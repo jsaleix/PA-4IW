@@ -1,0 +1,25 @@
+
+###> symfony/framework-bundle ###
+www/.env.local
+www/.env.local.php
+www/.env.*.local
+www/config/secrets/prod/prod.decrypt.private.php
+www/public/bundles/
+www/var/
+www/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+www/.phpunit.result.cache
+www/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> phpunit/phpunit ###
+www/phpunit.xml
+www/.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> IDE/OS ###
+.idea
+**/.DS_Store
+###< IDE/OS ###
