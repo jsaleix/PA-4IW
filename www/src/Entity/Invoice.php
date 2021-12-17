@@ -24,12 +24,6 @@ class Invoice
     private $sneaker;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="invoices")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $buyer;
-
-    /**
      * @ORM\Column(type="string", length=40)
      */
     private $paymentStatus;
@@ -52,18 +46,6 @@ class Invoice
     public function setSneaker(?Sneaker $sneaker): self
     {
         $this->sneaker = $sneaker;
-
-        return $this;
-    }
-
-    public function getBuyer(): ?User
-    {
-        return $this->buyer;
-    }
-
-    public function setBuyer(?User $buyer): self
-    {
-        $this->buyer = $buyer;
 
         return $this;
     }

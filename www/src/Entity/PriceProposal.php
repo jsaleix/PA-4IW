@@ -24,12 +24,6 @@ class PriceProposal
     private $product;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $buyer;
-
-    /**
      * @ORM\Column(type="string", length=100)
      */
     private $status;
@@ -52,18 +46,6 @@ class PriceProposal
     public function setProduct(?Sneaker $product): self
     {
         $this->product = $product;
-
-        return $this;
-    }
-
-    public function getBuyer(): ?User
-    {
-        return $this->buyer;
-    }
-
-    public function setBuyer(?User $buyer): self
-    {
-        $this->buyer = $buyer;
 
         return $this;
     }

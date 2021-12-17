@@ -85,12 +85,6 @@ class Sneaker
      */
     private $productAppreciations;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sneakers")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $publisher;
-
     public function __construct()
     {
         $this->category = new ArrayCollection();
@@ -333,15 +327,4 @@ class Sneaker
         return $this;
     }
 
-    public function getPublisher(): ?User
-    {
-        return $this->publisher;
-    }
-
-    public function setPublisher(?User $publisher): self
-    {
-        $this->publisher = $publisher;
-
-        return $this;
-    }
 }

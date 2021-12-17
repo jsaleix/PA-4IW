@@ -28,12 +28,6 @@ class Message
     private $date;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $author;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Conversation::class, inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -64,18 +58,6 @@ class Message
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
-
-        return $this;
-    }
-
-    public function getAuthor(): ?User
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?User $author): self
-    {
-        $this->author = $author;
 
         return $this;
     }

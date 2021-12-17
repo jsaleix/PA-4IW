@@ -26,17 +26,6 @@ class UserReport
     private $reason;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="userReports", orphanRemoval=true)
-     */
-    private $reporter;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="userReports")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $reportedUser;
-
-    /**
      * @ORM\Column(type="string", length=100)
      */
     private $status;
@@ -59,48 +48,6 @@ class UserReport
     public function setReason(?ReportReason $reason): self
     {
         $this->reason = $reason;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getReporter(): Collection
-    {
-        return $this->reporter;
-    }
-
-    public function addReporter(User $reporter): self
-    {
-        if (!$this->reporter->contains($reporter)) {
-            $this->reporter[] = $reporter;
-            $reporter->setUserReports($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReporter(User $reporter): self
-    {
-        if ($this->reporter->removeElement($reporter)) {
-            // set the owning side to null (unless already changed)
-            if ($reporter->getUserReports() === $this) {
-                $reporter->setUserReports(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getReportedUser(): ?User
-    {
-        return $this->reportedUser;
-    }
-
-    public function setReportedUser(?User $reportedUser): self
-    {
-        $this->reportedUser = $reportedUser;
 
         return $this;
     }

@@ -18,12 +18,6 @@ class ProductAppreciation
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $publisher;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Sneaker::class, inversedBy="productAppreciations")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -37,18 +31,6 @@ class ProductAppreciation
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getPublisher(): ?User
-    {
-        return $this->publisher;
-    }
-
-    public function setPublisher(?User $publisher): self
-    {
-        $this->publisher = $publisher;
-
-        return $this;
     }
 
     public function getProduct(): ?Sneaker

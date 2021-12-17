@@ -20,18 +20,6 @@ class Conversation
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $userA;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $userB;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $isActive;
