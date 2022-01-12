@@ -4,9 +4,23 @@
         <li><a href="/">HOME</a></li>
         <li><a href="/shop">SHOP</a></li>
         <li><a href="/marketplace">MARKET PLACE</a></li>
-        <div>
-            <a href="/login"><button style="cursor: pointer">LOGIN</button></a>
-        </div>
+        {% if( app.user ) %}
+            <div>
+                <a href="/login"><button style="cursor: pointer">{{app.user.username}}</button></a>
+                <a href="/logout"><button style="cursor: pointer">LOGOUT</button></a>
+            </div>
+        {% else %}
+            <div>
+                <a href="/login"><button style="cursor: pointer">LOGIN</button></a>
+            </div>
+        {% endif %}
+
+        {% if(is_granted('ROLE_ADMIN')) %}
+            <div>
+                <a href="{{ path('back_default') }}">ADMIN DASHBOARD</a>
+            </div>
+        {% endif %}
+
     </ul>
 </nav>
 
