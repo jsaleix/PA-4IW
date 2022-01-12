@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<title>Edit Color</title>
+
+{% block body %}
+    <h1>Edit Color</h1>
+
+        {{ form_start(form) }}
+            {{ form_rest(form) }}
+            <button type="submit">Appliquer</button>
+        {{ form_end(form) }}
+
+    <a href="{{ path('color_index') }}">back to list</a>
+
+    {{ include('back/color/_delete_form.html.twig') }}
+{% endblock %}

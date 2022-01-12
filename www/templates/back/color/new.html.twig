@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+
+<title>New Color</title>
+
+{% block body %}
+    <h1>Create new Color</h1>
+
+    {{ form_start(form) }}
+        {{ form_rest(form) }}
+        <button type="submit">Créer</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('color_index') }}">back to list</a>
+{% endblock %}

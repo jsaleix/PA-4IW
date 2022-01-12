@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<title>Color</title>
+
+{% block body %}
+    <h1>Color</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ color.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ color.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ color.description }}</td>
+            </tr>
+            <tr>
+                <th>Hexa_value</th>
+                <td>{{ color.hexaValue }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('color_index') }}">back to list</a>
+
+    <a href="{{ path('color_edit', {'id': color.id}) }}">edit</a>
+
+    {{ include('back/color/_delete_form.html.twig') }}
+{% endblock %}
