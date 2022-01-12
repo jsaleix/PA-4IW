@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -70,6 +72,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=80, nullable=true)
      */
     private $surname;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Invoice::class, mappedBy="buyer", orphanRemoval=true)
+     */
+    private $invoices;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Sneaker::class, mappedBy="publisher", orphanRemoval=true)
+     */
+    private $publishedSneakers;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserReport::class, mappedBy="reported", orphanRemoval=true)
+     */
+    private $userReports;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserReport::class, mappedBy="reporter")
+     */
+    private $userReportsMade;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Conversation::class, mappedBy="users")
+     */
+    private $conversations;
+
+    public function __construct()
+    {
+        $this->invoices = new ArrayCollection();
+        $this->publishedSneakers = new ArrayCollection();
+        $this->userReports = new ArrayCollection();
+        $this->userReportsMade = new ArrayCollection();
+        $this->conversations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -240,6 +276,153 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSurname(?string $surname): self
     {
         $this->surname = $surname;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invoice[]
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    public function addInvoice(Invoice $invoice): self
+    {
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices[] = $invoice;
+            $invoice->setBuyer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoice $invoice): self
+    {
+        if ($this->invoices->removeElement($invoice)) {
+            // set the owning side to null (unless already changed)
+            if ($invoice->getBuyer() === $this) {
+                $invoice->setBuyer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sneaker[]
+     */
+    public function getPublishedSneakers(): Collection
+    {
+        return $this->publishedSneakers;
+    }
+
+    public function addPublishedSneaker(Sneaker $publishedSneaker): self
+    {
+        if (!$this->publishedSneakers->contains($publishedSneaker)) {
+            $this->publishedSneakers[] = $publishedSneaker;
+            $publishedSneaker->setPublisher($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublishedSneaker(Sneaker $publishedSneaker): self
+    {
+        if ($this->publishedSneakers->removeElement($publishedSneaker)) {
+            // set the owning side to null (unless already changed)
+            if ($publishedSneaker->getPublisher() === $this) {
+                $publishedSneaker->setPublisher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserReport[]
+     */
+    public function getUserReports(): Collection
+    {
+        return $this->userReports;
+    }
+
+    public function addUserReport(UserReport $userReport): self
+    {
+        if (!$this->userReports->contains($userReport)) {
+            $this->userReports[] = $userReport;
+            $userReport->setReported($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserReport(UserReport $userReport): self
+    {
+        if ($this->userReports->removeElement($userReport)) {
+            // set the owning side to null (unless already changed)
+            if ($userReport->getReported() === $this) {
+                $userReport->setReported(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserReport[]
+     */
+    public function getUserReportsMade(): Collection
+    {
+        return $this->userReportsMade;
+    }
+
+    public function addUserReportsMade(UserReport $userReportsMade): self
+    {
+        if (!$this->userReportsMade->contains($userReportsMade)) {
+            $this->userReportsMade[] = $userReportsMade;
+            $userReportsMade->setReporter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserReportsMade(UserReport $userReportsMade): self
+    {
+        if ($this->userReportsMade->removeElement($userReportsMade)) {
+            // set the owning side to null (unless already changed)
+            if ($userReportsMade->getReporter() === $this) {
+                $userReportsMade->setReporter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Conversation[]
+     */
+    public function getConversations(): Collection
+    {
+        return $this->conversations;
+    }
+
+    public function addConversation(Conversation $conversation): self
+    {
+        if (!$this->conversations->contains($conversation)) {
+            $this->conversations[] = $conversation;
+            $conversation->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversation(Conversation $conversation): self
+    {
+        if ($this->conversations->removeElement($conversation)) {
+            $conversation->removeUser($this);
+        }
 
         return $this;
     }

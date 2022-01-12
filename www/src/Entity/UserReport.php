@@ -30,6 +30,18 @@ class UserReport
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="userReports")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $reported;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="userReportsMade")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $reporter;
+
     public function __construct()
     {
         $this->reporter = new ArrayCollection();
@@ -60,6 +72,30 @@ class UserReport
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getReported(): ?User
+    {
+        return $this->reported;
+    }
+
+    public function setReported(?User $reported): self
+    {
+        $this->reported = $reported;
+
+        return $this;
+    }
+
+    public function getReporter(): ?User
+    {
+        return $this->reporter;
+    }
+
+    public function setReporter(?User $reporter): self
+    {
+        $this->reporter = $reporter;
 
         return $this;
     }
