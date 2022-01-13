@@ -15,7 +15,6 @@ class MaterialType extends AbstractType
             ->add('name')
             ->add('description')
             ->add('icon')
-            ->add('sneakers')
         ;
     }
 

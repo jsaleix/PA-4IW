@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<title>Material index</title>
+
+{% block body %}
+    <h1>Material index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Icon</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for material in materials %}
+            <tr>
+                <td>{{ material.id }}</td>
+                <td>{{ material.name }}</td>
+                <td>{{ material.description }}</td>
+                <td>{{ material.icon }}</td>
+                <td>
+                    <a href="{{ path('material_show', {'id': material.id}) }}">show</a>
+                    <a href="{{ path('material_edit', {'id': material.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('material_new') }}">Create new</a>
+{% endblock %}
