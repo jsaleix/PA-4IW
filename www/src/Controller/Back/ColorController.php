@@ -3,7 +3,7 @@
 namespace App\Controller\Back;
 
 use App\Entity\Color;
-use App\Form\ColorType;
+use App\Form\Back\ColorType;
 use App\Repository\ColorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

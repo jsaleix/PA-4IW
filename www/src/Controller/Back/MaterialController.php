@@ -3,7 +3,7 @@
 namespace App\Controller\Back;
 
 use App\Entity\Material;
-use App\Form\MaterialType;
+use App\Form\Back\MaterialType;
 use App\Repository\MaterialRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
