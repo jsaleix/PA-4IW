@@ -1,5 +1,4 @@
 version: '3.8'
-
 x-cache-from:
   - &app-cache-from
     cache_from:
@@ -9,9 +8,9 @@ services:
   db:
     image: postgres:13-alpine
     environment:
-        POSTGRES_PASSWORD: password
-        POSTGRES_DB: db
-        POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
     volumes:
       - db-data:/var/lib/postgresql/data:rw
     ports:
@@ -51,16 +50,16 @@ services:
     depends_on:
       - php
     ports:
-      - "80:80"
-      - "443:443"
+      - "8095:80"
+      - "430:443"
 
   adminer:
     image: adminer
     ports:
-      - 8080:8080
+      - "8090:8080"
     depends_on:
-    - db
+      - db
 
 volumes:
-  db-data: {}
-  app-cache: {}
+  db-data: { }
+  app-cache: { }
