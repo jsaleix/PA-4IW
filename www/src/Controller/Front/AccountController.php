@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\Front\UserType;
 
+use Stripe\StripeClient;
+
 #[Route('/account')]
 class AccountController extends AbstractController
 {
@@ -45,19 +47,49 @@ class AccountController extends AbstractController
         if( in_array('ROLE_SELLER',  $user->getRoles()) ){
             return $this->redirectToRoute('front_account_index', [], Response::HTTP_SEE_OTHER);
         }
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        $stripe = new StripeClient($_ENV['STRIPE_SK']);
+        if($user->getStripeConnectId()){
+            $account = $user->getStripeConnectId();
+        }else{
+            $account = $stripe->accounts->create([
+                'type' => 'express'
+            ]);
 
-            return $this->redirectToRoute('front_account_profile', [], Response::HTTP_SEE_OTHER);
+            if($account){
+                $account = $account->id;
+                $user->setStripeConnectId($account);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+            }    
         }
 
-        return $this->render('front/account/profile/index.html.twig', [
-            'user' => $user,
-            'form' => $form->createView()
-         ]);
+        //Checking if stripe registration is over else redirect to form
+        $status = $stripe->accounts->retrieve($account);
+        //dd($status);
+        if(!$status->charges_enabled){
+            $link = $stripe->accountLinks->create([
+                'account' => $account,
+                'refresh_url' => 'http://localhost/account/become_seller',
+                'return_url' => 'http://localhost/account/become_seller',
+                'type' => 'account_onboarding',
+            ]);
+            
+            header('Location:' . $link->url); 
+        }else{
+            $newRoles = $user->getRoles();
+            $newRoles[] = 'ROLE_SELLER';
+
+            $user->setRoles($newRoles);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+            return $this->redirectToRoute('front_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        
+        return $this->render('front/account/becomeSeller/index.html.twig', []);
     }
 
 }
