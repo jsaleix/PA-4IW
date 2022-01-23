@@ -1,0 +1,81 @@
+{% extends 'base_front.html.twig' %}
+
+{% block title %}SNKER - Your account {% endblock %}
+
+{% block body %}
+
+<div class="account">
+    <h1>Your account</h1>
+
+    <div class='account_items'>
+        <a href="{{ path('front_account_profile') }}" class='account_item'>
+            <h3>Edit your profile</h3>
+            <p>lorem</p>
+        </a>
+        <a href="" class='account_item'>
+            <h3>Your orders</h3>
+                <p>lorem</p>
+        </a>
+        {% if(is_granted('ROLE_SELLER')) %}
+            <a href="" class='account_item'>
+                <h3>Your sales</h3>
+                <p>lorem</p>
+            </a>
+        {% else %}
+            <a href="" class='account_item'>
+                <h3>Become seller</h3>
+                <p>lorem</p>
+            </a>
+        {% endif %}
+        <a href="" class='account_item'>
+            <h3>Your payment methods</h3>
+            <p>lorem</p>
+        </a>
+
+        <a href="" class='account_item'>
+            <h3>Help</h3>
+            <p>lorem</p>
+        </a>
+    </div>
+</div>
+
+<style>
+
+    .account{
+        padding: 0 20%;
+    }
+
+    .account > h1{
+        margin-bottom: 20px;
+    }
+
+    .account a{
+        text-decoration: none;
+        color: black;
+    }
+
+    .account_items{
+        display: flex;
+        flex-direction: row;
+        /*justify-content: space-between;*/
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .account_item{
+        width: calc(100%/3.1);
+        margin-bottom: 15px;
+        border: 1px solid gray;
+        padding: 30px;
+        border-radius: 10px;
+        margin-right: 5px;
+        cursor: pointer;
+        transition: 0.5s;
+    }
+
+    .account_item:hover{
+        background-color: #f0f0f0;
+    }
+</style>
+
+{% endblock %}

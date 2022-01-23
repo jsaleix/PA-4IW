@@ -6,7 +6,7 @@
         <li><a href="/marketplace">Marketplace</a></li>
         {% if( app.user ) %}
             <div>
-                <a href="/login"><button style="cursor: pointer">{{app.user.username}}</button></a>
+                <a href="/account"><button style="cursor: pointer">{{app.user.username}}</button></a>
                 <a href="/logout"><button style="cursor: pointer">LOGOUT</button></a>
             </div>
         {% else %}

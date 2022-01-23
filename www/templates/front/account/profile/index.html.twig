@@ -1,0 +1,55 @@
+{% extends 'base_front.html.twig' %}
+
+{% block title %}SNKER - Your profile {% endblock %}
+
+{% block body %}
+
+<div class="account">
+    <h1>Your profile</h1>
+
+    <div class="account_profile">
+        <div class="left">
+            {{ form_start(form) }}
+                {{ form_rest(form) }}
+                <button type="submit">SAVE</button>
+            {{ form_end(form) }}
+        </div>
+        <div class="right">
+
+        </div>
+    </div>
+    
+</div>
+
+<style>
+
+    .account{
+        padding: 0 20%;
+    }
+
+    .account > h1{
+        margin-bottom: 20px;
+    }
+
+    .account a{
+        text-decoration: none;
+        color: black;
+    }
+
+    .account_profile{
+        display: flex;
+        width: 100%;
+    }
+
+    .left{
+        width: 70%;
+    }
+
+    .right{
+        width: 30%;
+        background-color: red;
+        height: 100vh;
+    }
+</style>
+
+{% endblock %}
