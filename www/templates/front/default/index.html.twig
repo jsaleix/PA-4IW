@@ -9,13 +9,105 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/src/Controller/DefaultController.php'|file_link(0) }}">src/Controller/DefaultController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/templates/default/index.html.twig'|file_link(0) }}">templates/default/index.html.twig</a></code></li>
+<div class="home">
+    <ul class="horizontal_list_item">
+        {% for category in categories %}
+            <li>{{ category.name }}</li>
+        {% else %}
+            <li>No category found </li>
+        {% endfor %}
+        <li>More ></li>
     </ul>
+
+    <div id="home_banner">
+        <img alt="banner" 
+            src="https://images.unsplash.com/photo-1552066344-2464c1135c32?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"/>
+    </div>
+
+    <ul class="horizontal_list_item">
+        {% for brand in brands %}
+            <li>{{brand.name }}</li>
+        {% else %}
+            <li>No brand found </li>
+        {% endfor %}
+        <li>More ></li>
+    </ul>
+
+    <section>
+        <div class="home_section_header">
+            <h2>Popular Sneakers from the Shop</h2>
+            <h2>See All ></h2>
+        </div>
+        <ul>
+            {% for sneaker in popularSneakers %}
+                <li>{{sneaker.name }}</li>
+            {% else %}
+                <li>No sneakers found </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <section>
+        <div class="home_section_header">
+            <h2>Popular models from the MarketPlace</h2>
+            <h2>See All ></h2>
+        </div>
+        <ul>
+            {% for sneaker in popularSneakers %}
+                <li>{{sneaker.name }}</li>
+            {% else %}
+                <li>No sneakers found </li>
+            {% endfor %}
+        </ul>
+    </section>
 </div>
+
+<style>
+
+    #home_banner{
+        height: 300px;
+        overflow: hidden;
+        position: relative;
+        margin: 20px 0;
+    }
+
+    #home_banner > img{
+        position: absolute;
+        top: -190%;
+        left: 0;
+    }
+
+    .horizontal_list_item{
+        width: 100%;
+        background-color: #EAEAEA;
+        display: flex;
+        justify-content: center;
+        padding: 10px 20px;
+    }
+
+    ul{
+        list-style-type: none;
+    }
+
+    .horizontal_list_item li{
+        width: auto;
+        padding: 5px 20px;
+    }
+
+    section{
+        padding: 0 20%;
+        width: 100%;
+    }
+
+    h2{
+        width: auto;
+    }
+
+    .home_section_header{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+
 {% endblock %}
