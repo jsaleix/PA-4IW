@@ -37,4 +37,27 @@ class AccountController extends AbstractController
             'form' => $form->createView()
          ]);
     }
+
+    #[Route('/become_seller', name: 'account_become_seller', methods: ['GET'])]
+    public function becomeSeller(Request $request): Response
+    {
+        $user = $this->getUser();
+        if( in_array('ROLE_SELLER',  $user->getRoles()) ){
+            return $this->redirectToRoute('front_account_index', [], Response::HTTP_SEE_OTHER);
+        }
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('front_account_profile', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('front/account/profile/index.html.twig', [
+            'user' => $user,
+            'form' => $form->createView()
+         ]);
+    }
+
 }
