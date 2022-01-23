@@ -1,0 +1,20 @@
+{% extends 'base_front.html.twig' %}
+
+{% block title %}Brand list{% endblock %}
+
+{% block body %}
+    <table>
+        <tr>
+            <td>Nom</td>
+            <td>Adresse</td>
+            <td>Ville</td>
+            <td>CP</td>
+            <td></td>
+        </tr>
+        {% for brand in brands %}
+            <tr>
+                <td>{{ brand.name }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -26,11 +26,11 @@
 
     <ul class="horizontal_list_item">
         {% for brand in brands %}
-            <li>{{brand.name }}</li>
+            <li><a href="{{ path('front_brand_show', {'id': brand.id}) }}">{{brand.name }}</a></li>
         {% else %}
             <li>No brand found </li>
         {% endfor %}
-        <li>More ></li>
+        <li><a href="{{ path('front_brand_index') }}" >More ></a></li>
     </ul>
 
     <section>
@@ -40,7 +40,7 @@
         </div>
         <ul>
             {% for sneaker in popularSneakers %}
-                <li>{{sneaker.name }}</li>
+                <li><a href="{{ path('front_sneaker_index', {'id': sneaker.id}) }}">{{sneaker.name }}</a></li>
             {% else %}
                 <li>No sneakers found </li>
             {% endfor %}
@@ -87,6 +87,11 @@
 
     ul{
         list-style-type: none;
+    }
+
+    a{
+        text-decoration: none;
+        color: black;
     }
 
     .horizontal_list_item li{
