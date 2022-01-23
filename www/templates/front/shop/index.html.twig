@@ -1,0 +1,64 @@
+{% extends 'base_front.html.twig' %}
+
+{% block title %}SNKER - Shop {% endblock %}
+
+{% block body %}
+
+<div class="shop">
+    
+</div>
+
+<style>
+
+    #home_banner{
+        height: 300px;
+        overflow: hidden;
+        position: relative;
+        margin: 20px 0;
+    }
+
+    #home_banner > img{
+        position: absolute;
+        top: -190%;
+        left: 0;
+    }
+
+    .horizontal_list_item{
+        width: 100%;
+        background-color: #EAEAEA;
+        display: flex;
+        justify-content: center;
+        padding: 10px 20px;
+    }
+
+    ul{
+        list-style-type: none;
+    }
+
+    a{
+        text-decoration: none;
+        color: black;
+    }
+
+    .horizontal_list_item li{
+        width: auto;
+        padding: 5px 20px;
+    }
+
+    section{
+        padding: 0 20%;
+        width: 100%;
+    }
+
+    h2{
+        width: auto;
+    }
+
+    .home_section_header{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+
+{% endblock %}
