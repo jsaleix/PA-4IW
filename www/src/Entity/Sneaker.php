@@ -50,7 +50,7 @@ class Sneaker
     private $from_shop;
 
     /**
-     * @ORM\ManyToMany(targetEntity=category::class, inversedBy="sneakers")
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="sneakers")
      */
     private $category;
 
@@ -178,14 +178,14 @@ class Sneaker
     }
 
     /**
-     * @return Collection|category[]
+     * @return Collection|Category[]
      */
     public function getCategory(): Collection
     {
         return $this->category;
     }
 
-    public function addCategory(category $category): self
+    public function addCategory(Category $category): self
     {
         if (!$this->category->contains($category)) {
             $this->category[] = $category;
@@ -194,7 +194,7 @@ class Sneaker
         return $this;
     }
 
-    public function removeCategory(category $category): self
+    public function removeCategory(Category $category): self
     {
         $this->category->removeElement($category);
 
