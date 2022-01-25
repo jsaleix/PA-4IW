@@ -1,5 +1,5 @@
 <nav>
-    <a href="{{path('front_default') }}"><img src="" alt="SNKERS logo"/></a>
+    <a href="{{path('front_default') }}"><img id="logo" src="{{asset('images/logo.png')}}" alt="SNKERS logo"/></a>
     <ul>
         <li><a href="{{path('front_default') }}">Home</a></li>
         <li><a href="/shop">Shop</a></li>
@@ -25,6 +25,11 @@
 </nav>
 
 <style>
+
+    #logo{
+        width: 150px;
+    }
+
     nav{
         box-sizing: border-box;
         width: 100%;
