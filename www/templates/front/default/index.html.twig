@@ -4,11 +4,6 @@
 
 {% block body %}
 
-<style>
-    .example-wrapper { margin: 1em auto; padding: 0 20%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
 <div class="home">
     <ul class="horizontal_list_item">
         {% for category in categories %}
@@ -33,28 +28,43 @@
         <li><a href="{{ path('front_brand_index') }}" >More ></a></li>
     </ul>
 
-    <section>
+    <section class="home_section">
         <div class="home_section_header">
             <h2>Popular Sneakers from the Shop</h2>
-            <h2>See All ></h2>
+            <a href="{{path('front_shop_index') }}" class="red-font">See All ></a>
         </div>
-        <ul>
-            {% for sneaker in popularSneakers %}
-                <li><a href="">{{sneaker.name }}</a></li>
+        <div>
+            {% for sneaker in popularSneakersFromShop %}
+                <a href="#" class="sneaker_item">
+                    <img src=""/>
+                    <div class="sneaker_data">
+                        <h3>{{sneaker.name}}</h3>
+                                                <span>{{ sneaker.brand.name}} </span>
+                        <span>${{sneaker.price}}</span>
+                        <span class="source">{{sneaker.fromShop ? 'From Shop' : 'From Marketplace'}}</span>
+                    </div>
+                </a>
             {% else %}
                 <li>No sneakers found </li>
             {% endfor %}
-        </ul>
+        </div>
     </section>
 
-    <section>
+    <section class="home_section">
         <div class="home_section_header">
             <h2>Popular models from the MarketPlace</h2>
-            <h2>See All ></h2>
+            <a href="{{path('front_marketplace_index') }}" class="red-font">See All ></a>
         </div>
         <ul>
-            {% for sneaker in popularSneakers %}
-                <li>{{sneaker.name }}</li>
+            {% for sneaker in popularSneakersFromMP %}
+                <a href="" class="sneaker_item">
+                    <img src=""/>
+                    <div class="sneaker_data">
+                        <h3>{{sneaker.name}}</h3>
+                        <span>${{sneaker.price}}</span>
+                        <span class="source">{{sneaker.fromShop ? 'From Shop' : 'From Marketplace'}}</span>
+                    </div>
+                </a>
             {% else %}
                 <li>No sneakers found </li>
             {% endfor %}
@@ -109,11 +119,26 @@
         width: auto;
     }
 
+    .home_section{
+        margin-top: 20px;
+    }
+
     .home_section_header{
         width: 100%;
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
     }
+
+    .home_section_header > a{
+        width: auto;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+
+
 </style>
 
 {% endblock %}

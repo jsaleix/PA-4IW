@@ -91,6 +91,11 @@ class Sneaker
      */
     private $publisher;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $price;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
@@ -341,6 +346,18 @@ class Sneaker
     public function setPublisher(?User $publisher): self
     {
         $this->publisher = $publisher;
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): self
+    {
+        $this->price = $price;
 
         return $this;
     }

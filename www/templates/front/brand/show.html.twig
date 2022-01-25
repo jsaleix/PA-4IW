@@ -7,13 +7,20 @@
     <div class="header">
         <h1>{{ brand.name }}</h1>
         <p>{{ brand.description }}</p>
-    <div>
+    </div>
 
-    <div>
+    <div class="sneakers_items">
         {% for sneaker in sneakers %}
-            <li><a href="">{{sneaker.name }}</a></li>
+            <a href="#" class="sneaker_item">
+                <img src=""/>
+                <div class="sneaker_data">
+                    <h3>{{sneaker.name}}</h3>
+                    <span>${{sneaker.price}}</span>
+                    <span class="source">{{sneaker.fromShop ? 'From Shop' : 'From Marketplace'}}</span>
+                </div>
+            </a>
         {% else %}
-            <li>No sneakers found </li>
+            <p>No sneakers found </p>
         {% endfor %}
     </div>
 </div>
