@@ -3,18 +3,20 @@
 {% block title %}Brand list{% endblock %}
 
 {% block body %}
-    <table>
-        <tr>
-            <td>Nom</td>
-            <td>Adresse</td>
-            <td>Ville</td>
-            <td>CP</td>
-            <td></td>
-        </tr>
-        {% for brand in brands %}
+    <div class="container brands-page">
+        <table>
             <tr>
-                <td>{{ brand.name }}</td>
+                <td>Nom</td>
+                <td>Adresse</td>
+                <td>Ville</td>
+                <td>CP</td>
+                <td></td>
             </tr>
-        {% endfor %}
-    </table>
+            {% for brand in brands %}
+                <tr>
+                    <td>{{ brand.name }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}

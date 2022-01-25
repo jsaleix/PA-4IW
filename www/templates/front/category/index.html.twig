@@ -1,0 +1,13 @@
+{% extends 'base_front.html.twig' %}
+
+{% block title %}Category list{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% for category in categories %}
+            <div>
+                <p>{{ category.name }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

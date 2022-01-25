@@ -5,6 +5,7 @@ namespace App\Controller\Front;
 use App\Entity\User;
 use App\Entity\Brand;
 use App\Repository\BrandRepository;
+use App\Repository\SneakerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,10 +24,11 @@ class BrandController extends AbstractController
     }
 
     #[Route('/{id}', name: 'brand_show', methods: ['GET'])]
-    public function show(Brand $brand): Response
+    public function show(Brand $brand, SneakerRepository $sneakerRepository): Response
     {
         return $this->render('front/brand/show.html.twig', [
-            'brand' => $brand
+            'brand' => $brand,
+            'sneakers' => $sneakerRepository->findBy([ 'brand' => $brand->getId()])
         ]);
     }
 }

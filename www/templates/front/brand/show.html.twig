@@ -3,6 +3,18 @@
 {% block title %}Brand {{brand.name }}{% endblock %}
 
 {% block body %}
-    <h1>{{ brand.name }}</h1>
-    <p>{{ brand.description }}</p>
+<div class="container section-page">
+    <div class="header">
+        <h1>{{ brand.name }}</h1>
+        <p>{{ brand.description }}</p>
+    <div>
+
+    <div>
+        {% for sneaker in sneakers %}
+            <li><a href="">{{sneaker.name }}</a></li>
+        {% else %}
+            <li>No sneakers found </li>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
