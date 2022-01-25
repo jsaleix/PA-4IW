@@ -102,12 +102,18 @@ class User
      */
     private $userReports;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Sneaker::class, mappedBy="favoris")
+     */
+    private $favoris;
+
     public function __construct()
     {
         $this->productReports = new ArrayCollection();
         $this->invoices = new ArrayCollection();
         $this->sneakers = new ArrayCollection();
         $this->userReports = new ArrayCollection();
+        $this->favoris = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -378,6 +384,33 @@ class User
             if ($userReport->getReportedUser() === $this) {
                 $userReport->setReportedUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sneaker[]
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(Sneaker $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris[] = $favori;
+            $favori->addFavori($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(Sneaker $favori): self
+    {
+        if ($this->favoris->removeElement($favori)) {
+            $favori->removeFavori($this);
         }
 
         return $this;

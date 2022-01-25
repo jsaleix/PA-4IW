@@ -35,7 +35,7 @@ class Category
     private $mainCategory;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Sneaker::class, mappedBy="category")
+     * @ORM\ManyToMany(targetEntity=Sneaker::class, mappedBy="Category")
      */
     private $sneakers;
 

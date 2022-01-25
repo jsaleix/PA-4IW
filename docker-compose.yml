@@ -37,7 +37,7 @@ services:
       start_period: 30s
     volumes:
       - ./www:/var/www
-      - app-cache:/var/www/var
+      - app-cache:/var/www/var0
 
   nginx:
     build:
@@ -57,7 +57,7 @@ services:
   adminer:
     image: adminer
     ports:
-      - 8080:8080
+      - 8089:8080
     depends_on:
     - db
 
