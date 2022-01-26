@@ -1,10 +1,10 @@
 twig:
-    default_path: '%kernel.project_dir%/templates'
-    paths:
-        '%kernel.project_dir%/templates/front': front
-        '%kernel.project_dir%/templates/back': back
-        
+  default_path: "%kernel.project_dir%/templates"
+  paths:
+    "%kernel.project_dir%/templates/front": front
+    "%kernel.project_dir%/templates/back": back
+  form_themes: ["bootstrap_5_layout.html.twig"]
 
 when@test:
-    twig:
-        strict_variables: true
+  twig:
+    strict_variables: true

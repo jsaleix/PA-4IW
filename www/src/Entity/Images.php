@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ImgRepository;
+use App\Repository\ImagesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=ImgRepository::class)
+ * @ORM\Entity(repositoryClass=ImagesRepository::class)
  */
-class Img
+class Images
 {
     /**
      * @ORM\Id
@@ -23,9 +23,10 @@ class Img
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity=Sneaker::class, inversedBy="images")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $path;
+    private $Sneaker;
 
     public function getId(): ?int
     {
@@ -44,14 +45,14 @@ class Img
         return $this;
     }
 
-    public function getPath(): ?string
+    public function getSneaker(): ?Sneaker
     {
-        return $this->path;
+        return $this->Sneaker;
     }
 
-    public function setPath(string $path): self
+    public function setSneaker(?Sneaker $Sneaker): self
     {
-        $this->path = $path;
+        $this->Sneaker = $Sneaker;
 
         return $this;
     }

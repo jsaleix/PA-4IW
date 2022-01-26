@@ -105,6 +105,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $conversations;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Sneaker::class, mappedBy="favoris")
+     */
+    private $favoris;
+
     public function __construct()
     {
         $this->invoices = new ArrayCollection();
@@ -112,6 +117,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->userReports = new ArrayCollection();
         $this->userReportsMade = new ArrayCollection();
         $this->conversations = new ArrayCollection();
+        $this->favoris = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -429,6 +435,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->conversations->removeElement($conversation)) {
             $conversation->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sneaker[]
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(Sneaker $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris[] = $favori;
+            $favori->addFavori($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(Sneaker $favori): self
+    {
+        if ($this->favoris->removeElement($favori)) {
+            $favori->removeFavori($this);
         }
 
         return $this;

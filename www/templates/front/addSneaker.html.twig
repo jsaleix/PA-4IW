@@ -1,0 +1,25 @@
+{% extends 'base_back.html.twig' %}
+{% form_theme formSneaker 'bootstrap_5_layout.html.twig' %}
+
+{% block title %}SNKER - Accueil
+{% endblock %}
+
+{% block body %}
+
+	{{ include('@front/navbar.html.twig') }}
+
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			padding: 0 20%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+	</style>
+
+	<div></div>
+
+	{{ form(formSneaker)}}{% endblock %}
