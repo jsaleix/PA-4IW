@@ -33,19 +33,19 @@
             <h2>Popular Sneakers from the Shop</h2>
             <a href="{{path('front_shop_index') }}" class="red-font">See All ></a>
         </div>
-        <div>
+        <div class="sneakers_items">
             {% for sneaker in popularSneakersFromShop %}
                 <a href="#" class="sneaker_item">
                     <img src=""/>
                     <div class="sneaker_data">
                         <h3>{{sneaker.name}}</h3>
-                                                <span>{{ sneaker.brand.name}} </span>
+                        <span>{{ sneaker.brand.name}} </span>
                         <span>${{sneaker.price}}</span>
                         <span class="source">{{sneaker.fromShop ? 'From Shop' : 'From Marketplace'}}</span>
                     </div>
                 </a>
             {% else %}
-                <li>No sneakers found </li>
+                <p>No sneakers found </p>
             {% endfor %}
         </div>
     </section>
@@ -55,20 +55,21 @@
             <h2>Popular models from the MarketPlace</h2>
             <a href="{{path('front_marketplace_index') }}" class="red-font">See All ></a>
         </div>
-        <ul>
+        <div class="sneakers_items">
             {% for sneaker in popularSneakersFromMP %}
                 <a href="" class="sneaker_item">
                     <img src=""/>
                     <div class="sneaker_data">
                         <h3>{{sneaker.name}}</h3>
+                        <span>{{ sneaker.brand.name}} </span>
                         <span>${{sneaker.price}}</span>
                         <span class="source">{{sneaker.fromShop ? 'From Shop' : 'From Marketplace'}}</span>
                     </div>
                 </a>
             {% else %}
-                <li>No sneakers found </li>
+                <p>No sneakers found </p>
             {% endfor %}
-        </ul>
+        </div>
     </section>
 </div>
 

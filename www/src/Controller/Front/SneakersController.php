@@ -12,24 +12,31 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SneakersController extends AbstractController
 {
-    #[Route('/add', name: 'sneaker')]
-    public function newSneaker(Request $request)
+    #[Route('/account/publish', name: 'front_account_sneaker_add')]
+    public function addMP(Request $request)
     {
+        $user = $this->getUser();
+        if( !in_array('ROLE_SELLER',  $user->getRoles()) ){
+            return $this->redirectToRoute('front_account_index', [], Response::HTTP_SEE_OTHER);
+        }
+
         $sneaker = new Sneaker();
-
         $form = $this->createForm(SneakerType::class, $sneaker);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $sneaker->setPublisher( $user);
+            $sneaker->setFromShop( false );
+            $sneaker->setUnused( true );
+            $sneaker->setPublicationDate( new \DateTime() );
             $em->persist($sneaker);
             $em->flush();
 
             return $this->redirectToRoute('default');
         }
 
-        return $this->render('front/addSneaker.html.twig', [
+        return $this->render('front/account/sneakers/new.html.twig', [
             'formSneaker' => $form->createView()
         ]);
     }

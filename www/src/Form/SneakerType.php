@@ -3,8 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Sneaker;
+use App\Entity\Brand;
 use App\Entity\Category;
+
 use Symfony\Component\Form\AbstractType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -29,10 +32,17 @@ class SneakerType extends AbstractType
                 ]
             ])
 
-            ->add('brand', ChoiceType::class, [
-                'attr' => [
-                    'placeholder' => "marque"
-                ]
+            /*->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                "required" => false
+            ])*/
+
+            ->add('brand', EntityType::class, [
+                'class' => Brand::class,
+                'choice_label' => 'name',
+                'multiple' => false
             ])
 
             ->add('size', TextType::class, [
