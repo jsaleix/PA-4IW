@@ -40,4 +40,41 @@ class SneakersController extends AbstractController
             'formSneaker' => $form->createView()
         ]);
     }
+
+    #[Route('/account/your-sales', name: 'front_account_seller_sales')]
+    public function SellerList(){
+        $user = $this->getUser();
+
+        if( !in_array('ROLE_SELLER',  $user->getRoles()) ){
+            return $this->redirectToRoute('front_account_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('front/account/sneakers/list.html.twig', [
+            'sneakers' => $user->getPublishedSneakers(),
+        ]);
+    }
+
+    #[Route('/account/sneaker/{id}', name: 'front_account_sneaker_edit', methods: ['GET', 'POST'])]
+    public function editSneaker(Request $request, Sneaker $sneaker)
+    {
+        $user = $this->getUser();
+        if( !in_array('ROLE_SELLER',  $user->getRoles()) ){
+            return $this->redirectToRoute('front_account_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        $form = $this->createForm(SneakerType::class, $sneaker);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('front_account_seller_sales', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('front/account/sneakers/edit.html.twig', [
+            'sneaker'=>$sneaker,
+            'form' => $form->createView()
+         ]);
+    }
+
 }

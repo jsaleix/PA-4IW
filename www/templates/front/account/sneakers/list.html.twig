@@ -1,0 +1,58 @@
+{% extends 'base_front.html.twig' %}
+
+{% block title %}SNKER - Your profile {% endblock %}
+
+{% block body %}
+
+<div class="account container">
+    <h1>Your sales</h1>
+
+    <div class="account_profile">
+        <div class="sneakers_items">    
+            {% for sneaker in sneakers %}
+                <a href="{{ path('front_account_sneaker_edit', {'id': sneaker.id}) }}" class="sneaker_item">
+                    <img src=""/>
+                    <div class="sneaker_data">
+                        <h3>{{sneaker.name}}</h3>
+                        <span>${{sneaker.price}}</span>
+                    </div>
+                </a>
+            {% else %}
+                <p>No sneakers found </p>
+            {% endfor %}
+        </div>
+    </div>
+    
+</div>
+
+<style>
+
+    .account{
+    }
+
+    .account > h1{
+        margin-bottom: 20px;
+    }
+
+    .account a{
+        text-decoration: none;
+        color: black;
+    }
+
+    .account_profile{
+        display: flex;
+        width: 100%;
+    }
+
+    .left{
+        width: 70%;
+    }
+
+    .right{
+        width: 30%;
+        background-color: red;
+        height: 100vh;
+    }
+</style>
+
+{% endblock %}

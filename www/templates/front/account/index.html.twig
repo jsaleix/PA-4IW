@@ -17,7 +17,7 @@
                 <p>lorem</p>
         </a>
         {% if(is_granted('ROLE_SELLER')) %}
-            <a href="" class='account_item'>
+            <a href="{{ path('front_account_seller_sales') }}" class='account_item'>
                 <h3>Your sales</h3>
                 <p>lorem</p>
             </a>
