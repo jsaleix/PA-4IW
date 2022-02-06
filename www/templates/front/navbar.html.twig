@@ -1,9 +1,8 @@
 <nav>
-    <a href="/"><img src="" alt="SNKERS logo"/></a>
+    <a href="/"><img src="../www/assets/images/Snkers.svg" alt="SNKERS" height="87px" width="100px"/></a>
     <ul>
-        <li><a href="/">HOME</a></li>
-        <li><a href="/shop">SHOP</a></li>
-        <li><a href="/marketplace">MARKET PLACE</a></li>
+        <li><a href="/shop">Shop</a></li>
+        <li><a href="/marketplace">Market Place</a></li>
         {% if( app.user ) %}
             <div>
                 <a href="/login"><button style="cursor: pointer">{{app.user.username}}</button></a>
@@ -23,6 +22,7 @@
 
     </ul>
 </nav>
+
 
 <style>
     nav{
@@ -55,4 +55,5 @@
         color: black;
         text-decoration: none;
     }
+
 </style>
