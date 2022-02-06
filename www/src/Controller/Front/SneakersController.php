@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class SneakersController extends AbstractController
 {
     #[Route('/account/publish', name: 'front_account_sneaker_add')]
-    public function addMP(Request $request)
+    public function addMP(Request $request)//Adding sneakers on the Marketplace
     {
         $user = $this->getUser();
         if( !in_array('ROLE_SELLER',  $user->getRoles()) ){
@@ -42,7 +42,7 @@ class SneakersController extends AbstractController
     }
 
     #[Route('/account/your-sales', name: 'front_account_seller_sales')]
-    public function SellerList(){
+    public function SellerList(){//Displays the products a seller user owns/is selling
         $user = $this->getUser();
 
         if( !in_array('ROLE_SELLER',  $user->getRoles()) ){
@@ -55,7 +55,7 @@ class SneakersController extends AbstractController
     }
 
     #[Route('/account/sneaker/{id}', name: 'front_account_sneaker_edit', methods: ['GET', 'POST'])]
-    public function editSneaker(Request $request, Sneaker $sneaker)
+    public function editSneaker(Request $request, Sneaker $sneaker)//Edit sneakers as seller
     {
         $user = $this->getUser();
         if( !in_array('ROLE_SELLER',  $user->getRoles()) ){
@@ -75,6 +75,14 @@ class SneakersController extends AbstractController
             'sneaker'=>$sneaker,
             'form' => $form->createView()
          ]);
+    }
+
+    #[Route('/sneaker/{id}', name: 'front_sneaker_item', methods: ['GET'])]
+    public function sneakerPage( Sneaker $sneaker )
+    {
+        return $this->render('front/sneaker/sneaker.html.twig', [
+            'sneaker'=>$sneaker,
+        ]);
     }
 
 }

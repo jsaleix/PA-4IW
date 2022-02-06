@@ -35,7 +35,7 @@
         </div>
         <div class="sneakers_items">
             {% for sneaker in popularSneakersFromShop %}
-                <a href="#" class="sneaker_item">
+                <a href="{{ path('front_sneaker_item', { 'id': sneaker.id }) }}" class="sneaker_item">
                     <img src=""/>
                     <div class="sneaker_data">
                         <h3>{{sneaker.name}}</h3>
@@ -57,7 +57,7 @@
         </div>
         <div class="sneakers_items">
             {% for sneaker in popularSneakersFromMP %}
-                <a href="" class="sneaker_item">
+                <a href="{{ path('front_sneaker_item', { 'id': sneaker.id }) }}" class="sneaker_item">
                     <img src=""/>
                     <div class="sneaker_data">
                         <h3>{{sneaker.name}}</h3>

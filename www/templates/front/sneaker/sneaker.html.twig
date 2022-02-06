@@ -1,0 +1,13 @@
+{% extends 'base_front.html.twig' %}
+
+{% block title %}SNKER - BUY {{ sneaker.name}} {{sneaker.fromShop ? 'from the Shop' : 'on the marketplace' }} {% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h1>{{sneaker.name}}</h1>
+    <span>{{sneaker.publicationDate is empty ? "" : sneaker.publicationDate|date("m/d/Y")}}</span>
+    <a href=""><button>BUY NOW</button></a>
+</div>
+
+{% endblock %}
