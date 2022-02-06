@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+use Stripe\StripeClient;
+
 class SneakersController extends AbstractController
 {
     #[Route('/account/publish', name: 'front_account_sneaker_add')]
@@ -30,8 +32,16 @@ class SneakersController extends AbstractController
             $sneaker->setFromShop( false );
             $sneaker->setUnused( true );
             $sneaker->setPublicationDate( new \DateTime() );
-            $em->persist($sneaker);
-            $em->flush();
+
+            $stripe = new StripeClient($_ENV['STRIPE_SK']);
+            $sneakerId = $stripe->products->create([
+                'name' => 'MP PRODUCT: ' . $sneaker->getName(),
+            ]);
+            if($sneakerId){
+                $sneaker->setStripeProductId($sneakerId->id);
+                $em->persist($sneaker);
+                $em->flush();
+            }
 
             return $this->redirectToRoute('default');
         }

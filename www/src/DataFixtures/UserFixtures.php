@@ -7,6 +7,8 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+use Stripe\StripeClient;
+
 class UserFixtures extends Fixture
 {
     const USER_ADMIN = 'admin';
@@ -41,10 +43,17 @@ class UserFixtures extends Fixture
         $manager->persist($user);
         $this->setReference(self::USER_USER, $user);
 
+        $stripe = new StripeClient($_ENV['STRIPE_SK']);
+        $stripeAccount = $stripe->accounts->create([
+            'type' => 'express'
+        ]);
+        $stripeAccount = $stripeAccount->id;
+
         $seller = (new User())
             ->setEmail('seller@seller')
             //->setIsVerified(true)
             ->setRoles(['ROLE_SELLER'])
+            ->setStripeConnectId($stripeAccount)
         ;
         $seller->setPassword($this->userPasswordHasher->hashPassword($seller, 'test'));
         $manager->persist($seller);

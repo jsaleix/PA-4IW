@@ -113,6 +113,11 @@ class Sneaker
      */
     private $favoris;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $StripeProductId;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
@@ -435,6 +440,18 @@ class Sneaker
     public function removeFavori(User $favori): self
     {
         $this->favoris->removeElement($favori);
+
+        return $this;
+    }
+
+    public function getStripeProductId(): ?string
+    {
+        return $this->StripeProductId;
+    }
+
+    public function setStripeProductId(?string $StripeProductId): self
+    {
+        $this->StripeProductId = $StripeProductId;
 
         return $this;
     }
