@@ -23,7 +23,7 @@ class MarketplaceController extends AbstractController
         return $this->render('front/marketplace/index.html.twig', []);
     }
 
-    #[Route('/marketplace/checkout/{id}', name: 'marketplace_product_checkout', methods: ['GET'])]
+    #[Route('/checkout/{id}', name: 'marketplace_product_checkout', methods: ['GET'])]
     public function checkout( Sneaker $sneaker, Request $request ): Response
     {
         if( $sneaker->getFromShop() ){
