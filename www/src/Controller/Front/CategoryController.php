@@ -4,13 +4,14 @@ namespace App\Controller\Front;
 
 use App\Entity\User;
 use App\Entity\Brand;
-use App\Repository\CategoryRepository;
+use App\Entity\Category;
+use App\Form\Front\UserType;
 use App\Repository\SneakerRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\Front\UserType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/categories')]
 class CategoryController extends AbstractController
@@ -28,7 +29,7 @@ class CategoryController extends AbstractController
     {
         return $this->render('front/category/show.html.twig', [
             'category' => $category,
-            'sneakers' => $sneakerRepository->findBy([ 'category' => $category->getId()])
+            'sneakers' => $sneakerRepository->findBy(['category' => $category->getId()])
         ]);
     }
 }
