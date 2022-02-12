@@ -25,7 +25,7 @@ class PaymentService
          * a successful status meaning it's already sold
          * or a buyer already affected, meaning someone might already be buying the product
          */
-        if( $invoice
+        if( $invoice && $invoice->getBuyer()
             && ($invoice->getPaymentStatus() === 'success' || $invoice->getBuyer() !== $buyer)
         ){
             return false;

@@ -40,7 +40,7 @@ class ShopController extends AbstractController
         }
         
         $buyer  = $this->getUser();
-        $url = $paymentService->generatePaymentIntent($sneaker, $buyer);
+        $url = $paymentService->generatePaymentIntent($sneaker, $buyer, false);
 
         if($url){
             header('Location:' . $url);

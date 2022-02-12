@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\Front\UserType;
+use App\Service\Payment\PaymentService;
 
 use Stripe\StripeClient;
 
@@ -24,39 +24,32 @@ class MarketplaceController extends AbstractController
     }
 
     #[Route('/checkout/{id}', name: 'marketplace_product_checkout', methods: ['GET'])]
-    public function checkout( Sneaker $sneaker, Request $request ): Response
+    public function checkout( Sneaker $sneaker, Request $request, PaymentService $paymentService ): Response
     {
-        if( $sneaker->getFromShop() ){
+        if( $sneaker->getFromShop() || !$sneaker->getStripeProductId() ){
             return $this->render('front/marketplace/index.html.twig', []);
         }
-        $buyer  = $this->getUser();
+
+        if( !$this->getUser() ){
+            return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
+        }
+
         $seller = $sneaker->getPublisher();
-        
-        if(!$seller->getStripeConnectId() || !$sneaker->getStripeProductId() ){
+
+        if(!$seller->getStripeConnectId() ){
             return $this->render('front/marketplace/index.html.twig', []);
         }
 
-        $stripe = new StripeClient($_ENV['STRIPE_SK']);
+        $buyer  = $this->getUser();
+        $url = $paymentService->generatePaymentIntent($sneaker, $buyer);
 
-        $price = $stripe->prices->create([
-            'unit_amount' => $sneaker->getPrice()*100,
-            'currency' => 'eur',
-            'product' => $sneaker->getStripeProductId(),
-        ]);
-                
-        $url = $stripe->checkout->sessions->create([
-            'success_url' => 'http://localhost/marketplace?success',
-            'cancel_url' => 'http://localhost/marketplace?failed',
-            'line_items' => [
-              [
-                'price' => $price->id,
-                'quantity' => 1,
-              ],
-            ],
-            'mode' => 'payment',
-          ]);
-        header('Location:' . $url->url); 
-        return $this->render('front/marketplace/checkout.html.twig', []);
+        if($url){
+            header('Location:' . $url);
+        }else{
+            return $this->redirectToRoute('front_default', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('front/shop/checkout.html.twig', []);
     }
 
 }
