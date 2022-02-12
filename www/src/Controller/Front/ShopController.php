@@ -4,15 +4,17 @@ namespace App\Controller\Front;
 
 use App\Entity\User;
 use App\Entity\Brand;
+use App\Entity\Invoice;
 use App\Entity\Sneaker;
+use Stripe\StripeClient;
+use App\Form\Front\UserType;
 use App\Repository\BrandRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\InvoiceRepository;
 use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\Front\UserType;
-
-use Stripe\StripeClient;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/shop')]
 class ShopController extends AbstractController
@@ -24,11 +26,24 @@ class ShopController extends AbstractController
     }
 
     #[Route('/checkout/{id}', name: 'shop_product_checkout', methods: ['GET'])]
-    public function checkout( Sneaker $sneaker, Request $request ): Response
+    public function checkout( Sneaker $sneaker, Request $request, InvoiceRepository $invoiceRepository ): Response
     {
-        $buyer  = $this->getUser();
-
+        
         if( !$sneaker->getFromShop() || !$sneaker->getStripeProductId() ){
+            return $this->redirectToRoute('front_default', [], Response::HTTP_SEE_OTHER);
+        }
+
+        if( !$this->getUser() ){
+            return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
+        }
+        
+        $buyer  = $this->getUser();
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $invoice = $invoiceRepository->findOneBy(['sneaker' => $sneaker->getId()]);
+        if( $invoice 
+            && ($invoice->getPaymentStatus() === 'success' || $invoice->getBuyer() !== $buyer)
+        ){
             return $this->redirectToRoute('front_default', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -41,7 +56,7 @@ class ShopController extends AbstractController
             'product' => $sneaker->getStripeProductId(),
         ]);
 
-        $url = $stripe->checkout->sessions->create([
+        $session = $stripe->checkout->sessions->create([
             'success_url' => 'http://localhost?success',
             'cancel_url' =>  'http://localhost?failed',
             'line_items' => [
@@ -54,7 +69,20 @@ class ShopController extends AbstractController
             'mode' => 'payment',
         ]);
         
-        header('Location:' . $url->url); 
+        if( !$invoice ){
+            $invoice = new Invoice();
+            $invoice->setSneaker($sneaker);
+        };
+
+        $invoice->setPaymentStatus('pending');
+        $invoice->setBuyer($buyer);
+        $invoice->setDate(new \DateTime());
+        $invoice->setStripePI($session->payment_intent);
+
+        $entityManager->persist($invoice);
+        $entityManager->flush();
+
+        header('Location:' . $session->url); 
         return $this->render('front/shop/checkout.html.twig', []);
     }
 }

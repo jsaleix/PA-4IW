@@ -35,9 +35,14 @@ class Invoice
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="invoices")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $buyer;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $stripePI;
 
     public function getId(): ?int
     {
@@ -91,4 +96,17 @@ class Invoice
 
         return $this;
     }
+
+    public function getStripePI(): ?string
+    {
+        return $this->stripePI;
+    }
+
+    public function setStripePI(?string $stripePI): self
+    {
+        $this->stripePI = $stripePI;
+
+        return $this;
+    }
+
 }

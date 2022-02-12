@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ asset('styles/styles.css') }}">
+    <title>{% block title %}SNKERS - {% endblock %}</title>
+    {% block stylesheets %}
+        {#{{ encore_entry_link_tags('app') }}#}
+    {% endblock %}
+
+    {% block javascripts %}
+        {#{{ encore_entry_script_tags('app') }}#}
+    {% endblock %}
+</head>
+<body>
+
+{{ include('@front/navbar.html.twig') }}
+
+{% block body %}
+    <div class="container">
+        <h1>An error occured</h1>
+    </div>
+{% endblock %}
+</body>
+
+<style>
+    *{
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+</style>
+</html>
