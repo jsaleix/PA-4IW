@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Sneaker;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -47,4 +48,14 @@ class SneakerRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findUserSneakersByInvoiceStatus(string $status, User $user): ?Array
+    {
+        $entityManager = $this->getEntityManager();
+        return $entityManager->createQuery('SELECT sneaker FROM App\Entity\Invoice invoice, App\Entity\Sneaker sneaker WHERE invoice.sneaker = sneaker.id AND sneaker.publisher = :user AND invoice.paymentStatus = :status')
+            ->setParameter('user', $user->getId())
+            ->setParameter('status', $status)
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_OBJECT)
+            ;
+    }
 }

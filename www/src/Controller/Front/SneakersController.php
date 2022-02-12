@@ -6,6 +6,7 @@ use App\Entity\Invoice;
 use App\Entity\Sneaker;
 use App\Form\SneakerType;
 use App\Repository\InvoiceRepository;
+use App\Repository\SneakerRepository;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,15 +55,19 @@ class SneakersController extends AbstractController
     }
 
     #[Route('/account/your-sales', name: 'front_account_seller_sales')]
-    public function SellerList(){//Displays the products a seller user owns/is selling
+    public function SellerList(SneakerRepository $sneakerRepository){//Displays the products a seller user owns/is selling
         $user = $this->getUser();
 
         if( !in_array('ROLE_SELLER',  $user->getRoles()) ){
             return $this->redirectToRoute('front_account_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        //$sales = $invoiceRepository->findBy(['paymentStatus'=> Invoice::SOLD_STATUS]);
+        $sales = $sneakerRepository->findUserSneakersByInvoiceStatus(Invoice::SOLD_STATUS, $user);
+        //dd( $sales);
         return $this->render('front/account/sneakers/list.html.twig', [
             'sneakers' => $user->getPublishedSneakers(),
+            'sales' => $sales
         ]);
     }
 

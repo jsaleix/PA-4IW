@@ -8,8 +8,24 @@
     <h1>Your sales</h1>
 
     <div class="account_profile">
+        <h2>ALL</h2>
         <div class="sneakers_items">    
             {% for sneaker in sneakers %}
+                <a href="{{ path('front_account_sneaker_edit', {'id': sneaker.id}) }}" class="sneaker_item">
+                    <img src=""/>
+                    <div class="sneaker_data">
+                        <h3>{{sneaker.name}}</h3>
+                        <span>${{sneaker.price}}</span>
+                    </div>
+                </a>
+            {% else %}
+                <p>No sneakers found </p>
+            {% endfor %}
+        </div>
+
+        <h2>SOLD</h2>
+        <div class="sneakers_items">
+            {% for sneaker in sales %}
                 <a href="{{ path('front_account_sneaker_edit', {'id': sneaker.id}) }}" class="sneaker_item">
                     <img src=""/>
                     <div class="sneaker_data">
@@ -41,6 +57,7 @@
 
     .account_profile{
         display: flex;
+        flex-direction: column;
         width: 100%;
     }
 
