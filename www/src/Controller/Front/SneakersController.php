@@ -2,8 +2,10 @@
 
 namespace App\Controller\Front;
 
+use App\Entity\Invoice;
 use App\Entity\Sneaker;
 use App\Form\SneakerType;
+use App\Repository\InvoiceRepository;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -88,10 +90,18 @@ class SneakersController extends AbstractController
     }
 
     #[Route('/sneaker/{id}', name: 'front_sneaker_item', methods: ['GET'])]
-    public function sneakerPage( Sneaker $sneaker )
+    public function sneakerPage( Sneaker $sneaker, InvoiceRepository $invoiceRepository)
     {
+        $invoice = $invoiceRepository->findOneBy(['sneaker' => $sneaker]);
+        if($invoice && $invoice->getPaymentStatus() === Invoice::SOLD_STATUS ){
+            $sold = true;
+        }else{
+            $sold = false;
+        }
+
         return $this->render('front/sneaker/sneaker.html.twig', [
             'sneaker'=>$sneaker,
+            'sold' => $sold
         ]);
     }
 

@@ -43,6 +43,7 @@ class UserFixtures extends Fixture
         $manager->persist($user);
         $this->setReference(self::USER_USER, $user);
 
+        //SELLER STILL NEEDS TO FILL IN STRIPE FORM BEFORE EARNING SELLER STATUS
         $stripe = new StripeClient($_ENV['STRIPE_SK']);
         $stripeAccount = $stripe->accounts->create([
             'type' => 'express'
@@ -52,7 +53,7 @@ class UserFixtures extends Fixture
         $seller = (new User())
             ->setEmail('seller@seller')
             //->setIsVerified(true)
-            ->setRoles(['ROLE_SELLER'])
+            ->setRoles(['ROLE_USER'])
             ->setStripeConnectId($stripeAccount)
         ;
         $seller->setPassword($this->userPasswordHasher->hashPassword($seller, 'test'));

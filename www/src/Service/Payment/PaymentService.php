@@ -6,15 +6,18 @@ use App\Entity\User;
 use App\Entity\Invoice;
 use App\Entity\Sneaker;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Boolean;
 use Stripe\StripeClient;
 use App\Repository\InvoiceRepository;
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Component\HttpFoundation\Response;
 
 class PaymentService
 {
-    public function __construct(private InvoiceRepository $invoiceRepository, private EntityManagerInterface $entityManager) {}
+    public function __construct(
+        private InvoiceRepository $invoiceRepository,
+        private EntityManagerInterface $entityManager
+    ) {}
 
     public function generatePaymentIntent(Sneaker $sneaker, User $buyer)
     {
@@ -58,7 +61,7 @@ class PaymentService
             $invoice->setSneaker($sneaker);
         };
 
-        $invoice->setPaymentStatus('pending');
+        $invoice->setPaymentStatus(Invoice::PENDING_STATUS);
         $invoice->setBuyer($buyer);
         $invoice->setDate(new \DateTime());
         $invoice->setStripePI($session->payment_intent);
@@ -67,6 +70,59 @@ class PaymentService
         $this->entityManager->flush();
 
         return $session->url;
-
     }
+
+    public function confirmPayment(Invoice $invoice){
+        $sneaker = $invoice->getSneaker();
+        if($sneaker->getFromShop()){
+            $this->confirmPaymentShop($invoice);
+        }else{
+            $this->confirmPaymentMP($invoice);
+        }
+    }
+
+    public function removeInvoice(Invoice $invoice){
+        $this->entityManager->remove($invoice);
+        $this->entityManager->flush();
+    }
+
+    public function confirmPaymentShop(Invoice $invoice){
+        try{
+            $invoice->setPaymentStatus(Invoice::SOLD_STATUS);
+            $this->entityManager->persist($invoice);
+            $this->entityManager->flush();
+            return true;
+        }catch(\Exception $e){
+            return false;
+        }
+    }
+
+    public function confirmPaymentMP( Invoice $invoice){
+        try{
+            $FEES = 0.1;
+
+            $invoice->setPaymentStatus(Invoice::SOLD_STATUS);
+            $this->entityManager->persist($invoice);
+            $this->entityManager->flush();
+
+            //transfer funds from our Stripe account to the user connected account
+            $sneaker = $invoice->getSneaker();
+            $seller = $sneaker->getPublisher();
+            if( !$seller->getStripeConnectId() ) throw new \Exception('No stripe connect id set');
+            $feesAmount = $sneaker->getPrice()*$FEES;
+
+            $stripe = new StripeClient($_ENV['STRIPE_SK']);
+            $stripe->transfers->create([
+                'amount' => ($sneaker->getPrice() - $feesAmount)*100,
+                'currency' => 'eur',
+                'destination' => $seller->getStripeConnectId(),
+                'description' => 'Your sale on SNKERS - '.$sneaker->getName(),
+            ]);
+            return true;
+        }catch(\Exception $e){
+            return $e->getMessage();
+        }
+    }
+
+
 }

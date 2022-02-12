@@ -10,6 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Invoice
 {
+    const SOLD_STATUS = 'successful';
+    const PENDING_STATUS = 'pending';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

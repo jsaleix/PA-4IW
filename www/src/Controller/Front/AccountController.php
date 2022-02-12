@@ -68,7 +68,7 @@ class AccountController extends AbstractController
         //Checking if stripe registration is over else redirect to form
         $status = $stripe->accounts->retrieve($account);
         //dd($status);
-        if(!$status->charges_enabled){
+        if(/*!$status->charges_enabled*/ !$status->details_submitted){
             $link = $stripe->accountLinks->create([
                 'account' => $account,
                 'refresh_url' => 'http://localhost/account/become_seller',
@@ -85,7 +85,7 @@ class AccountController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            return $this->redirectToRoute('front_index', [], Response::HTTP_SEE_OTHER);
+            //return $this->redirectToRoute('front_index', [], Response::HTTP_SEE_OTHER);
         }
 
         

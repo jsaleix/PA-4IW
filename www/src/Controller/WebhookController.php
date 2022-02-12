@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Webhook;
 use App\Entity\User;
 use Stripe\StripeClient;
@@ -13,6 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Psr\Log\LoggerInterface;
+use App\Entity\Invoice;
+use App\Service\Payment\PaymentService;
 
 #[Route('/webhook')]
 class WebhookController extends AbstractController
@@ -22,6 +25,8 @@ class WebhookController extends AbstractController
         Request $request, 
         UserRepository $userRepository,
         InvoiceRepository $invoiceRepository,
+        EntityManagerInterface $entityManager,
+        PaymentService $paymentService
     ): Response
     {
         $stripe= new StripeClient($_ENV['STRIPE_SK']);
@@ -40,37 +45,24 @@ class WebhookController extends AbstractController
                 $webhookSecret
             );
 
-            $user = $userRepository->findOneBy(['id' => 20]);
-            $user->setName( $event['data']['object'] ['id']);
-            $entityManager->persist($user);
-            $entityManager->flush();
-
             $type   = $event['type'];
             $object = $event['data']['object'];
-            $entityManager = $this->getDoctrine()->getManager();
 
             $invoice = $invoiceRepository->findOneBy(['stripePI' => $object['id']]);
+            if(!$invoice) throw new \Exception('No invoice linked');
 
             switch ($type) {
                 case 'payment_intent.succeeded':
                     //create bill
-                    $invoice->setPaymentStatus('success');
-                    $entityManager->persist($invoice);
-                    $entityManager->flush();
-
+                    $paymentService->confirmPayment($invoice);
                     break;
 
                 // case 'checkout.session.completed':
-                //     break;
-    
+                case 'checkout.session.expired':
                 case 'payment_intent.canceled':
-                    $invoice->setPaymentStatus(null);
-                    $invoice->setBuyer(null);
-                    $invoice->setDate(null);
-                    $entityManager->persist($invoice);
-                    $entityManager->flush();
+                    $paymentService->removeInvoice($invoice);
                     break;
-                    
+
                 default:
                     throw new \Exception('Unhandled event');
             }
@@ -88,7 +80,7 @@ class WebhookController extends AbstractController
         }
     }
 
-    #[Route('/stripe/{id}', name: 'stripe__event_visualizer', methods: ['GET'])]
+    #[Route('/stripe/{id}', name: 'stripe_event_visualizer', requirements: ['id' => '^\d+$'], methods: ['GET'])]
     public function event(
         Request $request,
         $id,
@@ -99,15 +91,26 @@ class WebhookController extends AbstractController
         $logger->info('I just got the logger');
 
         $stripe= new StripeClient($_ENV['STRIPE_SK']);
-        $event = $stripe->events->retrieve(
-            $id,
-            []
-        );
+        $event = $stripe->events->retrieve($id);
         $stripePI = $event['data']['object']['id'];
         //dd($stripePI);
         $invoice = $invoiceRepository->findOneBy(['stripePI' => $stripePI]);
         //dd($invoice);
 
         return new JsonResponse([$event]);
+    }
+
+    #[Route('/stripe/transfers', name: 'stripe_transfers_visualizer', methods: ['GET'])]
+    public function transfersList(
+        InvoiceRepository $invoiceRepository,
+        PaymentService $paymentService
+    ): Response
+    {
+        $invoice = $invoiceRepository->findOneBy(['id' => 9]);
+        //$test = $paymentService->confirmPaymentMP($invoice);
+        $stripe= new StripeClient($_ENV['STRIPE_SK']);
+        $transfers = $stripe->transfers->all(['limit' => 3]);
+
+        return new JsonResponse([]);
     }
 }

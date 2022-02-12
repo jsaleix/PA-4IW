@@ -7,7 +7,11 @@
 <div class="container">
     <h1>{{sneaker.name}}</h1>
     <span>{{sneaker.publicationDate is empty ? "" : sneaker.publicationDate|date("m/d/Y")}}</span>
-    <a href="{{ sneaker.fromShop ? path('shop_product_checkout', {'id': sneaker.id }) : path('marketplace_product_checkout', {'id': sneaker.id }) }}"><button>BUY NOW</button></a>
+    {% if(not sold) %}
+        <a href="{{ sneaker.fromShop ? path('shop_product_checkout', {'id': sneaker.id }) : path('marketplace_product_checkout', {'id': sneaker.id }) }}"><button>BUY NOW</button></a>
+    {% else %}
+        <h4>Sold</h4>
+    {%  endif %}
 </div>
 
 {% endblock %}
