@@ -2,14 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\ImagesRepository;
+use App\Entity\Traits\VichUploaderImageTrait;
+use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass=ImagesRepository::class)
+ * @ORM\Entity(repositoryClass=ImageRepository::class)
+ * @Vich\Uploadable
  */
-class Images
+class Image
 {
+    use VichUploaderImageTrait;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -18,15 +23,19 @@ class Images
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Sneaker::class, inversedBy="images")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
-    private $Sneaker;
+    private $path;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Sneaker::class, inversedBy="images")
+     */
+    private $sneaker;
 
     public function getId(): ?int
     {
@@ -38,7 +47,7 @@ class Images
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -47,12 +56,12 @@ class Images
 
     public function getSneaker(): ?Sneaker
     {
-        return $this->Sneaker;
+        return $this->sneaker;
     }
 
-    public function setSneaker(?Sneaker $Sneaker): self
+    public function setSneaker(?Sneaker $sneaker): self
     {
-        $this->Sneaker = $Sneaker;
+        $this->sneaker = $sneaker;
 
         return $this;
     }

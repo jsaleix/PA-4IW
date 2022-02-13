@@ -104,11 +104,6 @@ class Sneaker
     private $publisher;
 
     /**
-     * @ORM\OneToMany(targetEntity=Images::class, mappedBy="Sneaker", orphanRemoval=true)
-     */
-    private $images;
-
-    /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="favoris")
      */
     private $favoris;
@@ -118,6 +113,11 @@ class Sneaker
      */
     private $StripeProductId;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="sneaker")
+     */
+    private $images;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
@@ -125,8 +125,8 @@ class Sneaker
         $this->colors = new ArrayCollection();
         $this->materials = new ArrayCollection();
         $this->productAppreciations = new ArrayCollection();
-        $this->images = new ArrayCollection();
         $this->favoris = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -390,35 +390,6 @@ class Sneaker
         $this->price = $price;
         return $this;
     }
-    /**
-     * @return Collection|Images[]
-     */
-    public function getImages(): Collection
-    {
-        return $this->images;
-    }
-
-    public function addImage(Images $image): self
-    {
-        if (!$this->images->contains($image)) {
-            $this->images[] = $image;
-            $image->setSneaker($this);
-        }
-
-        return $this;
-    }
-
-    public function removeImage(Images $image): self
-    {
-        if ($this->images->removeElement($image)) {
-            // set the owning side to null (unless already changed)
-            if ($image->getSneaker() === $this) {
-                $image->setSneaker(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|User[]
@@ -452,6 +423,36 @@ class Sneaker
     public function setStripeProductId(?string $StripeProductId): self
     {
         $this->StripeProductId = $StripeProductId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Image[]
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setSneaker($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): self
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getSneaker() === $this) {
+                $image->setSneaker(null);
+            }
+        }
 
         return $this;
     }
