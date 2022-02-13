@@ -113,7 +113,6 @@ class SneakersController extends AbstractController
     #[Route('/sneaker/{id}', name: 'front_sneaker_item', methods: ['GET'])]
     public function sneakerPage( Sneaker $sneaker, InvoiceRepository $invoiceRepository)
     {
-        dd($sneaker->getImages()[0]);
         $invoice = $invoiceRepository->findOneBy(['sneaker' => $sneaker]);
         if($invoice && $invoice->getPaymentStatus() === Invoice::SOLD_STATUS ){
             $sold = true;
@@ -121,10 +120,40 @@ class SneakersController extends AbstractController
             $sold = false;
         }
 
-        return $this->render('front/sneaker/sneaker.html.twig', [
-            'sneaker'=>$sneaker,
-            'sold' => $sold
-        ]);
+        if($sneaker->getFromShop()){
+            return $this->render('front/sneaker/sneaker.shop.html.twig', [
+                'sneaker'=>$sneaker,
+                'sold' => $sold
+            ]);
+        }else{
+            return $this->render('front/sneaker/sneaker.mp.html.twig', [
+                'sneaker'=>$sneaker,
+                'sold' => $sold
+            ]);
+        }
+    }
+
+    #[Route('/sneaker/t/{slug}', name: 'front_sneaker_item_by_slug', methods: ['GET'])]
+    public function sneakerPageSlug( Sneaker $sneaker, InvoiceRepository $invoiceRepository)
+    {
+        $invoice = $invoiceRepository->findOneBy(['sneaker' => $sneaker]);
+        if($invoice && $invoice->getPaymentStatus() === Invoice::SOLD_STATUS ){
+            $sold = true;
+        }else{
+            $sold = false;
+        }
+
+        if($sneaker->getFromShop()){
+            return $this->render('front/sneaker/sneaker.shop.html.twig', [
+                'sneaker'=>$sneaker,
+                'sold' => $sold
+            ]);
+        }else{
+            return $this->render('front/sneaker/sneaker.mp.html.twig', [
+                'sneaker'=>$sneaker,
+                'sold' => $sold
+            ]);
+        }
     }
 
 }
