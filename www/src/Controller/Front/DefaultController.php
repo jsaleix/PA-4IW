@@ -19,8 +19,8 @@ class DefaultController extends AbstractController
         return $this->render('front/default/index.html.twig', [
             'categories' => $categoryRepository->findAll(),
             'brands' => $brandRepository->findBy(array(), array(), 4, 0),
-            'popularSneakersFromShop' => $sneakerRepository->findBy(['from_shop' => true], array(), 4, 0),
-            'popularSneakersFromMP' => $sneakerRepository->findBy(['from_shop' => false], array(), 4, 0),
+            'popularSneakersFromShop' => $sneakerRepository->findBy(['from_shop' => true], ['id' => 'DESC'], 4, 0),
+            'popularSneakersFromMP' => $sneakerRepository->findBy(['from_shop' => false], ['id' => 'DESC'], 4, 0),
         ]);
     }
 }

@@ -2,22 +2,19 @@
 
 namespace App\Controller\Front;
 
+use App\Entity\Image;
 use App\Entity\Invoice;
-use App\Entity\User;
 use App\Entity\Sneaker;
-use App\Form\SneakerType;
+use App\Form\Front\SneakerType;
 use App\Repository\InvoiceRepository;
 use App\Repository\SneakerRepository;
 use App\Security\Voter\SneakerVoter;
-use App\Security\Voter\RoleVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Doctrine\Persistence\ObjectManager;
+use Stripe\StripeClient;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
-use Stripe\StripeClient;
 
 class SneakersController extends AbstractController
 {
@@ -30,6 +27,11 @@ class SneakersController extends AbstractController
         }
 
         $sneaker = new Sneaker();
+        for($i=0; $i<3; $i++){
+            $image = new Image();
+            $sneaker->getImages()->add($image);
+        }
+
         $form = $this->createForm(SneakerType::class, $sneaker);
         $form->handleRequest($request);
 
@@ -46,6 +48,15 @@ class SneakersController extends AbstractController
             ]);
             if($sneakerId){
                 $sneaker->setStripeProductId($sneakerId->id);
+                for($i=0; $i<3; $i++){
+                    $image = $sneaker->getImages()[$i] ;
+                    if($image->getImageFile()){
+                        $image->setSneaker($sneaker);
+                        $em->persist($sneaker->getImages()[$i]);
+                    }else{
+                        $sneaker->removeImage($sneaker->getImages()[$i]);
+                    }
+                }
                 $em->persist($sneaker);
                 $em->flush();
             }
@@ -102,6 +113,7 @@ class SneakersController extends AbstractController
     #[Route('/sneaker/{id}', name: 'front_sneaker_item', methods: ['GET'])]
     public function sneakerPage( Sneaker $sneaker, InvoiceRepository $invoiceRepository)
     {
+        dd($sneaker->getImages()[0]);
         $invoice = $invoiceRepository->findOneBy(['sneaker' => $sneaker]);
         if($invoice && $invoice->getPaymentStatus() === Invoice::SOLD_STATUS ){
             $sold = true;
