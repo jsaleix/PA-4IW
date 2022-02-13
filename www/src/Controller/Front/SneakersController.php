@@ -3,10 +3,14 @@
 namespace App\Controller\Front;
 
 use App\Entity\Invoice;
+use App\Entity\User;
 use App\Entity\Sneaker;
 use App\Form\SneakerType;
 use App\Repository\InvoiceRepository;
 use App\Repository\SneakerRepository;
+use App\Security\Voter\SneakerVoter;
+use App\Security\Voter\RoleVoter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -72,6 +76,7 @@ class SneakersController extends AbstractController
     }
 
     #[Route('/account/sneaker/{id}', name: 'front_account_sneaker_edit', methods: ['GET', 'POST'])]
+    #[IsGranted(SneakerVoter::EDIT, 'sneaker')]
     public function editSneaker(Request $request, Sneaker $sneaker)//Edit sneakers as seller
     {
         $user = $this->getUser();
