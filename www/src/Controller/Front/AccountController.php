@@ -30,10 +30,10 @@ class AccountController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $user->setImageFile(null);
             return $this->redirectToRoute('front_account_profile', [], Response::HTTP_SEE_OTHER);
         }
-
+        $user->setImageFile(null);
         return $this->render('front/account/profile/index.html.twig', [
             'user' => $user,
             'form' => $form->createView()

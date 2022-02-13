@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class UserType extends AbstractType
 {
@@ -16,12 +17,15 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('avatar')
             ->add('city')
             ->add('address')
             ->add('phone')
             ->add('name')
             ->add('surname')
+            ->add('imageFile', VichImageType::class, [
+                'required' => false,
+                'image_uri' => true,
+            ]);
         ;
     }
 
