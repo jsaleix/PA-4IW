@@ -62,7 +62,7 @@ class AccountController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);
                 $entityManager->flush();
-            }    
+            }
         }
 
         //Checking if stripe registration is over else redirect to form
@@ -89,6 +89,27 @@ class AccountController extends AbstractController
         }
 
         
+        return $this->render('front/account/becomeSeller/index.html.twig', []);
+    }
+
+    #[Route('/stripe-managing', name: 'account_manage_stripe', methods: ['GET'])]
+    public function manageStripeAccount(Request $request): Response
+    {
+        $user = $this->getUser();
+        if( !in_array('ROLE_SELLER',  $user->getRoles()) ){
+            return $this->redirectToRoute('front_account_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        $stripe = new StripeClient($_ENV['STRIPE_SK']);
+        if($user->getStripeConnectId()){
+            $account = $user->getStripeConnectId();
+        }
+
+        $link = $stripe->accounts->createLoginLink(
+            $user->getStripeConnectId()
+        );
+
+        header('Location:' . $link->url);
         return $this->render('front/account/becomeSeller/index.html.twig', []);
     }
 

@@ -27,16 +27,17 @@
                 <p>Publish and sell your own sneakers</p>
             </a>
 
+            <a href="{{ path('front_account_manage_stripe') }}" class='account_item'>
+                <h3>Manage your Stripe account</h3>
+                <p>lorem</p>
+            </a>
+
         {% else %}
             <a href="{{ path('front_account_become_seller') }}" class='account_item'>
                 <h3>Become seller</h3>
                 <p>lorem</p>
             </a>
         {% endif %}
-        <a href="" class='account_item'>
-            <h3>Your payment methods</h3>
-            <p>lorem</p>
-        </a>
 
         <a href="" class='account_item'>
             <h3>Help</h3>
