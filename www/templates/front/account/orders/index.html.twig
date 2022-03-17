@@ -10,7 +10,7 @@
         </div>
         <div class="invoices-list">
             {% for invoice in invoices %}
-                <div class="invoice-item">
+                <a href="{{ path('front_account_order', { 'id': invoice.id}) }}" class="invoice-item">
                     <div class="invoice-img">
                         <img src="{{ vich_uploader_asset(invoice.sneaker.images[0]) }}" alt="picture"/>
                     </div>
@@ -19,7 +19,7 @@
                         <p>{{ invoice.date|date("d/m/Y") }} - {{ invoice.paymentStatus }}</p>
                         <p>{{ invoice.sneaker.price }}$</p>
                     </div>
-                </div>
+                </a>
             {% endfor %}
         </div>
     </div>

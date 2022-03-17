@@ -2,6 +2,7 @@
 
 namespace App\Controller\Front;
 
+use App\Entity\Invoice;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,6 +47,14 @@ class AccountController extends AbstractController
         $user = $this->getUser();
         return $this->render('front/account/orders/index.html.twig', [
             'invoices' => $user->getInvoices()
+        ]);
+    }
+
+    #[Route('/orders/{id}', name: 'account_order', methods: ['GET'])]
+    public function order(Invoice $invoice): Response
+    {
+        return $this->render('front/account/orders/show.html.twig', [
+            'invoice' => $invoice
         ]);
     }
 
