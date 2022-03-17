@@ -40,6 +40,15 @@ class AccountController extends AbstractController
          ]);
     }
 
+    #[Route('/orders', name: 'account_orders', methods: ['GET'])]
+    public function orders(Request $request): Response
+    {
+        $user = $this->getUser();
+        return $this->render('front/account/orders/index.html.twig', [
+            'invoices' => $user->getInvoices()
+        ]);
+    }
+
     #[Route('/become_seller', name: 'account_become_seller', methods: ['GET'])]
     public function becomeSeller(Request $request): Response
     {
