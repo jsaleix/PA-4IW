@@ -1,0 +1,78 @@
+{% extends 'base_front.html.twig' %}
+{% block title %}{{ user.name }} {{ user.surname }} profile | SNKERS{% endblock %}
+
+{% block body %}
+    <div class="container profile">
+        <div class="left-part">
+            <h2>{{ user.name }} {{ user.surname }}</h2>
+            <img src="" alt="profile picture"/>
+        </div>
+        <div class="right-part">
+            <div class="right-header">
+                <h2>Sellings</h2>
+                <select defaultValue="ALL">
+                    <option value="ALL">All</option>
+                    <option value="SELLABLE">Sellable</option>
+                    <option value="SOLD">Sold</option>
+                </select>
+            </div>
+            {% if user.publishedSneakers %}
+            <div class="sneakers_items">
+            {% for sneaker in user.publishedSneakers %}
+                <a href="{{ path('front_sneaker_item_by_slug', { 'slug': sneaker.slug }) }}" class="sneaker_item">
+                    <img src=""/>
+                    <div class="sneaker_data">
+                        {% if( sneaker.getImages() is not empty) %}
+                            <img src="{{ vich_uploader_asset(sneaker.getImages()[0]) }}" alt="{{ sneaker. name }}" />
+                        {% endif %}
+                        <h3>{{sneaker.name}}</h3>
+                        <span>{{ sneaker.brand.name}} </span>
+                        <span>${{sneaker.price}}</span>
+                        <span class="source">{{sneaker.fromShop ? 'From Shop' : 'From Marketplace'}}</span>
+                    </div>
+                </a>
+            {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <style>
+        .profile{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .left-part{
+            background: #FFFFFF;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            width: 25%;
+            padding: 20px 40px;
+        }
+
+        .right-part{
+            background: #FFFFFF;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            width: 74%;
+            padding: 20px 40px;
+        }
+
+        .right-part .right-header{
+            display: flex;
+        }
+
+        .right-part .right-header select{
+            width: fit-content;
+            padding: 5px 15px;
+        }
+    </style>
+{% endblock %}
