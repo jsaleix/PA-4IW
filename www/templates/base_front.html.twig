@@ -19,9 +19,16 @@
 </head>
 <body>
 
-{{ include('@front/components/header.html.twig') }}
+    {{ include('@front/components/header.html.twig') }}
 
-{% block body %}{% endblock %}
+    {% for type, messages in app.flashes() %}
+        {% for message in messages %}
+            <div class="alert alert-{{ type }} container">{{ message  }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    {% block body %}{% endblock %}
+
 </body>
 
 <style>
@@ -30,6 +37,10 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+    }
+
+    .toast-container .toast{
+        background-color: black !important;
     }
 </style>
 </html>

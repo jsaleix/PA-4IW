@@ -8,9 +8,18 @@
     <div class="left">
         <h1>{{sneaker.name}}</h1>
         <h3>{{ sneaker.brand.name }} - FUTUR MODEL DISPLAYED HERE</h3>
-        {% if( sneaker.getImages() is not empty) %}
-            <img src="{{ vich_uploader_asset(sneaker.getImages()[0]) }}" alt="{{ sneaker. name }}" />
-        {% endif %}
+        <div class="images">
+            <div id="images-column">
+                {% if( sneaker.getImages() is not empty) %}
+                    {% for image in sneaker.getImages %}
+                        <img src="{{ vich_uploader_asset(image) }}" />
+                    {% endfor %}
+                {% endif %}
+            </div>
+            {% if( sneaker.getImages() is not empty) %}
+                <img id="main-picture" src="{{ vich_uploader_asset(sneaker.getImages()[0]) }}" alt="{{ sneaker. name }}" />
+            {% endif %}
+        </div>
         <h3>Description</h3>
         {{ sneaker.description }}
     </div>
@@ -57,9 +66,41 @@
         width: 60%;
     }
 
+    .left > .images > #images-column{
+        display: flex;
+        flex-direction: column;
+        /*justify-content: space-between;*/
+        width: 20%;
+    }
+
+    .left > .images > #images-column > img{
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+
+    .left > .images > img{
+        width: 80%;
+        height: 500px;
+        object-fit: cover;
+    }
+
+    .left > .images {
+        display: flex;
+    }
+
     .right{
         width: 35%;
     }
 </style>
+
+<script>
+    let mainImage = document.getElementById('main-picture');
+    let imagesList = document.getElementById('images-column').children;
+    for( let imgItem of imagesList){
+        imgItem.addEventListener( 'click', () => {
+            mainImage.setAttribute('src', imgItem.getAttribute('src'));
+        });
+    }
+</script>
 
 {% endblock %}

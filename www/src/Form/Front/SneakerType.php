@@ -7,11 +7,13 @@ use App\Entity\Sneaker;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Regex;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 use App\Form\Front\SneakerImageFormType;
 
@@ -22,13 +24,13 @@ class SneakerType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'attr' => [
-                    'placeholder' => "Titre de la sneaker"
+                    'placeholder' => "Sneaker's title"
                 ]
             ])
 
             ->add('description', TextareaType::class, [
                 'attr' => [
-                    'placeholder' => "quelques ligne sur le produit"
+                    'placeholder' => "Some words about the product"
                 ]
             ])
 
@@ -41,27 +43,28 @@ class SneakerType extends AbstractType
 
             ->add('brand', EntityType::class, [
                 'class' => Brand::class,
-                'choice_label' => 'name',
+                'choice_label' => 'Name',
                 'multiple' => false
             ])
 
-            ->add('size', TextType::class, [
+            ->add('size', NumberType::class, [
                 'attr' => [
-                    'placeholder' => "taille"
-                ]
+                    'placeholder' => "Size"
+                ],
             ])
 
-            ->add('price', TextType::class, [
+            ->add('price', NumberType::class, [
                 'attr' => [
-                    'placeholder' => "taille"
+                    'type' => 'number',
+                    'placeholder' => "Enter amount($)"
                 ]
             ])
             ->add('images', CollectionType::class, [
                 'entry_type' => SneakerImageFormType::class,
                 'entry_options' => ['label' => false],
-                'allow_add' => true,
+                'allow_add' => false,
             ])
-            ->add('Valider', SubmitType::class);
+            ->add('Submit', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -16,6 +16,8 @@ class SneakerImageFormType extends AbstractType
             ->add('imageFile', VichImageType::class, [
                 'required' => false,
                 'image_uri' => true,
+                'allow_delete' => false,
+                'download_uri' => false
             ]);
         ;
     }
