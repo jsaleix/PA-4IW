@@ -1,0 +1,45 @@
+<style>
+    .container{
+        display: flex;
+    }
+
+    .left{
+        width: 60%;
+    }
+
+    .left > .images > #images-column{
+        display: flex;
+        flex-direction: column;
+        /*justify-content: space-between;*/
+        width: 20%;
+    }
+
+    .left > .images > #images-column > img{
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+
+    .left > .images > img{
+        width: 80%;
+        height: 500px;
+        object-fit: cover;
+    }
+
+    .left > .images {
+        display: flex;
+    }
+
+    .right{
+        width: 35%;
+    }
+</style>
+
+<script>
+    let mainImage = document.getElementById('main-picture');
+    let imagesList = document.getElementById('images-column').children;
+    for( let imgItem of imagesList){
+        imgItem.addEventListener( 'click', () => {
+            mainImage.setAttribute('src', imgItem.getAttribute('src'));
+        });
+    }
+</script>
