@@ -5,6 +5,8 @@ www/.env.local.php
 www/.env.*.local
 www/config/secrets/prod/prod.decrypt.private.php
 www/public/bundles/
+www/public/images/profiles
+www/public/images/sneakers
 www/var/
 www/vendor/
 ###< symfony/framework-bundle ###
