@@ -9,6 +9,8 @@ use App\Form\Front\SneakerType;
 use App\Repository\InvoiceRepository;
 use App\Repository\SneakerRepository;
 use App\Security\Voter\SneakerVoter;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Stripe\StripeClient;
@@ -82,7 +84,7 @@ class SneakersController extends AbstractController
     }
 
     #[Route('/account/your-sales', name: 'front_account_seller_sales')]
-    public function SellerList(SneakerRepository $sneakerRepository){//Displays the products a seller user owns/is selling
+    public function sellerList(SneakerRepository $sneakerRepository){//Displays the products a seller user owns/is selling
         $user = $this->getUser();
 
         if( !in_array('ROLE_SELLER',  $user->getRoles()) ){
@@ -120,6 +122,40 @@ class SneakersController extends AbstractController
             'sneaker'=>$sneaker,
             'form' => $form->createView()
          ]);
+    }
+
+    #[Route('/account/sneaker/delete/{id}', name: 'front_sneaker_delete', requirements: ['id' => '^\d+$'], methods: ['POST'])]
+    #[IsGranted(SneakerVoter::DELETE, 'sneaker')]
+    public function delete(Sneaker $sneaker, Request $request, EntityManagerInterface $entityManager, InvoiceRepository $invoiceRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$sneaker->getId(), $request->request->get('_token'))) {
+            $invoice = $invoiceRepository->findOneBy(['sneaker' => $sneaker]);
+            if($invoice){
+                $entityManager->remove($invoice);
+            }
+            foreach($sneaker->getImages() as $img){
+                $sneaker->removeImage($img);
+                //$entityManager->remove($img);
+            }
+            $entityManager->remove($sneaker);
+            $entityManager->flush();
+        }else{
+            $this->addFlash('warning', "An error occurred.");
+        }
+
+        return $this->redirectToRoute('front_account_seller_sales', [], Response::HTTP_SEE_OTHER);
+
+        /*if ($this->isCsrfTokenValid('delete_sneaker', $token)) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($sneaker);
+            $em->flush();
+
+            $this->addFlash('success', "Sneaker {$sneaker->getName()} has been successfuly removed.");
+
+            return $this->redirectToRoute('front_account_seller_sales');
+        }
+
+        throw new Exception('Invalid token');*/
     }
 
     #[Route('/sneaker/{id}', name: 'front_sneaker_item', methods: ['GET'])]

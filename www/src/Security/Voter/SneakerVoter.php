@@ -33,7 +33,7 @@ class SneakerVoter extends Voter
                 return $this->canEdit($subject, $user);
                 break;
             case self::DELETE:
-                return in_array($user->getRoles(), 'ROLE_ADMIN') || $this->canEdit($subject, $user);
+                return in_array('ROLE_ADMIN', $user->getRoles()) || $this->canEdit($subject, $user);
                 break;
         }
 
