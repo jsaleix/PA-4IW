@@ -25,7 +25,7 @@ class ShopController extends AbstractController
     #[Route('/', name: 'shop_index', methods: ['GET'])]
     public function index(SneakerRepository $sneakerRepository): Response
     {
-        $sneakers = $sneakerRepository->findBy(['from_shop' => true]);
+        $sneakers = $sneakerRepository->findBy(['from_shop' => true], ['id' => 'DESC']);
         return $this->render('front/shop/index.html.twig', [
             'sneakers' => $sneakers
         ]);

@@ -19,7 +19,7 @@ class BrandController extends AbstractController
     public function index(BrandRepository $brandRepository): Response
     {
         return $this->render('front/brand/index.html.twig', [
-            'brands' => $brandRepository->findBy($params)
+            'brands' => $brandRepository->findAll()
         ]);
     }
 

@@ -4,19 +4,11 @@
 
 {% block body %}
     <div class="container brands-page">
-        <table>
-            <tr>
-                <td>Nom</td>
-                <td>Adresse</td>
-                <td>Ville</td>
-                <td>CP</td>
-                <td></td>
-            </tr>
-            {% for brand in brands %}
-                <tr>
-                    <td>{{ brand.name }}</td>
-                </tr>
-            {% endfor %}
-        </table>
+        {% for brand in brands %}
+            <a href="{{ path('front_brand_show', {'id': brand.id}) }}">
+                <td>{{ brand.name }}</td>
+            </a>
+            <br/>
+        {% endfor %}
     </div>
 {% endblock %}

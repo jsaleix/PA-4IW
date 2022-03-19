@@ -5,6 +5,21 @@
 {% block body %}
 
 <div class="marketplace container">
+    <div class="header">
+        <h1>Our marketplace</h1>
+        <p>lorem ipsum</p>
+    </div>
+    <form class="filters" name="filter-form">
+        <div class="filter-item">
+            <label>Sort by</label>
+            <select name="from" value="all">
+                <option value="all">All</option>
+                <option value="DESC">More recent</option>
+                <option value="ASC">Oldest</option>
+            </select>
+        </div>
+        <input type="submit" value="Apply">
+    </form>
     <div class="sneakers_items">
         {% for sneaker in sneakers %}
             {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
@@ -16,54 +31,23 @@
 
 <style>
 
-    #home_banner{
-        height: 300px;
-        overflow: hidden;
-        position: relative;
-        margin: 20px 0;
-    }
-
-    #home_banner > img{
-        position: absolute;
-        top: -190%;
-        left: 0;
-    }
-
-    .horizontal_list_item{
-        width: 100%;
-        background-color: #EAEAEA;
+    .filters{
         display: flex;
-        justify-content: center;
-        padding: 10px 20px;
+        align-items: flex-end;
+        border: 1px solid gray;
+        padding: 30px 20px;
     }
 
-    ul{
-        list-style-type: none;
+    .filters input[type=submit]{
+        height: fit-content;
+        width: fit-content;
     }
 
-    a{
-        text-decoration: none;
-        color: black;
-    }
-
-    .horizontal_list_item li{
-        width: auto;
-        padding: 5px 20px;
-    }
-
-    section{
-        padding: 0 20%;
-        width: 100%;
-    }
-
-    h2{
-        width: auto;
-    }
-
-    .home_section_header{
-        width: 100%;
+    .filters .filter-item{
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        width: fit-content;
+        margin-right: 20px;
     }
 </style>
 
