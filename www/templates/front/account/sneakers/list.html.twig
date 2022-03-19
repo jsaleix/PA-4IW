@@ -11,13 +11,7 @@
         <h2>ALL</h2>
         <div class="sneakers_items">    
             {% for sneaker in sneakers %}
-                <a href="{{ path('front_account_sneaker_edit', {'id': sneaker.id}) }}" class="sneaker_item">
-                    <img src=""/>
-                    <div class="sneaker_data">
-                        <h3>{{sneaker.name}}</h3>
-                        <span>${{sneaker.price}}</span>
-                    </div>
-                </a>
+                {{ include('@front/components/sneaker_card/sneaker_item_edit.html.twig') }}
             {% else %}
                 <p>No sneakers found </p>
             {% endfor %}
@@ -26,13 +20,7 @@
         <h2>SOLD</h2>
         <div class="sneakers_items">
             {% for sneaker in sales %}
-                <a href="{{ path('front_account_sneaker_edit', {'id': sneaker.id}) }}" class="sneaker_item">
-                    <img src=""/>
-                    <div class="sneaker_data">
-                        <h3>{{sneaker.name}}</h3>
-                        <span>${{sneaker.price}}</span>
-                    </div>
-                </a>
+                {{ include('@front/components/sneaker_card/sneaker_item_edit.html.twig') }}
             {% else %}
                 <p>No sneakers found </p>
             {% endfor %}

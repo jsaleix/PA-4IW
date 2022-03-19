@@ -35,18 +35,7 @@
         </div>
         <div class="sneakers_items">
             {% for sneaker in popularSneakersFromShop %}
-                <a href="{{ path('front_sneaker_item_by_slug', { 'slug': sneaker.slug }) }}" class="sneaker_item">
-                    <img src=""/>
-                    <div class="sneaker_data">
-                        {% if( sneaker.getImages() is not empty) %}
-                            <img src="{{ vich_uploader_asset(sneaker.getImages()[0]) }}" alt="{{ sneaker. name }}" />
-                        {% endif %}
-                        <h3>{{sneaker.name}}</h3>
-                        <span>{{ sneaker.brand.name}} </span>
-                        <span>${{sneaker.price}}</span>
-                        <span class="source">{{sneaker.fromShop ? 'From Shop' : 'From Marketplace'}}</span>
-                    </div>
-                </a>
+                {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
             {% else %}
                 <p>No sneakers found </p>
             {% endfor %}
@@ -60,18 +49,7 @@
         </div>
         <div class="sneakers_items">
             {% for sneaker in popularSneakersFromMP %}
-                <a href="{{ path('front_sneaker_item_by_slug', { 'slug': sneaker.slug }) }}" class="sneaker_item">
-                    <img src=""/>
-                    <div class="sneaker_data">
-                        {% if( sneaker.getImages() is not empty) %}
-                            <img src="{{ vich_uploader_asset(sneaker.getImages()[0]) }}" alt="{{ sneaker. name }}" />
-                        {% endif %}
-                        <h3>{{sneaker.name}}</h3>
-                        <span>{{ sneaker.brand.name}} </span>
-                        <span>${{sneaker.price}}</span>
-                        <span class="source">{{sneaker.fromShop ? 'From Shop' : 'From Marketplace'}}</span>
-                    </div>
-                </a>
+                {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
             {% else %}
                 <p>No sneakers found </p>
             {% endfor %}
