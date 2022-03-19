@@ -5,29 +5,21 @@
 {% block body %}
 
 <div class="account container">
-    <h1>Your profile</h1>
-
     <div class="account_profile">
-        <div class="left">
-            {{ form_start(form) }}
-                {{ form_rest(form) }}
-                <button type="submit">SAVE</button>
-            {{ form_end(form) }}
-        </div>
-        <div class="right">
-
-        </div>
+        <h1>Your profile</h1>
+        {{ form_start(form) }}
+            {{ form_rest(form) }}
+            <button type="submit" class="btn btn-primary">SAVE</button>
+        {{ form_end(form) }}
     </div>
-    
+
+    <div class="right"></div>
 </div>
 
 <style>
 
     .account{
-    }
-
-    .account > h1{
-        margin-bottom: 20px;
+        display: flex;
     }
 
     .account a{
@@ -37,7 +29,9 @@
 
     .account_profile{
         display: flex;
+        flex-direction: column;
         width: 100%;
+        padding: 10px;
     }
 
     .left{
@@ -46,8 +40,11 @@
 
     .right{
         width: 30%;
-        background-color: red;
         height: 100vh;
+        background-image: url('{{ asset('images/assets/visuals/ryan-plomp-76w_eDO1u1E-unsplash.jpg') }}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position-x: center;
     }
 </style>
 
