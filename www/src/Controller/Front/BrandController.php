@@ -19,16 +19,24 @@ class BrandController extends AbstractController
     public function index(BrandRepository $brandRepository): Response
     {
         return $this->render('front/brand/index.html.twig', [
-            'brands' => $brandRepository->findAll()
+            'brands' => $brandRepository->findBy($params)
         ]);
     }
 
     #[Route('/{id}', name: 'brand_show', methods: ['GET'])]
-    public function show(Brand $brand, SneakerRepository $sneakerRepository): Response
+    public function show(Brand $brand, SneakerRepository $sneakerRepository, Request $request): Response
     {
+        $params = [ 'brand' => $brand->getId() ];
+        $fromParam = $request->query->get('from');
+
+        if( in_array($fromParam, ['marketplace', 'shop'])){
+            $params["from_shop"] = $fromParam === 'shop';
+        }
+
+
         return $this->render('front/brand/show.html.twig', [
             'brand' => $brand,
-            'sneakers' => $sneakerRepository->findBy([ 'brand' => $brand->getId()])
+            'sneakers' => $sneakerRepository->findBy($params)
         ]);
     }
 }

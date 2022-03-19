@@ -8,20 +8,47 @@
         <h1>{{ brand.name }}</h1>
         <p>{{ brand.description }}</p>
     </div>
-
+    <form class="filters" name="filter-form">
+        <div class="filter-item">
+            <label>From</label>
+            <select name="from" value="all">
+                <option value="all">All</option>
+                <option value="marketplace">Marketplace</option>
+                <option value="shop">Shop</option>
+            </select>
+        </div>
+        <input type="submit" value="Apply">
+    </form>
     <div class="sneakers_items">
         {% for sneaker in sneakers %}
-            <a href="#" class="sneaker_item">
-                <img src=""/>
-                <div class="sneaker_data">
-                    <h3>{{sneaker.name}}</h3>
-                    <span>${{sneaker.price}}</span>
-                    <span class="source">{{sneaker.fromShop ? 'From Shop' : 'From Marketplace'}}</span>
-                </div>
-            </a>
+            {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
         {% else %}
             <p>No sneakers found </p>
         {% endfor %}
     </div>
+
 </div>
+
+<style>
+    .filters{
+        display: flex;
+        align-items: flex-end;
+        border: 1px solid gray;
+        padding: 30px 20px;
+    }
+
+    .filters input[type=submit]{
+        height: fit-content;
+        width: fit-content;
+    }
+
+    .filters .filter-item{
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        margin-right: 20px;
+    }
+</style>
+
 {% endblock %}
+

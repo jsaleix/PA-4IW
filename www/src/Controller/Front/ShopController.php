@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Brand;
 use App\Entity\Invoice;
 use App\Entity\Sneaker;
+use App\Repository\SneakerRepository;
 use Stripe\StripeClient;
 use App\Form\Front\UserType;
 use App\Repository\BrandRepository;
@@ -22,9 +23,12 @@ use App\Service\Payment\PaymentService;
 class ShopController extends AbstractController
 {
     #[Route('/', name: 'shop_index', methods: ['GET'])]
-    public function index(): Response
+    public function index(SneakerRepository $sneakerRepository): Response
     {
-        return $this->render('front/shop/index.html.twig', []);
+        $sneakers = $sneakerRepository->findBy(['from_shop' => true]);
+        return $this->render('front/shop/index.html.twig', [
+            'sneakers' => $sneakers
+        ]);
     }
 
     #[Route('/checkout/{id}', name: 'shop_product_checkout', methods: ['GET'])]

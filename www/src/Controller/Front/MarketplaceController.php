@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Brand;
 use App\Entity\Sneaker;
 use App\Repository\BrandRepository;
+use App\Repository\SneakerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,9 +19,12 @@ use Stripe\StripeClient;
 class MarketplaceController extends AbstractController
 {
     #[Route('/', name: 'marketplace_index', methods: ['GET'])]
-    public function index(): Response
+    public function index(SneakerRepository $sneakerRepository, Request $request): Response
     {
-        return $this->render('front/marketplace/index.html.twig', []);
+        $sneakers = $sneakerRepository->findBy(['from_shop' => false]);
+        return $this->render('front/marketplace/index.html.twig', [
+            'sneakers' => $sneakers
+        ]);
     }
 
     #[Route('/checkout/{id}', name: 'marketplace_product_checkout', methods: ['GET'])]

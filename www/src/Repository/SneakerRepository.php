@@ -58,4 +58,14 @@ class SneakerRepository extends ServiceEntityRepository
             ->getResult(\Doctrine\ORM\Query::HYDRATE_OBJECT)
             ;
     }
+
+    public function findSneakersByInvoiceStatus(string $status): ?Array
+    {
+        $entityManager = $this->getEntityManager();
+        return $entityManager->createQuery('SELECT sneaker FROM App\Entity\Invoice invoice, App\Entity\Sneaker sneaker WHERE invoice.sneaker = sneaker.id AND invoice.paymentStatus = :status')
+            ->setParameter('status', $status)
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_OBJECT)
+            ;
+    }
+
 }

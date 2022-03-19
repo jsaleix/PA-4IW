@@ -4,8 +4,14 @@
 
 {% block body %}
 
-<div class="shop">
-    
+<div class="shop container">
+    <div class="sneakers_items">
+        {% for sneaker in sneakers %}
+            {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
+        {% else %}
+            <p>No sneakers found </p>
+        {% endfor %}
+    </div>
 </div>
 
 <style>
