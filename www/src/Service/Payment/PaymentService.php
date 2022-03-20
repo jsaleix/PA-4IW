@@ -75,9 +75,9 @@ class PaymentService
     public function confirmPayment(Invoice $invoice){
         $sneaker = $invoice->getSneaker();
         if($sneaker->getFromShop()){
-            $this->confirmPaymentShop($invoice);
+            $this->confirmPaymentShop($invoice, $sneaker);
         }else{
-            $this->confirmPaymentMP($invoice);
+            $this->confirmPaymentMP($invoice, $sneaker);
         }
     }
 
@@ -86,8 +86,13 @@ class PaymentService
         $this->entityManager->flush();
     }
 
-    public function confirmPaymentShop(Invoice $invoice){
+    public function confirmPaymentShop(Invoice $invoice, Sneaker $sneaker){
         try{
+            //Checking sneaker stock and if stock arrives to 0, set Sold to true
+            /*$sneaker->setSold(true);
+            $this->entityManager->persist($sneaker);
+            $this->entityManager->flush();*/
+
             $invoice->setPaymentStatus(Invoice::SOLD_STATUS);
             $this->entityManager->persist($invoice);
             $this->entityManager->flush();
@@ -97,9 +102,14 @@ class PaymentService
         }
     }
 
-    public function confirmPaymentMP( Invoice $invoice){
+    public function confirmPaymentMP( Invoice $invoice, Sneaker $sneaker){
         try{
             $FEES = 0.1;
+
+            //Updating sold attribute on sneaker
+            $sneaker->setSold(true);
+            $this->entityManager->persist($sneaker);
+            $this->entityManager->flush();
 
             $invoice->setPaymentStatus(Invoice::SOLD_STATUS);
             $this->entityManager->persist($invoice);
