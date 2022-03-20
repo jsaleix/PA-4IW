@@ -9,6 +9,8 @@ use App\Form\Front\SneakerType;
 use App\Repository\InvoiceRepository;
 use App\Repository\SneakerRepository;
 use App\Security\Voter\SneakerVoter;
+use App\Service\Front\SneakerService;
+
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -158,49 +160,49 @@ class SneakersController extends AbstractController
         throw new Exception('Invalid token');*/
     }
 
-    #[Route('/sneaker/{id}', name: 'front_sneaker_item', methods: ['GET'])]
-    public function sneakerPage( Sneaker $sneaker, InvoiceRepository $invoiceRepository)
+    #[Route('/sneaker/like/{id}', name: 'front_like_sneaker_item', requirements: ['id' => '^\d+$'], methods: ['POST'])]
+    public function likeSneaker( Sneaker $sneaker, EntityManagerInterface $entityManager, Request $request)
     {
-        $invoice = $invoiceRepository->findOneBy(['sneaker' => $sneaker]);
-        if($invoice && $invoice->getPaymentStatus() === Invoice::SOLD_STATUS ){
-            $sold = true;
+        if( !$this->getUser() ){
+            return $this->redirectToRoute('front_sneaker_item');
+        }
+        if ($this->isCsrfTokenValid('like'.$sneaker->getId(), $request->request->get('_token'))) {
+            $user = $this->getUser();
+            if($user->getFavoris()->contains($sneaker)){
+                $user->removeFavori($sneaker);
+            }else{
+                $user->addFavori($sneaker);
+            }
+            $entityManager->flush();
+
         }else{
-            $sold = false;
+            $this->addFlash('warning', "An error occurred.");
         }
 
+        return $this->redirectToRoute('front_sneaker_item_by_slug', ['slug' => $sneaker->getSlug()]);
+    }
+
+    #[Route('/sneaker/{id}', name: 'front_sneaker_item', methods: ['GET'])]
+    public function sneakerPage( Sneaker $sneaker, SneakerService $sneakerService)
+    {
+        $user = $this->getUser();
+        $vars = $sneakerService->renderPage($sneaker, $user);
         if($sneaker->getFromShop()){
-            return $this->render('front/sneaker/sneaker.shop.html.twig', [
-                'sneaker'=>$sneaker,
-                'sold' => $sold
-            ]);
+            return $this->render('front/sneaker/sneaker.shop.html.twig', $vars);
         }else{
-            return $this->render('front/sneaker/sneaker.mp.html.twig', [
-                'sneaker'=>$sneaker,
-                'sold' => $sold
-            ]);
+            return $this->render('front/sneaker/sneaker.mp.html.twig', $vars);
         }
     }
 
     #[Route('/sneaker/t/{slug}', name: 'front_sneaker_item_by_slug', methods: ['GET'])]
-    public function sneakerPageSlug( Sneaker $sneaker, InvoiceRepository $invoiceRepository)
+    public function sneakerPageSlug( Sneaker $sneaker, SneakerService $sneakerService)
     {
-        $invoice = $invoiceRepository->findOneBy(['sneaker' => $sneaker]);
-        if($invoice && $invoice->getPaymentStatus() === Invoice::SOLD_STATUS ){
-            $sold = true;
-        }else{
-            $sold = false;
-        }
-
+        $user = $this->getUser();
+        $vars = $sneakerService->renderPage($sneaker, $user);
         if($sneaker->getFromShop()){
-            return $this->render('front/sneaker/sneaker.shop.html.twig', [
-                'sneaker'=>$sneaker,
-                'sold' => $sold
-            ]);
+            return $this->render('front/sneaker/sneaker.shop.html.twig', $vars);
         }else{
-            return $this->render('front/sneaker/sneaker.mp.html.twig', [
-                'sneaker'=>$sneaker,
-                'sold' => $sold
-            ]);
+            return $this->render('front/sneaker/sneaker.mp.html.twig', $vars);
         }
     }
 
