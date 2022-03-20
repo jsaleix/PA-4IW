@@ -12,10 +12,18 @@
     <form class="filters" name="filter-form">
         <div class="filter-item">
             <label>Sort by</label>
-            <select name="from" value="all">
+            <select name="order" value="all">
                 <option value="all">All</option>
                 <option value="DESC">More recent</option>
                 <option value="ASC">Oldest</option>
+            </select>
+        </div>
+        <div class="filter-item">
+            <label>Status</label>
+            <select name="status" value="all">
+                <option value="all">All</option>
+                <option value="buyable">Buyable</option>
+                <option value="sold">Sold</option>
             </select>
         </div>
         <input type="submit" value="Apply">

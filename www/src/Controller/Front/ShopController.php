@@ -23,9 +23,24 @@ use App\Service\Payment\PaymentService;
 class ShopController extends AbstractController
 {
     #[Route('/', name: 'shop_index', methods: ['GET'])]
-    public function index(SneakerRepository $sneakerRepository): Response
+    public function index(SneakerRepository $sneakerRepository, Request $request): Response
     {
-        $sneakers = $sneakerRepository->findBy(['from_shop' => true], ['id' => 'DESC']);
+        $params = ['from_shop' => true];
+        $filter = ['id' => 'DESC'];
+
+        $statusParam    = $request->query->get('status');
+        $orderParam     = $request->query->get('order');
+
+        if( $orderParam && in_array($orderParam, ['ASC', 'DESC'])){
+            $filter['id'] = $orderParam;
+        }
+
+        if( $statusParam && in_array($statusParam, ['sold', 'buyable']) ){
+            $params['sold'] = $statusParam === 'sold' ? true : null;
+        }
+
+        $sneakers = $sneakerRepository->findBy( $params, $filter);
+
         return $this->render('front/shop/index.html.twig', [
             'sneakers' => $sneakers
         ]);
