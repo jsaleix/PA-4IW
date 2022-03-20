@@ -118,6 +118,11 @@ class Sneaker
      */
     private $images;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $sold;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
@@ -453,6 +458,18 @@ class Sneaker
                 $image->setSneaker(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSold(): ?bool
+    {
+        return $this->sold;
+    }
+
+    public function setSold(?bool $sold): self
+    {
+        $this->sold = $sold;
 
         return $this;
     }
