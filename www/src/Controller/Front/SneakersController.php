@@ -164,7 +164,7 @@ class SneakersController extends AbstractController
     public function likeSneaker( Sneaker $sneaker, EntityManagerInterface $entityManager, Request $request)
     {
         if( !$this->getUser() ){
-            return $this->redirectToRoute('front_sneaker_item');
+            return $this->redirectToRoute('front_sneaker_item_by_slug', ['slug' => $sneaker->getSlug()]);
         }
         if ($this->isCsrfTokenValid('like'.$sneaker->getId(), $request->request->get('_token'))) {
             $user = $this->getUser();
