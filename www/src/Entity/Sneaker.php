@@ -99,7 +99,7 @@ class Sneaker
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="publishedSneakers")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $publisher;
 

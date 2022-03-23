@@ -51,7 +51,6 @@ class SneakerService
 
     public function publish(Sneaker $sneaker, $user, bool $fromShop = true)
     {
-        $sneaker->setPublisher( $user);
         $sneaker->setFromShop( $fromShop );
         $sneaker->setUnused( true );
         $sneaker->setPublicationDate( new \DateTime() );
@@ -62,6 +61,7 @@ class SneakerService
                 'name' => 'SHOP PRODUCT: ' . $sneaker->getName() . ' - ' . $sneaker->getId(),
             ]);
         }else{
+            $sneaker->setPublisher( $user );
             $sneakerId = $stripe->products->create([
                 'name' => 'MP PRODUCT: ' . $sneaker->getName() . ' - ' . $sneaker->getId(),
             ]);
