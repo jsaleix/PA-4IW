@@ -15,7 +15,6 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Stripe\StripeClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,59 +23,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class SneakersController extends AbstractController
 {
     #[Route('/account/publish', name: 'front_account_sneaker_add')]
-    public function addMP(Request $request)//Adding sneakers on the Marketplace
+    public function addMP(Request $request, SneakerService $sneakerService)//Adding sneakers on the Marketplace
     {
         $user = $this->getUser();
         if( !in_array('ROLE_SELLER',  $user->getRoles()) ){
             return $this->redirectToRoute('front_account_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        $sneaker = new Sneaker();
-        for($i=0; $i<3; $i++){
-            $image = new Image();
-            $sneaker->getImages()->add($image);
-        }
-
+        $sneaker = $sneakerService->generateSneakerWithEmptyImages();
         $form = $this->createForm(SneakerType::class, $sneaker);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try{
-                $em = $this->getDoctrine()->getManager();
-                $sneaker->setPublisher( $user);
-                $sneaker->setFromShop( false );
-                $sneaker->setUnused( true );
-                $sneaker->setPublicationDate( new \DateTime() );
-
-                $stripe = new StripeClient($_ENV['STRIPE_SK']);
-                $sneakerId = $stripe->products->create([
-                    'name' => 'MP PRODUCT: ' . $sneaker->getName(),
-                ]);
-                if(!$sneakerId) {
-                    throw new \Exception('An error occurred with Stripe, please try again later');
-                }
-
-                $sneaker->setStripeProductId($sneakerId->id);
-                foreach($sneaker->getImages() as $image){
-                    if($image->getImageFile()){
-                        $image->setSneaker($sneaker);
-                        $em->persist($image);
-                    }else{
-                        $sneaker->removeImage($image);
-                    }
-                }
-
-                if( count($sneaker->getImages()) < 3){
-                    throw new Exception('Missing image(s) (required: 3, got: '. count($sneaker->getImages()) . ')' );
-                }
-
-                $em->persist($sneaker);
-                $em->flush();
+                $sneakerService->publish($sneaker, $user, false);
                 return $this->redirectToRoute('default');
-
             }catch(Exception $e){
                 $this->addFlash( 'warning', $e->getMessage()??'An error occurred' );
-                //return $this->redirectToRoute('front_account_sneaker_add');
             }
         }
 
