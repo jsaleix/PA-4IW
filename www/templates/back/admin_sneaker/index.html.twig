@@ -1,0 +1,44 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Sneakers index{% endblock %}
+
+{% block body %}
+    <h1>User index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Price</th>
+                <th>Slug</th>
+                <th>Description</th>
+                <th>Unused</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sneaker in sneakers %}
+            <tr>
+                <td>{{ sneaker.id }}</td>
+                <td>{{ sneaker.name }}</td>
+                <td>{{ sneaker.size }}</td>
+                <td>{{ sneaker.price }}</td>
+                <td>{{ sneaker.slug }}</td>
+                <td>{{ sneaker.description }}</td>
+                <td>{{ sneaker.unused }}</td>
+                <td>
+                    <a href="{{ path('admin_sneaker_show', {'id': sneaker.id}) }}">show</a>
+                    <a href="{{ path('admin_sneaker_edit', {'id': sneaker.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

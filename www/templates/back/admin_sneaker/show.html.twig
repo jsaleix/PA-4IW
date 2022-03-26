@@ -1,0 +1,38 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Sneaker{% endblock %}
+
+{% block body %}
+    <h1>Sneaker</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ sneakers.id }}</td>
+            </tr>
+            <tr>
+                <th>Size</th>
+                <td>{{ sneakers.size }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ sneakers.price }}</td>
+            </tr>
+            <tr>
+                <th>Slug</th>
+                <td>{{ sneakers.slug }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ sneakers.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin_sneaker_dashboard') }}">back to list</a>
+
+    <a href="{{ path('admin_sneaker_edit', {'id': sneakers.id}) }}">edit</a>
+
+    {{ include('back/admin_sneaker/_delete_form.html.twig') }}
+{% endblock %}

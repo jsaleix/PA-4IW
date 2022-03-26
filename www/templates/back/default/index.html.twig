@@ -1,20 +1,60 @@
-{% extends 'base_back.html.twig' %}
+{% extends 'base_front.html.twig' %}
 
-{% block title %}Hello DefaultController!{% endblock %}
+{% block title %}SNKER - Your DashBoard {% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div class="container account">
+        <h1>Your Dashboard</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/src/Controller/DefaultController.php'|file_link(0) }}">src/Controller/DefaultController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/templates/default/index.html.twig'|file_link(0) }}">templates/default/index.html.twig</a></code></li>
-    </ul>
-</div>
+        <div class='account_items'>
+            <a href="{{ path('admin_user_dashboard') }}" class='account_item'>
+                <h3>User interface</h3>
+                <p>User Panel</p>
+            </a>
+            <a href="{{ path('admin_sneaker_dashboard') }}" class='account_item'>
+                <h3>Sneakers interface</h3>
+                <p>Sneakers panel</p>
+            </a>
+        </div>
+    </div>
+
+    <style>
+
+        .account{
+        }
+
+        .account > h1{
+            margin-bottom: 20px;
+        }
+
+        .account a{
+            text-decoration: none;
+            color: black;
+        }
+
+        .account_items{
+            display: flex;
+            flex-direction: row;
+            /*justify-content: space-between;*/
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .account_item{
+            width: calc(100%/3.1);
+            margin-bottom: 15px;
+            border: 1px solid gray;
+            padding: 30px;
+            border-radius: 10px;
+            margin-right: 5px;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+
+        .account_item:hover{
+            background-color: #f0f0f0;
+        }
+    </style>
+
 {% endblock %}

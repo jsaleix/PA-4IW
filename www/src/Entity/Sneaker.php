@@ -218,7 +218,7 @@ class Sneaker
     }
 
     /**
-     * @return Collection|Category[]
+     * @return Category[]
      */
     public function getCategory(): Collection
     {

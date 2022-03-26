@@ -7,12 +7,13 @@ use App\Entity\SneakerModel;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Faker\Factory;
 
 class SneakerModelFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
         $brands = $manager->getRepository(Brand::class)->findAll();
 
         for ($i = 0; $i < 100; $i++) {
