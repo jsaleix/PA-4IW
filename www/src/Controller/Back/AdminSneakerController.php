@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/sneakers')]
 class AdminSneakerController extends AbstractController
 {
-    #[Route('/', name: 'admin_sneaker_index', methods: ['GET'])]
+    #[Route('/panel', name: 'admin_sneaker_dashboard', methods: ['GET'])]
     public function index(SneakerRepository $sneakerRepository): Response
     {
         return $this->render('back/admin_sneaker/index.html.twig', [
@@ -37,7 +37,7 @@ class AdminSneakerController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('admin_sneaker_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_sneaker_dashboard', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('back/admin_sneaker/edit.html.twig', [
@@ -55,6 +55,6 @@ class AdminSneakerController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('admin_sneaker_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('admin_sneaker_dashboard', [], Response::HTTP_SEE_OTHER);
     }
 }

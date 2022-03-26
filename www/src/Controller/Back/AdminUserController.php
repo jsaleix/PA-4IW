@@ -10,10 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/admin/users')]
+#[Route('/admin/user')]
 class AdminUserController extends AbstractController
 {
-    #[Route('/adminDashboard', name: 'admin_user_dashboard', methods: ['GET'])]
+    #[Route('/panel', name: 'admin_user_dashboard', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('back/admin_user/index.html.twig', [
@@ -24,7 +24,7 @@ class AdminUserController extends AbstractController
     public function show(User $user): Response
     {
         return $this->render('back/admin_user/show.html.twig', [
-            'user' => $user,
+            'users' => $user,
         ]);
     }
 
@@ -37,11 +37,11 @@ class AdminUserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('admin_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_user_dashboard', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('back/admin_user/edit.html.twig', [
-            'user' => $user,
+            'users' => $user,
             'form' => $form->createView()
          ]);
     }
@@ -55,6 +55,6 @@ class AdminUserController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('admin_user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('admin_user_dashboard', [], Response::HTTP_SEE_OTHER);
     }
 }
