@@ -1,0 +1,60 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Sneakers index{% endblock %}
+
+{% block body %}
+    <h1>User index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Price</th>
+                <th>Slug</th>
+                <th>Description</th>
+                <th>image</th>
+                <th>Publication date</th>
+                <th>Unused</th>
+                <th>From Shop</th>
+                <th>Category</th>
+                <th>Brand Id</th>
+                <th>Sneaker model Id</th>
+                <th>Publisher Id</th>
+                <th>Stripe product id</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sneaker in sneakers %}
+            <tr>
+                <td>{{ sneaker.id }}</td>
+                <td>{{ sneaker.name }}</td>
+                <td>{{ sneaker.size }}</td>
+                <td>{{ sneaker.price }}</td>
+                <td>{{ sneaker.slug }}</td>
+                <td>{{ sneaker.description }}</td>
+                <td>{{ sneaker.images }}</td>
+                <td>{{ sneaker.publicationDAte }}</td>
+                <td>{{ sneaker.unused }}</td>
+                <td>{{ sneaker.from_shop }}</td>
+                <td>{{ sneaker.category }}</td>
+                <td>{{ sneaker.brand }}</td>
+                <td>{{ sneaker.sneakerModel }}</td>
+                <td>{{ sneaker.publisher }}</td>
+                <td>{{ sneaker.stripeProductId }}</td>
+
+                <td>
+                    <a href="{{ path('admin_sneaker_show', {'id': sneaker.id}) }}">show</a>
+                    <a href="{{ path('admin_sneaker_edit', {'id': sneaker.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

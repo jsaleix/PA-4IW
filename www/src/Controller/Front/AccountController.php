@@ -3,7 +3,6 @@
 namespace App\Controller\Front;
 
 use App\Entity\Invoice;
-use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +16,7 @@ use Stripe\StripeClient;
 class AccountController extends AbstractController
 {
     #[Route('/', name: 'account_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(): Response
     {
         return $this->render('front/account/index.html.twig', []);
     }

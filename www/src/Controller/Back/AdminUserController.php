@@ -13,35 +13,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/users')]
 class AdminUserController extends AbstractController
 {
-    #[Route('/', name: 'admin_user_index', methods: ['GET'])]
+    #[Route('/adminDashboard', name: 'admin_user_dashboard', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('back/admin_user/index.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
     }
-
-    /*#[Route('/new', name: 'admin_user_new', methods: ['GET','POST'])]
-    public function new(Request $request): Response
-    {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('admin_user_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('back/admin_user/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
-    }*/
-
     #[Route('/{id}', name: 'admin_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
