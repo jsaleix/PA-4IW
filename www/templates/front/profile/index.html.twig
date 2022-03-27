@@ -6,6 +6,7 @@
         <div class="left-part">
             <h2>{{ user.name }} {{ user.surname }}</h2>
             <img src="" alt="profile picture"/>
+            <a href="{{ path('report-user', { 'id': user.id }) }}"><button>Report this user</button></a>
         </div>
         <div class="right-part">
             <div class="right-header">
