@@ -75,7 +75,7 @@ class ReportController extends AbstractController
         }
         return $this->render('front/report/report_sneaker.html.twig', [
             'form' => $form->createView(),
-            'reasons' => $reasons
+
         ]);
     }
 }
