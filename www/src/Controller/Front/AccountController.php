@@ -130,4 +130,15 @@ class AccountController extends AbstractController
         return $this->render('front/account/becomeSeller/index.html.twig', []);
     }
 
+    #[Route('/likes', name: 'account_likes', methods: ['GET'])]
+    public function showLikes(Request $request): Response
+    {
+        $likes = $this->getUser()->getFavoris();
+        return $this->render('front/account/likes/index.html.twig', [
+            'likes' => $likes
+        ]);
+    }
+
+
+
 }
