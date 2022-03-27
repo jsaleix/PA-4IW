@@ -1,0 +1,30 @@
+{% extends 'base_front.html.twig' %}
+
+{% block title %}SNKER - Your orders {% endblock %}
+
+{% block body %}
+
+    <div class="account container">
+        <div class="orders-header">
+            <h1>Your likes</h1>
+        </div>
+            {% if likes is not empty %}
+                <div class="sneakers_items">
+                    {% for sneaker in likes %}
+                        {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Looks like you have liked nothing yet</p>
+            {% endif %}
+
+    </div>
+
+<style>
+    .likes-list{
+        display: flex;
+
+    }
+</style>
+
+{% endblock %}
