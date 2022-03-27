@@ -4,6 +4,15 @@
 
 {% block body %}
     <div class="container">
-        <h1>Hello {{ controller_name }}! ✅</h1>
+        <div class="row">
+            <div class="col">
+                <h1>Message</h1>
+                <p>Resume messages</p>
+                <p>Received: {{ app.user.received|length }} </p>
+                <p>Sent: </p>
+                <button type="button" class="btn btn-primary">My messages</button>
+                <button type="button" class="btn btn-secondary">Send a Message</button>
+            </div>
+        </div>
     </div>
 {% endblock %}
