@@ -20,7 +20,7 @@
         {%  endif %}
 
         <div>
-            <div>
+            <div style="border-bottom: 1px solid gray">
                 <h4>Materials</h4>
                 {%  if(sneaker.getMaterials is not empty) %}
 
@@ -28,7 +28,7 @@
                     <span>Not specified</span>
                 {% endif %}
             </div>
-            <div>
+            <div style="border-bottom: 1px solid gray">
                 <h4>Colors</h4>
                 {%  if(sneaker.getColors is not empty) %}
 
@@ -36,6 +36,7 @@
                     <span>Not specified</span>
                 {% endif %}
             </div>
+            <a href="{{ path('report-sneaker', { 'id': sneaker.id }) }}"><button>Report this product</button></a>
         </div>
     </div>
 
