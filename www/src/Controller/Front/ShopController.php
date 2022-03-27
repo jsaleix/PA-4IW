@@ -57,6 +57,11 @@ class ShopController extends AbstractController
         if( !$this->getUser() ){
             return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
         }
+
+        if( !$this->getUser()->getAddress() || !$this->getUser()->getCity() ){
+            $this->addFlash('warning', "You must specify the address and city to which you want to be delivered.");
+            return $this->redirectToRoute('account_profile', [], Response::HTTP_SEE_OTHER);
+        }
         
         $buyer  = $this->getUser();
         $url = $paymentService->generatePaymentIntent($sneaker, $buyer, false);

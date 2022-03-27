@@ -61,6 +61,7 @@ class PaymentService
             $invoice->setSneaker($sneaker);
         };
 
+        $invoice->setReceptionAddress($buyer->getAddress() . ' ' . $buyer->getCity());
         $invoice->setPaymentStatus(Invoice::PENDING_STATUS);
         $invoice->setBuyer($buyer);
         $invoice->setDate(new \DateTime());
@@ -132,6 +133,7 @@ class PaymentService
         }catch(\Exception $e){
             return $e->getMessage();
         }
+
     }
 
 

@@ -26,10 +26,8 @@ services:
       <<: *app-cache-from
     depends_on:
       - db
-    environment:
-      - APP_ENV=${APP_ENV}
-      - APP_SECRET=${APP_SECRET}
-      - DATABASE_URL=${DATABASE_URL}
+    env_file:
+      - ./www/.env
     healthcheck:
       interval: 10s
       timeout: 3s

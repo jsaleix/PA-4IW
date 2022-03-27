@@ -10,8 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Invoice
 {
-    const SOLD_STATUS = 'successful';
     const PENDING_STATUS = 'pending';
+    const SOLD_STATUS = 'paid';
+    const DELIVERING_STATUS = 'out for delivery';
+    const FINISHED_STATUS = 'finished';
 
     /**
      * @ORM\Id
@@ -46,6 +48,16 @@ class Invoice
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $stripePI;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $trackingNb;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $receptionAddress;
 
     public function getId(): ?int
     {
@@ -108,6 +120,30 @@ class Invoice
     public function setStripePI(?string $stripePI): self
     {
         $this->stripePI = $stripePI;
+
+        return $this;
+    }
+
+    public function getTrackingNb(): ?string
+    {
+        return $this->trackingNb;
+    }
+
+    public function setTrackingNb(?string $trackingNb): self
+    {
+        $this->trackingNb = $trackingNb;
+
+        return $this;
+    }
+
+    public function getReceptionAddress(): ?string
+    {
+        return $this->receptionAddress;
+    }
+
+    public function setReceptionAddress(string $receptionAddress): self
+    {
+        $this->receptionAddress = $receptionAddress;
 
         return $this;
     }

@@ -17,8 +17,13 @@
                 <p>lorem</p>
         </a>
         {% if(is_granted('ROLE_SELLER')) %}
-            <a href="{{ path('front_account_seller_sales') }}" class='account_item'>
-                <h3>Your sales</h3>
+            <a href="{{ path('front_account_seller_orders') }}" class='account_item'>
+                <h3>Your sellings</h3>
+                <p>lorem</p>
+            </a>
+
+            <a href="{{ path('front_account_seller_products') }}" class='account_item'>
+                <h3>Your products</h3>
                 <p>lorem</p>
             </a>
 

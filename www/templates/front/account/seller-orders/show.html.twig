@@ -12,8 +12,10 @@
             <p>Delivery details</p>
             <hr/>
             <p>{{ invoice.receptionAddress }}</p>
-            {% if canReceiveParcel %}
-                {{ include('@front/account/orders/components/_receive_form.html.twig') }}
+            {% if form is not null %}
+                {{ form_start(form) }}
+                    {{ form_rest(form) }}
+                {{ form_end(form) }}
             {% endif %}
         </div>
 
