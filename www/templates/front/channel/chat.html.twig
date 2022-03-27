@@ -34,10 +34,43 @@
             </div>
             <div>
                 <form id="form" class="container row">
-                    <input id="message" class="input-group-text col-sm-9" placeholder="Message" type="text" />
+                    <input id="message" class="input-group-text col-sm-9" placeholder="Message" type="text"/>
                     <button id="submit" type="submit" class="btn btn-success col-sm-3">Send</button>
                 </form>
             </div>
         </div>
     </div>
 {% endblock %}
+
+<script>
+    {% block javascripts %}
+    let chatDiv = document.querySelector('.overflow-auto')
+    chatDiv.scrollTop = chatDiv.scrollHeight
+
+    let form = document.getElementById('form')
+
+    function handleForm(event) {
+        event.preventDefault()
+    }
+
+    form.addEventListener('submit', handleForm)
+
+    const submit = document.querySelector('button')
+    submit.onclick = e => {
+        const message = document.getElementById('message')
+        const data = {
+            'content': message.value,
+            'channel': {{ channel.id }}
+        }
+        console.log(data)
+        fetch('/message', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        }).then((response) => {
+            message.value = ''
+            console.log(response)
+        })
+    }
+    {% endblock %}
+</script>
+

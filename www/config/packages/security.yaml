@@ -47,4 +47,5 @@ security:
         - { path: ^/account/*, roles: ROLE_USER }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/chat, roles: ROLE_USER }
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
