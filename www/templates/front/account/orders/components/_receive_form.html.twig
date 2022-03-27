@@ -1,0 +1,9 @@
+<form method="post"
+      class="like-form"
+      action="{{ path('account_receive_order', {'id': invoice.id}) }}">
+    <input
+            type="hidden"
+            name="_token"
+            value="{{ csrf_token('receive' ~ invoice.id) }}">
+    <button class="btn-success btn">I have received my parcel</button>
+</form>

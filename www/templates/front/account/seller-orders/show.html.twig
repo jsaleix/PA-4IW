@@ -12,8 +12,10 @@
             <p>Delivery details</p>
             <hr/>
             <p>{{ invoice.receptionAddress }}</p>
-            {% if canReceiveParcel %}
-                <a><button>I have received my parcel</button></a>
+            {% if form is not null %}
+                {{ form_start(form) }}
+                    {{ form_rest(form) }}
+                {{ form_end(form) }}
             {% endif %}
         </div>
 

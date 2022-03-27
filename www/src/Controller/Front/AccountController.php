@@ -3,16 +3,15 @@
 namespace App\Controller\Front;
 
 use App\Entity\Invoice;
+use App\Form\Front\Invoice\TrackingNumberFormType;
+use App\Form\Front\UserType;
 use App\Repository\InvoiceRepository;
-use App\Repository\SneakerRepository;
-use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Stripe\StripeClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\Front\UserType;
-
-use Stripe\StripeClient;
 
 #[Route('/account')]
 class AccountController extends AbstractController
@@ -59,6 +58,24 @@ class AccountController extends AbstractController
             'canReceiveParcel' => $invoice->getPaymentStatus() === Invoice::DELIVERING_STATUS
         ]);
     }
+
+
+    #[Route('/orders/receive/{id}', name: 'account_receive_order', requirements: ['id' => '^\d+$'], methods: ['POST'])]
+    public function receiveParcel( Invoice $invoice, EntityManagerInterface $entityManager, Request $request)
+    {
+        if ($this->isCsrfTokenValid('receive'. $invoice->getId(), $request->request->get('_token'))) {
+            if($invoice->getPaymentStatus() === Invoice::FINISHED_STATUS){
+                return $this->redirectToRoute('account_order', ['id' => $invoice->getId()]);
+            }
+            $invoice->setPaymentStatus(Invoice::FINISHED_STATUS);
+            $entityManager->flush();
+        }else{
+            $this->addFlash('warning', "An error occurred.");
+        }
+
+        return $this->redirectToRoute('account_order', ['id' => $invoice->getId()]);
+    }
+
 
     #[Route('/become_seller', name: 'account_become_seller', methods: ['GET'])]
     public function becomeSeller(Request $request): Response
@@ -160,11 +177,22 @@ class AccountController extends AbstractController
     }
 
     #[Route('/seller-orders/{id}', name: 'account_seller_order', methods: ['GET', 'POST'])]
-    public function sellerOder(Invoice $invoice, Request $request): Response
+    public function sellerOder(Invoice $invoice, Request $request, EntityManagerInterface $entityManager): Response
     {
-        return $this->render('front/account/orders/show.html.twig', [
+        $canSetTrackingNb = $invoice->getPaymentStatus() === Invoice::SOLD_STATUS;
+        if($canSetTrackingNb){
+            $form = $this->createForm(TrackingNumberFormType::class, $invoice);
+            $form->handleRequest($request);
+
+            if( $form->isSubmitted() && $form->isValid() ) {
+                $invoice->setPaymentStatus(Invoice::DELIVERING_STATUS);
+                $entityManager->flush();
+            }
+            $canSetTrackingNb = $invoice->getPaymentStatus() === Invoice::SOLD_STATUS;
+        }
+        return $this->render('front/account/seller-orders/show.html.twig', [
             'invoice' => $invoice,
-            'canReceiveParcel' => $invoice->getPaymentStatus() === Invoice::DELIVERING_STATUS
+            'form' => $canSetTrackingNb ? $form->createView() : null
         ]);
     }
 

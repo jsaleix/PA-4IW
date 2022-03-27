@@ -14,7 +14,7 @@
                     {% if invoices is not empty %}
                         <h1>{{ label }}</h1>
                         {% for invoice in invoices %}
-                            <a href="{{ path('front_account_order', { 'id': invoice.id}) }}" class="invoice-item">
+                            <a href="{{ path('front_account_seller_order', { 'id': invoice.id}) }}" class="invoice-item">
                                 <div class="invoice-img">
                                     <img src="{{ vich_uploader_asset(invoice.sneaker.images[0]) }}" alt="picture"/>
                                 </div>

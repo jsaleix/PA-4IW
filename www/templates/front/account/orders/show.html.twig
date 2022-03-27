@@ -13,7 +13,7 @@
             <hr/>
             <p>{{ invoice.receptionAddress }}</p>
             {% if canReceiveParcel %}
-                <a><button>I have received my parcel</button></a>
+                {{ include('@front/account/orders/components/_receive_form.html.twig') }}
             {% endif %}
         </div>
 
