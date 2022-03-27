@@ -39,6 +39,11 @@ class Message
      */
     private $author;
 
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private $created_at;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -88,6 +93,18 @@ class Message
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    {
+        $this->created_at = $created_at;
 
         return $this;
     }
