@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Entity\UserReport;
 use App\Form\Front\ProductReportFormType;
 use App\Form\Front\UserReportType;
+use App\Repository\ProductReportRepository;
 use App\Repository\ReportReasonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,9 +34,7 @@ class ReportController extends AbstractController
                 $report->setStatus('pending');
                 $entityManager->persist($report);
                 $entityManager->flush();
-            }catch(\Exception $e){
-
-            }
+            }catch(\Exception $e){}
         }
         return $this->render('front/report/report_user.html.twig', [
             'form' => $form->createView(),
@@ -44,8 +43,13 @@ class ReportController extends AbstractController
     }
 
     #[Route('/report/sneaker/{id}', name: 'report-sneaker')]
-    public function reportSneaker(Sneaker $sneaker, Request $request, EntityManagerInterface $entityManager, ReportReasonRepository $reasonRepository): Response
+    public function reportSneaker(Sneaker $sneaker, Request $request, EntityManagerInterface $entityManager, ReportReasonRepository $reasonRepository, ProductReportRepository $productReportRepository): Response
     {
+        //Checking if user has not already reported this sneaker
+        $isAlreadyReported = $productReportRepository->findBy(['product' => $sneaker, 'reporter' => $this->getUser() ]);
+        if($isAlreadyReported){
+            return $this->redirectToRoute('front_sneaker_item_by_slug', [ 'slug' => $sneaker->getSlug()]);
+        }
         $reasons = $reasonRepository->findBy(['type' => '2']);
         $report = new ProductReport();
         $form = $this->createForm( ProductReportFormType::class, $report);
@@ -54,12 +58,11 @@ class ReportController extends AbstractController
         if( $form->isSubmitted() && $form->isValid() ){
             try{
                 $report->setProduct($sneaker);
+                $report->setReporter($this->getUser());
                 $report->setStatus('pending');
                 $entityManager->persist($report);
                 $entityManager->flush();
-            }catch(\Exception $e){
-                dd($e);
-            }
+            }catch(\Exception $e){}
         }
         return $this->render('front/report/report_sneaker.html.twig', [
             'form' => $form->createView(),

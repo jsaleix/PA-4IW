@@ -110,6 +110,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $favoris;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ProductReport::class, mappedBy="reporter", orphanRemoval=true)
+     */
+    private $productReports;
+
     public function __construct()
     {
         $this->invoices = new ArrayCollection();
@@ -118,6 +123,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->userReportsMade = new ArrayCollection();
         $this->conversations = new ArrayCollection();
         $this->favoris = new ArrayCollection();
+        $this->productReports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -450,6 +456,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->favoris->removeElement($favori)) {
             $favori->removeFavori($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductReport>
+     */
+    public function getProductReports(): Collection
+    {
+        return $this->productReports;
+    }
+
+    public function addProductReport(ProductReport $productReport): self
+    {
+        if (!$this->productReports->contains($productReport)) {
+            $this->productReports[] = $productReport;
+            $productReport->setReporter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductReport(ProductReport $productReport): self
+    {
+        if ($this->productReports->removeElement($productReport)) {
+            // set the owning side to null (unless already changed)
+            if ($productReport->getReporter() === $this) {
+                $productReport->setReporter(null);
+            }
         }
 
         return $this;

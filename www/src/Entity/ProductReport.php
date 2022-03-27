@@ -34,6 +34,12 @@ class ProductReport
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="productReports")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $reporter;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -71,6 +77,18 @@ class ProductReport
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getReporter(): ?User
+    {
+        return $this->reporter;
+    }
+
+    public function setReporter(?User $reporter): self
+    {
+        $this->reporter = $reporter;
 
         return $this;
     }
