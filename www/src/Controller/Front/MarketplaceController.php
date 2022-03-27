@@ -52,6 +52,11 @@ class MarketplaceController extends AbstractController
             return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
         }
 
+        if( !$this->getUser()->getAddress() || !$this->getUser()->getCity() ){
+            $this->addFlash('warning', "You must specify the address and city to which you want to be delivered.");
+            return $this->redirectToRoute('account_profile', [], Response::HTTP_SEE_OTHER);
+        }
+
         $seller = $sneaker->getPublisher();
 
         if(!$seller->getStripeConnectId() ){
