@@ -39,6 +39,12 @@ class Message
      */
     private $author;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Channel::class, inversedBy="messages")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $channel;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -88,6 +94,18 @@ class Message
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getChannel(): ?Channel
+    {
+        return $this->channel;
+    }
+
+    public function setChannel(?Channel $channel): self
+    {
+        $this->channel = $channel;
 
         return $this;
     }
