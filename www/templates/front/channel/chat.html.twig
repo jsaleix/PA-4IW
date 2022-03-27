@@ -1,0 +1,43 @@
+{% extends 'base_front.html.twig' %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Chat{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% if app.user %}
+            <div class="mb-3">
+                You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+        {% endif %}
+        <h1>Channel {{ channel.name }}</h1>
+        <div class="container" style="height: 600px">
+            <div class="container bg-light h-75 overflow-auto">
+                {% for message in messages %}
+                    {% if app.user == message.author %}
+                        <div class="row w-75 float-right">
+                            <b>{{ message.author.username }}</b>
+                            <p class="alert alert-info w-100">
+                                {{ message.content }}
+                            </p>
+                        </div>
+                    {% else %}
+                        <div class="row w-75 float-left">
+                            <b>{{ message.author.username }}</b>
+                            <p class="alert alert-success w-100">
+                                {{ message.content }}
+                            </p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div>
+                <form id="form" class="container row">
+                    <input id="message" class="input-group-text col-sm-9" placeholder="Message" type="text" />
+                    <button id="submit" type="submit" class="btn btn-success col-sm-3">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
