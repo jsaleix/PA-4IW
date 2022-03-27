@@ -48,7 +48,7 @@ class SneakersController extends AbstractController
         ]);
     }
 
-    #[Route('/account/your-sales', name: 'front_account_seller_sales')]
+    #[Route('/account/your-products', name: 'front_account_seller_products')]
     public function sellerList(SneakerRepository $sneakerRepository){//Displays the products a seller user owns/is selling
         $user = $this->getUser();
 
@@ -80,7 +80,7 @@ class SneakersController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('front_account_seller_sales', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('front_account_seller_products', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('front/account/sneakers/edit.html.twig', [
@@ -108,7 +108,7 @@ class SneakersController extends AbstractController
             $this->addFlash('warning', "An error occurred.");
         }
 
-        return $this->redirectToRoute('front_account_seller_sales', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('front_account_seller_products', [], Response::HTTP_SEE_OTHER);
 
         /*if ($this->isCsrfTokenValid('delete_sneaker', $token)) {
             $em = $this->getDoctrine()->getManager();

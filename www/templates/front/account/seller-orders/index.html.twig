@@ -1,0 +1,64 @@
+{% extends 'base_front.html.twig' %}
+
+{% block title %}SNKER - Your orders {% endblock %}
+
+{% block body %}
+
+    <div class="account container">
+        <div class="orders-header">
+            <h1>Orders received</h1>
+        </div>
+        <div class="invoices-list">
+            {% for label, invoices in invoicesList %}
+                <div>
+                    {% if invoices is not empty %}
+                        <h1>{{ label }}</h1>
+                        {% for invoice in invoices %}
+                            <a href="{{ path('front_account_order', { 'id': invoice.id}) }}" class="invoice-item">
+                                <div class="invoice-img">
+                                    <img src="{{ vich_uploader_asset(invoice.sneaker.images[0]) }}" alt="picture"/>
+                                </div>
+                                <div class="invoice-data">
+                                    <h3>{{ invoice.sneaker.name }}</h3>
+                                    <p>{{ invoice.date|date("d/m/Y") }} - {{ invoice.paymentStatus }}</p>
+                                    <p>{{ invoice.sneaker.price }}$</p>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <style>
+        .invoices-list{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .invoice-item{
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            background: #FFFFFF;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .invoice-item .invoice-img{
+            width: 300px;
+            margin-right: 10px;
+        }
+
+        .invoice-data{
+            display: flex;
+            flex-direction: column;
+            padding: 10px 20px;
+        }
+    </style>
+
+{% endblock %}

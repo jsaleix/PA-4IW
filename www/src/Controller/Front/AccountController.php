@@ -3,6 +3,8 @@
 namespace App\Controller\Front;
 
 use App\Entity\Invoice;
+use App\Repository\InvoiceRepository;
+use App\Repository\SneakerRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,7 +55,8 @@ class AccountController extends AbstractController
     public function order(Invoice $invoice): Response
     {
         return $this->render('front/account/orders/show.html.twig', [
-            'invoice' => $invoice
+            'invoice' => $invoice,
+            'canReceiveParcel' => $invoice->getPaymentStatus() === Invoice::DELIVERING_STATUS
         ]);
     }
 
@@ -139,6 +142,31 @@ class AccountController extends AbstractController
         ]);
     }
 
+    #[Route('/seller-orders', name: 'account_seller_orders', methods: ['GET'])]
+    public function sellerOrders(InvoiceRepository $invoiceRepository): Response
+    {
+        $user = $this->getUser();
+        $waitingForTracking = $invoiceRepository->findUserInvoicesByStatus(Invoice::SOLD_STATUS, $user);
+        $delivering         = $invoiceRepository->findUserInvoicesByStatus(Invoice::DELIVERING_STATUS, $user);
+        $finished           = $invoiceRepository->findUserInvoicesByStatus(Invoice::FINISHED_STATUS, $user);
+
+        return $this->render('front/account/seller-orders/index.html.twig', [
+            'invoicesList' => [
+                                'waiting for tracking' => $waitingForTracking,
+                                'delivering' => $delivering,
+                                'finished' => $finished
+                            ]
+        ]);
+    }
+
+    #[Route('/seller-orders/{id}', name: 'account_seller_order', methods: ['GET', 'POST'])]
+    public function sellerOder(Invoice $invoice, Request $request): Response
+    {
+        return $this->render('front/account/orders/show.html.twig', [
+            'invoice' => $invoice,
+            'canReceiveParcel' => $invoice->getPaymentStatus() === Invoice::DELIVERING_STATUS
+        ]);
+    }
 
 
 }
