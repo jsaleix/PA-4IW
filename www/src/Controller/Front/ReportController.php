@@ -28,7 +28,11 @@ class ReportController extends AbstractController
 
         if( $form->isSubmitted() && $form->isValid() ){
             try{
-
+                $report->setReported($user);
+                $report->setReporter($this->getUser());
+                $report->setStatus('pending');
+                $entityManager->persist($report);
+                $entityManager->flush();
             }catch(\Exception $e){
 
             }
@@ -49,9 +53,12 @@ class ReportController extends AbstractController
 
         if( $form->isSubmitted() && $form->isValid() ){
             try{
-                dd($sneaker);
+                $report->setProduct($sneaker);
+                $report->setStatus('pending');
+                $entityManager->persist($report);
+                $entityManager->flush();
             }catch(\Exception $e){
-
+                dd($e);
             }
         }
         return $this->render('front/report/report_sneaker.html.twig', [
