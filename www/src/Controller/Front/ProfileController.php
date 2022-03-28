@@ -2,6 +2,7 @@
 
 namespace App\Controller\Front;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ProfileController extends AbstractController
 {
     #[Route('/{id}', name: 'front_profile')]
-    public function index(UserInterface $user): Response
+    public function index(User $user): Response
     {
         return $this->render('@front/profile/index.html.twig', [
             'user' => $user,
@@ -19,9 +20,8 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/debug/{id}', name: 'front_profile_debug')]
-    public function debug(UserInterface $user): Response
+    public function debug(User $user): Response
     {
-        dd($user);
         return $this->render('@front/profile/index.html.twig', [
             'user' => $user,
         ]);
