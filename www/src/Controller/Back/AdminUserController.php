@@ -24,7 +24,7 @@ class AdminUserController extends AbstractController
     public function show(User $user): Response
     {
         return $this->render('back/admin_user/show.html.twig', [
-            'users' => $user,
+            'user' => $user,
         ]);
     }
 
@@ -41,7 +41,7 @@ class AdminUserController extends AbstractController
         }
 
         return $this->render('back/admin_user/edit.html.twig', [
-            'users' => $user,
+            'user' => $user,
             'form' => $form->createView()
          ]);
     }
