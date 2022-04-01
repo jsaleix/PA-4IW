@@ -4,9 +4,11 @@ namespace App\Controller\Front;
 
 use App\Entity\Invoice;
 use App\Form\Front\Invoice\TrackingNumberFormType;
+use App\Form\Front\UserMailType;
 use App\Form\Front\UserType;
 use App\Form\Front\UserPasswordType;
 use App\Repository\InvoiceRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\StripeClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -68,6 +70,31 @@ class AccountController extends AbstractController
             }
         }
         return $this->render('front/account/profile/change_password.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/profile/change-mail', name: 'account_profile_mail', methods: ['GET', 'POST'])]
+    public function changeMail(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserMailType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $requestParams = $request->get('user_mail');
+            $newMail = $requestParams['newMail'];
+
+            $mailAlreadyTaken = $userRepository->findOneBy(['email' => $newMail]);
+            if($mailAlreadyTaken){
+                $this->addFlash('warning', 'This mail is already taken');
+            }else{
+                $user->setEmail($newMail);
+                $entityManager->flush();
+                return $this->redirectToRoute('front_account_profile', [], Response::HTTP_SEE_OTHER);
+            }
+        }
+        return $this->render('front/account/profile/change_mail.html.twig', [
             'form' => $form->createView()
         ]);
     }
