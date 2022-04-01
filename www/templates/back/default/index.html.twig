@@ -1,4 +1,4 @@
-{% extends 'base_front.html.twig' %}
+{% extends 'base_back.html.twig' %}
 
 {% block title %}SNKER - Your DashBoard {% endblock %}
 
@@ -15,6 +15,10 @@
             <a href="{{ path('admin_sneaker_dashboard') }}" class='account_item'>
                 <h3>Sneakers interface</h3>
                 <p>Sneakers panel</p>
+            </a>
+            <a href="{{ path('admin_marketplace_index') }}" class='account_item'>
+                <h3>Marketplace</h3>
+                <p>Manage the marketplace</p>
             </a>
         </div>
     </div>
