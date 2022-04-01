@@ -1,0 +1,14 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Publish{% endblock %}
+
+{% block body %}
+<div class="account container">
+    <h1>Sell sneakers</h1>
+
+    {{ form_start(formSneaker) }}
+        {{ form_rest(formSneaker) }}
+    {{ form_end(formSneaker) }}
+
+</div>
+{% endblock %}

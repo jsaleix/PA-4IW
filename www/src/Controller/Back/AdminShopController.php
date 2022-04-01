@@ -2,8 +2,11 @@
 
 namespace App\Controller\Back;
 
+use App\Form\Back\SneakerType;
 use App\Repository\SneakerRepository;
+use App\Service\Front\SneakerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,4 +24,30 @@ class AdminShopController extends AbstractController
             'sneakers'=>$sneakers
         ]);
     }
+
+    #[Route('/publish', name: 'admin_shop_publish')]
+    public function publish(Request $request, SneakerService $sneakerService, SneakerRepository $sneakerRepository): Response
+    {
+        $user = $this->getUser();
+        if( !in_array('ROLE_ADMIN',  $user->getRoles()) ){
+            return $this->redirectToRoute('front_account_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        $sneaker = $sneakerService->generateSneakerWithEmptyImages();
+        $form = $this->createForm(SneakerType::class, $sneaker);
+        $form->handleRequest($request);
+
+        if( $form->isSubmitted() && $form->isValid() ){
+            try{
+                $sneakerService->publish($sneaker, $user, true);
+                return $this->redirectToRoute('admin_shop_index');
+            }catch(Exception $e){
+                $this->addFlash( 'warning', $e->getMessage()??'An error occurred' );
+            }
+        }
+        return $this->render('back/shop/publish.html.twig', [
+            'formSneaker' => $form->createView()
+        ]);
+    }
+
 }
