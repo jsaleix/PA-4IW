@@ -67,7 +67,7 @@ class AccountController extends AbstractController
                 $this->addFlash('warning', 'Wrong password');
             }
         }
-        return $this->render('front/account/profile/index.html.twig', [
+        return $this->render('front/account/profile/change_password.html.twig', [
             'form' => $form->createView()
         ]);
     }
