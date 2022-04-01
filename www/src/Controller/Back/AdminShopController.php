@@ -18,7 +18,7 @@ class AdminShopController extends AbstractController
 
         $sneakers = $sneakerRepository->findBy( $params, $filters);
         return $this->render('back/shop/index.html.twig', [
-            'sneaker'=>$sneakers
+            'sneakers'=>$sneakers
         ]);
     }
 }
