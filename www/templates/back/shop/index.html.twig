@@ -34,7 +34,7 @@
         </form>
         <div class="sneakers_items">
             {% for sneaker in sneakers %}
-                {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
+                {{ include('@back/components/sneaker_card/sneaker_item_show.html.twig') }}
             {% else %}
                 <p>No sneakers found </p>
             {% endfor %}
