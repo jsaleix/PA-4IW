@@ -6,8 +6,8 @@
     <div class="shop container">
         <div class="header">
             <div class="left">
-                <h1>Manage the shop</h1>
-                <p>lorem ipsum</p>
+                <h1>Manage invoices</h1>
+                <p>Here you can see and manage every invoices concerning items bought in the shop.</p>
             </div>
             <a href="{{ path('admin_shop_publish') }}">
                 <button class="btn">+ Add product</button>
@@ -78,4 +78,8 @@
             padding: 10px;
         }
     </style>
+    <script>
+        let selector = document.forms[0];
+        selector.addEventListener('change', () => selector.submit());
+    </script>
 {% endblock %}
