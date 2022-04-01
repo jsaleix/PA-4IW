@@ -2,9 +2,11 @@
 
 namespace App\Controller\Back;
 
+use App\Entity\Sneaker;
 use App\Form\Back\SneakerType;
 use App\Repository\SneakerRepository;
 use App\Service\Front\SneakerService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
