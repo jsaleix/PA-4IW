@@ -26,6 +26,7 @@ class ReportController extends AbstractController
         //Checking if user has not already reported this user
         $isAlreadyReported = $reportRepository->findBy(['reported' => $user, 'reporter' => $this->getUser() ]);
         if($isAlreadyReported){
+            $this->addFlash('warning', 'You\'ve already reported this user');
             return $this->redirectToRoute('front_profile', [ 'id' => $user->getId()]);
         }
 
@@ -56,6 +57,7 @@ class ReportController extends AbstractController
         //Checking if user has not already reported this sneaker
         $isAlreadyReported = $productReportRepository->findBy(['product' => $sneaker, 'reporter' => $this->getUser() ]);
         if($isAlreadyReported){
+            $this->addFlash('warning', 'You\'ve already reported this product');
             return $this->redirectToRoute('front_sneaker_item_by_slug', [ 'slug' => $sneaker->getSlug()]);
         }
         $reasons = $reasonRepository->findBy(['type' => '2']);
