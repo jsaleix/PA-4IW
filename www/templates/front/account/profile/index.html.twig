@@ -11,8 +11,13 @@
             {{ form_rest(form) }}
             <button type="submit" class="btn btn-primary">SAVE</button>
         {{ form_end(form) }}
-        <div style="margin-top: 10px">
-            <a href="{{ path('account_profile_password') }}"><button class="btn btn-primary">Change password</button></a>
+        <div class="buttons-row">
+            <a href="{{ path('account_profile_password') }}">
+                <button class="btn btn-primary">Change password</button>
+            </a>
+            <a href="{{ path('account_profile_mail') }}">
+                <button class="btn btn-primary">Change mail</button>
+            </a>
         </div>
     </div>
 
@@ -20,6 +25,14 @@
 </div>
 
 <style>
+
+    .buttons-row{
+        margin-top: 10px;
+    }
+
+    .buttons-row a {
+        margin-bottom: 10px;
+    }
 
     .account{
         display: flex;
