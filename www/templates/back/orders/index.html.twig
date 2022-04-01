@@ -1,0 +1,81 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}SNKER - Manage the shop {% endblock %}
+
+{% block body %}
+    <div class="shop container">
+        <div class="header">
+            <div class="left">
+                <h1>Manage the shop</h1>
+                <p>lorem ipsum</p>
+            </div>
+            <a href="{{ path('admin_shop_publish') }}">
+                <button class="btn">+ Add product</button>
+            </a>
+        </div>
+        <form class="filters" name="filter-form">
+            <div class="filter-item">
+                <label>Status</label>
+                <select name="status" value="all">
+                    {% for status in statusList %}
+                        <option value="{{ status }}">{{ status }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <input type="submit" value="Apply">
+        </form>
+        <div class="sneakers_items">
+            {% for invoice in invoices %}
+                <div class="invoice-item">
+                    <div class="invoice-top">
+                        <h4>No.{{ invoice.id }} - {{ invoice.paymentStatus }}</h4>
+                    </div>
+                    <p>Bought on {{ invoice.date|date('d/m/Y') }}</p>
+                    <a href="{{ path('admin_orders_show', { 'id': invoice.id }) }}"><button>Check details</button></a>
+                </div>
+            {% else %}
+                <p>No invoice found </p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+
+        .header{
+            display: flex;
+            justify-content: flex-start;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .left{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filters{
+            display: flex;
+            align-items: flex-end;
+            border: 1px solid gray;
+            padding: 30px 20px;
+        }
+
+        .filters input[type=submit]{
+            height: fit-content;
+            width: fit-content;
+        }
+
+        .filters .filter-item{
+            display: flex;
+            flex-direction: column;
+            width: fit-content;
+            margin-right: 20px;
+        }
+
+        .invoice-item{
+            border: 1px solid gray;
+            width: 100%;
+            padding: 10px;
+        }
+    </style>
+{% endblock %}

@@ -6,6 +6,7 @@ use App\Entity\Invoice;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\Boolean;
 
 /**
  * @method Invoice|null find($id, $lockMode = null, $lockVersion = null)
@@ -56,6 +57,16 @@ class InvoiceRepository extends ServiceEntityRepository
                ->setParameter('status', $status)
                ->getResult(\Doctrine\ORM\Query::HYDRATE_OBJECT)
                ;
+    }
+
+    public function findInvoicesFromSneakerType(string $status, bool $isFromShop = true): ?Array
+    {
+        $entityManager = $this->getEntityManager();
+        return $entityManager->createQuery('SELECT invoice FROM App\Entity\Invoice invoice, App\Entity\Sneaker sneaker WHERE invoice.sneaker = sneaker.id AND sneaker.from_shop = :isFromShop AND invoice.paymentStatus = :status')
+            ->setParameter('isFromShop', $isFromShop)
+            ->setParameter('status', $status)
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_OBJECT)
+            ;
     }
 
 }
