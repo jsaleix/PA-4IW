@@ -27,17 +27,25 @@ class AccountController extends AbstractController
     }
 
     #[Route('/profile', name: 'account_profile', methods: ['GET', 'POST'])]
-    public function profile(Request $request): Response
+    public function profile(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-            $user->setImageFile(null);
-            return $this->redirectToRoute('front_account_profile', [], Response::HTTP_SEE_OTHER);
+            try{
+                $user->setImageFile(null);
+                $entityManager->flush();
+                $this->addFlash('success', 'Success');
+                return $this->redirectToRoute('front_account_profile', [], Response::HTTP_SEE_OTHER);
+            }catch(\Exception $e){
+                $this->addFlash('warning', $e->getMessage());
+                $this->addFlash('warning', 'An error occured');
+            }
+
         }
+
         $user->setImageFile(null);
         return $this->render('front/account/profile/index.html.twig', [
             'user' => $user,
