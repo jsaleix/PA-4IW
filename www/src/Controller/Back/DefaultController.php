@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
-    #[Route('/dashboard', name: 'admin_dashboard_index')]
+    #[Route('/admin/dashboard', name: 'admin_dashboard_index')]
     public function index(CategoryRepository $categoryRepository): Response
     {
         return $this->render('back/default/index.html.twig', [

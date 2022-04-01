@@ -7,11 +7,12 @@
     <div class="account container">
         <div class="orders-header">
             <h1>Order no.{{ invoice.id }}</h1>
+            <p><i>Bought on {{ invoice.date|date('d/m/Y') }}</i></p>
             <hr/>
             <p>Status: {{ invoice.paymentStatus }}</p>
             <p>Delivery details</p>
+            <p>Reception address: <b>{{ invoice.receptionAddress }}</b></p>
             <hr/>
-            <p>{{ invoice.receptionAddress }}</p>
             {% if canReceiveParcel %}
                 {{ include('@front/account/orders/components/_receive_form.html.twig') }}
             {% endif %}

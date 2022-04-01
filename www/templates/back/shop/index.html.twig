@@ -1,0 +1,77 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}SNKER - Manage the shop {% endblock %}
+
+{% block body %}
+    <div class="marketplace container">
+        <div class="header">
+            <div class="left">
+                <h1>Manage the shop</h1>
+                <p>lorem ipsum</p>
+            </div>
+            <a href="{{ path('admin_shop_publish') }}">
+                <button class="btn">+ Add product</button>
+            </a>
+        </div>
+        <form class="filters" name="filter-form">
+            <div class="filter-item">
+                <label>Sort by</label>
+                <select name="order" value="all">
+                    <option value="all">All</option>
+                    <option value="DESC">More recent</option>
+                    <option value="ASC">Oldest</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label>Status</label>
+                <select name="status" value="all">
+                    <option value="all">All</option>
+                    <option value="buyable">Buyable</option>
+                    <option value="sold">Sold</option>
+                </select>
+            </div>
+            <input type="submit" value="Apply">
+        </form>
+        <div class="sneakers_items">
+            {% for sneaker in sneakers %}
+                {{ include('@back/components/sneaker_card/sneaker_item_manage.html.twig') }}
+            {% else %}
+                <p>No sneakers found </p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+
+        .header{
+            display: flex;
+            justify-content: flex-start;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .left{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filters{
+            display: flex;
+            align-items: flex-end;
+            border: 1px solid gray;
+            padding: 30px 20px;
+        }
+
+        .filters input[type=submit]{
+            height: fit-content;
+            width: fit-content;
+        }
+
+        .filters .filter-item{
+            display: flex;
+            flex-direction: column;
+            width: fit-content;
+            margin-right: 20px;
+        }
+    </style>
+{% endblock %}

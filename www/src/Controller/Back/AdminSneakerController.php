@@ -4,6 +4,7 @@ namespace App\Controller\Back;
 
 use App\Entity\Sneaker;
 use App\Form\Front\SneakerType;
+use App\Repository\InvoiceRepository;
 use App\Repository\SneakerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,10 +22,13 @@ class AdminSneakerController extends AbstractController
         ]);
     }
     #[Route('/{id}', name: 'admin_sneaker_show', methods: ['GET'])]
-    public function show(Sneaker $sneaker): Response
+    public function show(Sneaker $sneaker, InvoiceRepository $invoiceRepository): Response
     {
+        $invoices = $invoiceRepository->findBy(['sneaker' => $sneaker]);
+
         return $this->render('back/admin_sneaker/show.html.twig', [
             'sneakers' => $sneaker,
+            'invoices' => $invoices
         ]);
     }
 

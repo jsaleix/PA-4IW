@@ -1,4 +1,4 @@
-{% extends 'base_front.html.twig' %}
+{% extends 'base_back.html.twig' %}
 
 {% block title %}SNKER - order {{ invoice.id}} {% endblock %}
 
@@ -13,10 +13,12 @@
             <p>Delivery details</p>
             <p>Reception address: <b>{{ invoice.receptionAddress }}</b></p>
             <hr/>
-            {% if form is not null %}
-                {{ form_start(form) }}
+            {% if invoice.sneaker.fromShop %}
+                {% if form is not null %}
+                    {{ form_start(form) }}
                     {{ form_rest(form) }}
-                {{ form_end(form) }}
+                    {{ form_end(form) }}
+                {% endif %}
             {% endif %}
         </div>
 
