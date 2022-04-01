@@ -16,10 +16,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminShopController extends AbstractController
 {
     #[Route('/', name: 'admin_shop_index')]
-    public function index(SneakerRepository $sneakerRepository): Response
+    public function index(SneakerRepository $sneakerRepository, Request $request): Response
     {
         $params = ['from_shop' => true];
         $filters = ['id' => 'DESC'];
+
+        $statusParam    = $request->query->get('status');
+        $orderParam     = $request->query->get('order');
+
+        if( $orderParam && in_array($orderParam, ['ASC', 'DESC'])){
+            $filter['id'] = $orderParam;
+        }
+
+        if( $statusParam && in_array($statusParam, ['sold', 'buyable']) ){
+            $params['sold'] = $statusParam === 'sold' ? true : null;
+        }
 
         $sneakers = $sneakerRepository->findBy( $params, $filters);
         return $this->render('back/shop/index.html.twig', [
