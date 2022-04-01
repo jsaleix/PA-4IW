@@ -3,10 +3,11 @@
 {% block title %}Sneaker{% endblock %}
 
 {% block body %}
-    <h1>Sneaker</h1>
+    <div class="container">
+        <h1>Sneaker</h1>
 
-    <table class="table">
-        <tbody>
+        <table class="table">
+            <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ sneakers.id }}</td>
@@ -27,35 +28,53 @@
                 <th>Description</th>
                 <td>{{ sneakers.description }}</td>
             </tr>
-        </tbody>
-    </table>
-    <div class="actions-buttons">
-        <a href="{{ path('admin_sneaker_dashboard') }}">back to list</a>
+            </tbody>
+        </table>
+        <div class="actions-buttons">
+            <a href="{{ path('admin_sneaker_dashboard') }}">back to list</a>
 
-        <a href="{{ path('admin_sneaker_edit', {'id': sneakers.id}) }}">edit</a>
+            <a href="{{ path('admin_sneaker_edit', {'id': sneakers.id}) }}">edit</a>
 
-        {{ include('back/admin_sneaker/_delete_form.html.twig') }}
-    </div>
-
-    <div>
-        <h2>Invoices history</h2>
-        <div>
-            {% if invoices is not empty %}
-                {% for invoice in invoices %}
-                    <div>
-                        <p>{{ invoice.id }}</p>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>Product never ordered yet</p>
-            {% endif %}
+            {{ include('back/admin_sneaker/_delete_form.html.twig') }}
         </div>
+
+        <div>
+            <h2>Invoices history</h2>
+            <div>
+                {% if invoices is not empty %}
+                    {% for invoice in invoices %}
+                        <div class="invoice-item">
+                            <div class="invoice-top">
+                                <h4>No.{{ invoice.id }} - {{ invoice.paymentStatus }}</h4>
+                            </div>
+                            <p>Bought on {{ invoice.date|date('d/m/Y') }}</p>
+                            <a href="{{ path('admin_orders_show', { 'id': invoice.id }) }}"><button>Check details</button></a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Product never ordered yet</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <style>
+            .actions-buttons{
+                border: 1px solid gray;
+                padding: 10px;
+            }
+
+            .invoice-item{
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                border: 1px solid gray;
+                padding: 10px;
+            }
+
+            .invoice-item > .invoice-top{
+                display: flex;
+            }
+        </style>
     </div>
 
-    <style>
-        .actions-buttons{
-            border: 1px solid gray;
-            padding: 10px;
-        }
-    </style>
 {% endblock %}
