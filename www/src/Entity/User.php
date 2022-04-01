@@ -49,6 +49,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+    private $plainPassword;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -115,7 +116,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $productReports;
 
-    public function __construct()
+    /*public function __construct()
     {
         $this->invoices = new ArrayCollection();
         $this->publishedSneakers = new ArrayCollection();
@@ -124,7 +125,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->conversations = new ArrayCollection();
         $this->favoris = new ArrayCollection();
         $this->productReports = new ArrayCollection();
-    }
+    }*/
 
     public function getId(): ?int
     {
@@ -192,6 +193,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->password = $password;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param mixed $plainPassword
+     * @return User
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
         return $this;
     }
 

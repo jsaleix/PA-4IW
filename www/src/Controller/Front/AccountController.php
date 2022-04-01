@@ -4,13 +4,17 @@ namespace App\Controller\Front;
 
 use App\Entity\Invoice;
 use App\Form\Front\Invoice\TrackingNumberFormType;
+use App\Form\Front\UserMailType;
 use App\Form\Front\UserType;
+use App\Form\Front\UserPasswordType;
 use App\Repository\InvoiceRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\StripeClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/account')]
@@ -39,6 +43,60 @@ class AccountController extends AbstractController
             'user' => $user,
             'form' => $form->createView()
          ]);
+    }
+
+    #[Route('/profile/change-password', name: 'account_profile_password', methods: ['GET', 'POST'])]
+    public function changePassword(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        $form = $this->createForm(UserPasswordType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $requestParams = $request->get('user_password');
+            $oldPwd = $requestParams['oldPassword'];
+            $newPwd = $requestParams['newPassword'];
+
+            if($newPwd['first'] !== $newPwd['second']){
+                $this->addFlash('warning', 'The passwords do not match');
+            }
+
+            $user = $this->getUser();
+            if( $passwordHasher->isPasswordValid($user, $oldPwd) ){
+                $user->setPassword($passwordHasher->hashPassword($user, $newPwd['first']));
+                $entityManager->flush();
+                return $this->redirectToRoute('front_account_profile', [], Response::HTTP_SEE_OTHER);
+            }else{
+                $this->addFlash('warning', 'Wrong password');
+            }
+        }
+        return $this->render('front/account/profile/change_password.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/profile/change-mail', name: 'account_profile_mail', methods: ['GET', 'POST'])]
+    public function changeMail(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserMailType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $requestParams = $request->get('user_mail');
+            $newMail = $requestParams['newMail'];
+
+            $mailAlreadyTaken = $userRepository->findOneBy(['email' => $newMail]);
+            if($mailAlreadyTaken){
+                $this->addFlash('warning', 'This mail is already taken');
+            }else{
+                $user->setEmail($newMail);
+                $entityManager->flush();
+                return $this->redirectToRoute('front_account_profile', [], Response::HTTP_SEE_OTHER);
+            }
+        }
+        return $this->render('front/account/profile/change_mail.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     #[Route('/orders', name: 'account_orders', methods: ['GET'])]
