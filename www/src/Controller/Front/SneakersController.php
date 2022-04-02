@@ -9,7 +9,7 @@ use App\Form\Front\SneakerType;
 use App\Repository\InvoiceRepository;
 use App\Repository\SneakerRepository;
 use App\Security\Voter\SneakerVoter;
-use App\Service\Front\SneakerService;
+use App\Service\Mercure\SneakerService;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
