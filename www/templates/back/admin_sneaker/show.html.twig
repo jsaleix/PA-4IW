@@ -8,6 +8,12 @@
 
         <table class="table">
             <tbody>
+            {% if sneakers.fromShop == false %}
+                <tr>
+                    <th>Publisher</th>
+                    <td><a href="{{ path('admin_user_show', {'id': sneakers.publisher.id}) }}">{{ sneakers.publisher.email }}</a></td>
+                </tr>
+            {% endif %}
             <tr>
                 <th>Id</th>
                 <td>{{ sneakers.id }}</td>
