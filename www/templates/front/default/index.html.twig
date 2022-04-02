@@ -59,11 +59,11 @@
     <section class="home_section">
         <div class="home_section_header">
             <h2>Last models listed</h2>
-            <a href="{{path('app_sneaker_model_index') }}" class="red-font">See All ></a>
+            <a href="{{path('front_sneaker_model_index') }}" class="red-font">See All ></a>
         </div>
         <div class="sneakers_items">
             {% for sneaker_model in lastModels %}
-                <a href="{{ path('app_sneaker_model_show', {'id': sneaker_model.id}) }}" class="model-item">
+                <a href="{{ path('front_sneaker_model_show', {'id': sneaker_model.id}) }}" class="model-item">
                     <img src=""/>
                     <h3>{{ sneaker_model.name }}</h3>
                 </a>

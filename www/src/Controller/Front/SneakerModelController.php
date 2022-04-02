@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/models')]
 class SneakerModelController extends AbstractController
 {
-    #[Route('/', name: 'app_sneaker_model_index', methods: ['GET'])]
+    #[Route('/', name: 'front_sneaker_model_index', methods: ['GET'])]
     public function index(SneakerModelRepository $sneakerModelRepository): Response
     {
         return $this->render('front/models/index.html.twig', [
@@ -22,7 +22,7 @@ class SneakerModelController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_sneaker_model_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'front_sneaker_model_show', methods: ['GET'])]
     public function show(SneakerModel $sneakerModel): Response
     {
         return $this->render('front/models/show.html.twig', [

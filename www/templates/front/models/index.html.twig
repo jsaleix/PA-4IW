@@ -6,7 +6,7 @@
         <h1>Models listed</h1>
         <div class="models-list">
             {% for sneaker_model in sneaker_models %}
-                <a href="{{ path('app_sneaker_model_show', {'id': sneaker_model.id}) }}" class="model-item">
+                <a href="{{ path('front_sneaker_model_show', {'id': sneaker_model.id}) }}" class="model-item">
                     <img src=""/>
                     <h3>{{ sneaker_model.name }}</h3>
                 </a>
