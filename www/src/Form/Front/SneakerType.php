@@ -4,6 +4,7 @@ namespace App\Form\Front;
 
 use App\Entity\Brand;
 use App\Entity\Sneaker;
+use App\Entity\SneakerModel;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -45,6 +46,13 @@ class SneakerType extends AbstractType
                 'class' => Brand::class,
                 'choice_label' => 'Name',
                 'multiple' => false
+            ])
+
+            ->add('sneaker_model', EntityType::class, [
+                'class' => SneakerModel::class,
+                'choice_label' => 'Name',
+                'multiple' => false,
+                'required' => false,
             ])
 
             ->add('size', NumberType::class, [

@@ -82,7 +82,7 @@ class SneakerService
         }
 
         if( count($sneaker->getImages()) < 3){
-            throw new Exception('Missing image(s) (required: 3, got: '. count($sneaker->getImages()) . ')' );
+            throw new \Exception('Missing image(s) (required: 3, got: '. count($sneaker->getImages()) . ')' );
         }
 
         $this->entityManager->persist($sneaker);
