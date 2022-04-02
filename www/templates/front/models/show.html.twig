@@ -2,32 +2,29 @@
 {% block title %}SNKER - Models {% endblock %}
 
 {% block body %}
-    <h1>SneakerModel</h1>
+    <div class="container model-page">
+        <div class="model-information">
+            <img src="{{  sneaker_model.img }}"/>
+            <h2>{{ sneaker_model.name }}</h2>
+            <p>{{ sneaker_model.description }}</p>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ sneaker_model.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ sneaker_model.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ sneaker_model.description }}</td>
-            </tr>
-            <tr>
-                <th>Img</th>
-                <td>{{ sneaker_model.img }}</td>
-            </tr>
-        </tbody>
-    </table>
+        </div>
 
-    <a href="{{ path('app_sneaker_model_index') }}">back to list</a>
+        <a href="{{ path('app_sneaker_model_index') }}">back to list</a>
+        <hr/>
+        <div class="sneakers-list">
+            {% if sneaker_model.sneakers is not empty %}
+                <h2>Buyable</h2>
+                <div class="sneakers_items">
+                    {% for sneaker in sneaker_model.sneakers %}
+                        {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <h4>No one is selling this model</h4>
+            {% endif %}
 
-    <a href="{{ path('app_sneaker_model_edit', {'id': sneaker_model.id}) }}">edit</a>
+        </div>
+    </div>
 
-    {{ include('front/models/_delete_form.html.twig') }}
 {% endblock %}

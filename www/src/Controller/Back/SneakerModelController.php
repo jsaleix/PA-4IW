@@ -4,7 +4,7 @@ namespace App\Controller\Back;
 
 use App\Controller\EntityManagerInterface;
 use App\Entity\SneakerModel;
-use App\Form\SneakerModelType;
+use App\Form\Back\SneakerModelType;
 use App\Repository\SneakerModelRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

@@ -3,37 +3,39 @@
 
 {% block body %}
     <div class="container">
-        <h1>SneakerModel index</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Img</th>
-                    <th>actions</th>
-                </tr>
-            </thead>
-            <tbody>
+        <h1>Models listed</h1>
+        <div class="models-list">
             {% for sneaker_model in sneaker_models %}
-                <tr>
-                    <td>{{ sneaker_model.id }}</td>
-                    <td>{{ sneaker_model.name }}</td>
-                    <td>{{ sneaker_model.description }}</td>
-                    <td>{{ sneaker_model.img }}</td>
-                    <td>
-                        <a href="{{ path('app_sneaker_model_show', {'id': sneaker_model.id}) }}">show</a>
-                        <a href="{{ path('app_sneaker_model_edit', {'id': sneaker_model.id}) }}">edit</a>
-                    </td>
-                </tr>
+                <a href="{{ path('app_sneaker_model_show', {'id': sneaker_model.id}) }}" class="model-item">
+                    <img src=""/>
+                    <h3>{{ sneaker_model.name }}</h3>
+                </a>
             {% else %}
-                <tr>
+                <div>
                     <td colspan="5">no records found</td>
-                </tr>
+                </div>
             {% endfor %}
-            </tbody>
-        </table>
-
-        <a href="{{ path('app_sneaker_model_new') }}">Create new</a>
+        </div>
     </div>
+
+    <style>
+        .models-list{
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            grid-gap: 28px;
+        }
+
+        .model-item{
+            display: flex;
+            flex-direction: column;
+            border: 1px solid gray;
+            padding: 10px;
+        }
+
+        .models-list a{
+            color: black;
+            text-decoration: none;
+            color: #BA0000;
+        }
+    </style>
 {% endblock %}
