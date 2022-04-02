@@ -1,0 +1,12 @@
+{% extends 'base_back.html.twig' %}
+{% block title %}SNKER - Models {% endblock %}
+
+{% block body %}
+    <h1>Edit SneakerModel</h1>
+
+    {{ include('back/models/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_sneaker_model_index') }}">back to list</a>
+
+    {{ include('back/models/_delete_form.html.twig') }}
+{% endblock %}

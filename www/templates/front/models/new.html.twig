@@ -1,0 +1,10 @@
+{% extends 'base_front.html.twig' %}
+{% block title %}SNKER - Models {% endblock %}
+
+{% block body %}
+    <h1>Create new SneakerModel</h1>
+
+    {{ include('front/models/_form.html.twig') }}
+
+    <a href="{{ path('app_sneaker_model_index') }}">back to list</a>
+{% endblock %}
