@@ -10,7 +10,6 @@
                     <th>Id</th>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>Img</th>
                     <th>actions</th>
                 </tr>
             </thead>
@@ -20,10 +19,9 @@
                     <td>{{ sneaker_model.id }}</td>
                     <td>{{ sneaker_model.name }}</td>
                     <td>{{ sneaker_model.description }}</td>
-                    <td>{{ sneaker_model.img }}</td>
                     <td>
-                        <a href="{{ path('app_sneaker_model_show', {'id': sneaker_model.id}) }}">show</a>
-                        <a href="{{ path('app_sneaker_model_edit', {'id': sneaker_model.id}) }}">edit</a>
+                        <a href="{{ path('back_sneaker_model_show', {'id': sneaker_model.id}) }}">show</a>
+                        <a href="{{ path('back_sneaker_model_edit', {'id': sneaker_model.id}) }}">edit</a>
                     </td>
                 </tr>
             {% else %}
@@ -34,6 +32,6 @@
             </tbody>
         </table>
 
-        <a href="{{ path('app_sneaker_model_new') }}">Create new</a>
+        <a href="{{ path('back_sneaker_model_new') }}">Create new</a>
     </div>
 {% endblock %}

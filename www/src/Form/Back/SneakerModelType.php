@@ -16,7 +16,6 @@ class SneakerModelType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('img')
             ->add('brand', EntityType::class, [
                 'class' => Brand::class,
                 'choice_label' => 'Name',

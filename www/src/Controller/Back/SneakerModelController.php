@@ -2,7 +2,7 @@
 
 namespace App\Controller\Back;
 
-use App\Controller\EntityManagerInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\SneakerModel;
 use App\Form\Back\SneakerModelType;
 use App\Repository\SneakerModelRepository;
@@ -17,7 +17,7 @@ class SneakerModelController extends AbstractController
     #[Route('/', name: 'back_sneaker_model_index', methods: ['GET'])]
     public function index(SneakerModelRepository $sneakerModelRepository): Response
     {
-        return $this->render('sneaker_model/index.html.twig', [
+        return $this->render('back/models/index.html.twig', [
             'sneaker_models' => $sneakerModelRepository->findAll(),
         ]);
     }
@@ -33,10 +33,10 @@ class SneakerModelController extends AbstractController
             $entityManager->persist($sneakerModel);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_sneaker_model_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('back_sneaker_model_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('sneaker_model/new.html.twig', [
+        return $this->renderForm('back/models/new.html.twig', [
             'sneaker_model' => $sneakerModel,
             'form' => $form,
         ]);
@@ -45,7 +45,7 @@ class SneakerModelController extends AbstractController
     #[Route('/{id}', name: 'back_sneaker_model_show', methods: ['GET'])]
     public function show(SneakerModel $sneakerModel): Response
     {
-        return $this->render('sneaker_model/show.html.twig', [
+        return $this->render('back/models/show.html.twig', [
             'sneaker_model' => $sneakerModel,
         ]);
     }
@@ -59,10 +59,10 @@ class SneakerModelController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_sneaker_model_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('back_sneaker_model_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('sneaker_model/edit.html.twig', [
+        return $this->renderForm('back/models/edit.html.twig', [
             'sneaker_model' => $sneakerModel,
             'form' => $form,
         ]);
@@ -76,6 +76,6 @@ class SneakerModelController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_sneaker_model_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('back_sneaker_model_index', [], Response::HTTP_SEE_OTHER);
     }
 }
