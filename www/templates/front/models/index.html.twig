@@ -1,0 +1,41 @@
+{% extends 'base_front.html.twig' %}
+{% block title %}SNKER - Models {% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Models listed</h1>
+        <div class="models-list">
+            {% for sneaker_model in sneaker_models %}
+                <a href="{{ path('front_sneaker_model_show', {'id': sneaker_model.id}) }}" class="model-item">
+                    <img src=""/>
+                    <h3>{{ sneaker_model.name }}</h3>
+                </a>
+            {% else %}
+                <div>
+                    <td colspan="5">no records found</td>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+        .models-list{
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            grid-gap: 28px;
+        }
+
+        .model-item{
+            display: flex;
+            flex-direction: column;
+            border: 1px solid gray;
+            padding: 10px;
+        }
+
+        .models-list a{
+            color: black;
+            text-decoration: none;
+            color: #BA0000;
+        }
+    </style>
+{% endblock %}

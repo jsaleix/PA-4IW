@@ -9,7 +9,7 @@
         {{ include('@front/sneaker/components/sneaker_left_column.html.twig') }}
     </div>
     <div class="right">
-        <span>{{sneaker.publicationDate is empty ? "" : sneaker.publicationDate|date("m/d/Y")}}</span>
+        <span>{{sneaker.publicationDate is empty ? "" : sneaker.publicationDate|date("d/m/Y")}}</span>
         <span>Provided by <a href="{{  path('front_profile', { 'id': sneaker.publisher.id }) }}">{{ sneaker.publisher.name??'Unknown' }} {{ sneaker.publisher.surname }}</a></span>
         {% if(not sold) %}
             <a href="{{ path('marketplace_product_checkout', {'id': sneaker.id }) }}">

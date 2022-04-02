@@ -18,7 +18,7 @@ class AdminMarketPlaceController extends AbstractController
 
         $sneakers = $sneakerRepository->findBy( $params, $filters);
         return $this->render('back/marketplace/index.html.twig', [
-            'sneaker'=>$sneakers
+            'sneakers'=>$sneakers
         ]);
     }
 }

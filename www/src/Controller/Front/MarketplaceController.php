@@ -37,7 +37,9 @@ class MarketplaceController extends AbstractController
 
         $sneakers = $sneakerRepository->findBy( $params, $filter);
         return $this->render('front/marketplace/index.html.twig', [
-            'sneakers' => $sneakers
+            'sneakers' => $sneakers,
+            'orderParam' => $orderParam,
+            'statusParam' => $statusParam
         ]);
     }
 
