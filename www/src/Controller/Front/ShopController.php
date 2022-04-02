@@ -42,7 +42,9 @@ class ShopController extends AbstractController
         $sneakers = $sneakerRepository->findBy( $params, $filter);
 
         return $this->render('front/shop/index.html.twig', [
-            'sneakers' => $sneakers
+            'sneakers' => $sneakers,
+            'orderParam' => $orderParam,
+            'statusParam' => $statusParam
         ]);
     }
 

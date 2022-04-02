@@ -13,17 +13,17 @@
         <div class="filter-item">
             <label>Sort by</label>
             <select name="order" value="all">
-                <option value="all">All</option>
-                <option value="DESC">More recent</option>
-                <option value="ASC">Oldest</option>
+                <option value="all" {% if orderParam == 'all' %} selected="selected"{% endif %}>All</option>
+                <option value="DESC" {% if orderParam == 'DESC' %} selected="selected"{% endif %}>More recent</option>
+                <option value="ASC" {% if orderParam == 'ASC' %} selected="selected"{% endif %}>Oldest</option>
             </select>
         </div>
         <div class="filter-item">
             <label>Status</label>
             <select name="status" value="all">
-                <option value="all">All</option>
-                <option value="buyable">Buyable</option>
-                <option value="sold">Sold</option>
+                <option value="all"  {% if statusParam == 'all' %} selected="selected"{% endif %}>All</option>
+                <option value="buyable"  {% if statusParam == 'buyable' %} selected="selected"{% endif %}>Buyable</option>
+                <option value="sold"  {% if statusParam == 'sold' %} selected="selected"{% endif %}>Sold</option>
             </select>
         </div>
         <input type="submit" value="Apply">
@@ -38,7 +38,6 @@
 </div>
 
 <style>
-
     .filters{
         display: flex;
         align-items: flex-end;
@@ -58,5 +57,10 @@
         margin-right: 20px;
     }
 </style>
+
+<script>
+    let selector = document.forms[0];
+    selector.addEventListener('change', () => selector.submit());
+</script>
 
 {% endblock %}

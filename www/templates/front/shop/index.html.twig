@@ -4,60 +4,64 @@
 
 {% block body %}
 
-<div class="shop container">
-    <div class="header">
-        <h1>Our shop</h1>
-        <p>lorem ipsum</p>
-    </div>
-    <form class="filters" name="filter-form">
-        <div class="filter-item">
-            <label>Sort by</label>
-            <select name="order" value="all">
-                <option value="all">All</option>
-                <option value="DESC">More recent</option>
-                <option value="ASC">Oldest</option>
-            </select>
+    <div class="shop container">
+        <div class="header">
+            <h1>Our shop</h1>
+            <p>lorem ipsum</p>
         </div>
-        <div class="filter-item">
-            <label>Status</label>
-            <select name="status" value="all">
-                <option value="all">All</option>
-                <option value="buyable">Buyable</option>
-                <option value="sold">Sold</option>
-            </select>
+        <form class="filters" name="filter-form">
+            <div class="filter-item">
+                <label>Sort by</label>
+                <select name="order" value="all">
+                    <option value="all" {% if orderParam == 'all' %} selected="selected"{% endif %}>All</option>
+                    <option value="DESC" {% if orderParam == 'DESC' %} selected="selected"{% endif %}>More recent</option>
+                    <option value="ASC" {% if orderParam == 'ASC' %} selected="selected"{% endif %}>Oldest</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label>Status</label>
+                <select name="status" value="all">
+                    <option value="all"  {% if statusParam == 'all' %} selected="selected"{% endif %}>All</option>
+                    <option value="buyable"  {% if statusParam == 'buyable' %} selected="selected"{% endif %}>Buyable</option>
+                    <option value="sold"  {% if statusParam == 'sold' %} selected="selected"{% endif %}>Sold</option>
+                </select>
+            </div>
+            <input type="submit" value="Apply">
+        </form>
+        <div class="sneakers_items">
+            {% for sneaker in sneakers %}
+                {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
+            {% else %}
+                <p>No sneakers found </p>
+            {% endfor %}
         </div>
-        <input type="submit" value="Apply">
-    </form>
-    <div class="sneakers_items">
-        {% for sneaker in sneakers %}
-            {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
-        {% else %}
-            <p>No sneakers found </p>
-        {% endfor %}
     </div>
-</div>
 
-<style>
+    <style>
 
-    .filters{
-        display: flex;
-        align-items: flex-end;
-        border: 1px solid gray;
-        padding: 30px 20px;
-    }
+        .filters{
+            display: flex;
+            align-items: flex-end;
+            border: 1px solid gray;
+            padding: 30px 20px;
+        }
 
-    .filters input[type=submit]{
-        height: fit-content;
-        width: fit-content;
-    }
+        .filters input[type=submit]{
+            height: fit-content;
+            width: fit-content;
+        }
 
-    .filters .filter-item{
-        display: flex;
-        flex-direction: column;
-        width: fit-content;
-        margin-right: 20px;
-    }
+        .filters .filter-item{
+            display: flex;
+            flex-direction: column;
+            width: fit-content;
+            margin-right: 20px;
+        }
 
-</style>
+    </style>
 
+    <script>
+        let selector = document.forms[0];
+        selector.addEventListener('change', () => selector.submit());
+    </script>
 {% endblock %}
