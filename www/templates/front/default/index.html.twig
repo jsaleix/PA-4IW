@@ -44,7 +44,7 @@
 
     <section class="home_section">
         <div class="home_section_header">
-            <h2>Popular models from the MarketPlace</h2>
+            <h2>Popular Sneakers from the MarketPlace</h2>
             <a href="{{path('front_marketplace_index') }}" class="red-font">See All ></a>
         </div>
         <div class="sneakers_items">
@@ -52,6 +52,23 @@
                 {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
             {% else %}
                 <p>No sneakers found </p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="home_section">
+        <div class="home_section_header">
+            <h2>Last models listed</h2>
+            <a href="{{path('app_sneaker_model_index') }}" class="red-font">See All ></a>
+        </div>
+        <div class="sneakers_items">
+            {% for sneaker_model in lastModels %}
+                <a href="{{ path('app_sneaker_model_show', {'id': sneaker_model.id}) }}" class="model-item">
+                    <img src=""/>
+                    <h3>{{ sneaker_model.name }}</h3>
+                </a>
+            {% else %}
+                <p>No model found </p>
             {% endfor %}
         </div>
     </section>
@@ -122,6 +139,21 @@
         font-size: 20px;
     }
 
+    .model-item{
+        display: flex;
+        flex-direction: column;
+        border: 1px solid gray;
+        padding: 10px;
+        width: calc(100%/5);
+        margin-right: 5px;
+        border-radius: 5px;
+    }
+
+    .models-list a{
+        color: black;
+        text-decoration: none;
+        color: #BA0000;
+    }
 
 
 </style>

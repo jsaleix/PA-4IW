@@ -2,6 +2,7 @@
 
 namespace App\Controller\Front;
 
+use App\Repository\SneakerModelRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,7 +14,11 @@ use App\Repository\SneakerRepository;
 class DefaultController extends AbstractController
 {
     #[Route('/', name: 'default')]
-    public function index(CategoryRepository $categoryRepository, BrandRepository $brandRepository, SneakerRepository $sneakerRepository): Response
+    public function index(CategoryRepository $categoryRepository,
+                          BrandRepository $brandRepository,
+                          SneakerRepository $sneakerRepository,
+                          SneakerModelRepository $sneakerModelRepository
+    ): Response
     {        
         
         return $this->render('front/default/index.html.twig', [
@@ -21,6 +26,7 @@ class DefaultController extends AbstractController
             'brands' => $brandRepository->findBy(array(), array(), 4, 0),
             'popularSneakersFromShop' => $sneakerRepository->findBy(['from_shop' => true, 'sold' => null ], ['id' => 'DESC'], 4, 0),
             'popularSneakersFromMP' => $sneakerRepository->findBy(['from_shop' => false, 'sold' => null], ['id' => 'DESC'], 4, 0),
+            'lastModels' => $sneakerModelRepository->findBy([], ['id' => 'DESC'], 4, 0)
         ]);
     }
 }
