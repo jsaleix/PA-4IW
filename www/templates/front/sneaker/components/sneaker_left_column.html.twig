@@ -16,5 +16,12 @@
         <img id="main-picture" src="{{ vich_uploader_asset(sneaker.getImages()[0]) }}" alt="{{ sneaker. name }}" />
     {% endif %}
 </div>
-<h3>Description</h3>
-{{ sneaker.description }}
+<hr/>
+<div>
+    <h3>Description</h3>
+    <p>{{ sneaker.description }}</p>
+    <hr/>
+    {% if sneaker.sneakerModel is not null %}
+        <h3>Model: <a href="{{ path('front_sneaker_model_show', {'id': sneaker.sneakerModel.id }) }}">{{ sneaker.sneakerModel.name }}</a></h3>
+    {% endif %}
+</div>
