@@ -3,7 +3,7 @@
 namespace App\Controller\Back;
 
 use App\Entity\Sneaker;
-use App\Form\Front\SneakerType;
+use App\Form\Back\SneakerType;
 use App\Repository\InvoiceRepository;
 use App\Repository\SneakerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
