@@ -19,21 +19,77 @@ class PaymentService
         private EntityManagerInterface $entityManager
     ) {}
 
+    /*
+     * <--- Payment intents functions
+     */
     public function generatePaymentIntent(Sneaker $sneaker, User $buyer)
     {
+        if($sneaker->getSold()){
+            return false;
+        }
 
+        if(!$sneaker->getFromShop()){
+            return $this->generateMPIntent($sneaker, $buyer);
+        }else{
+            return $this->generateShopIntent($sneaker, $buyer);
+        }
+
+    }
+
+    public function generateMPIntent(Sneaker $sneaker, User $buyer){
         $invoice = $this->invoiceRepository->findOneBy(['sneaker' => $sneaker->getId()]);
         /*
-         * Checking if there is an invoice already created with either
+         * Checking if there is already an invoice created with either
          * a successful status meaning it's already sold
          * or a buyer already affected, meaning someone might already be buying the product
          */
-        if( $invoice && $invoice->getBuyer()
+        if( $invoice
             && ($invoice->getPaymentStatus() === 'success' || $invoice->getBuyer() !== $buyer)
         ){
             return false;
         }
 
+        $session = $this->generateStripeSession($sneaker);
+        $invoice = $this->invoiceRepository->findOneBy(['sneaker' => $sneaker->getId()]);
+
+        if( !$invoice ){
+            $invoice = new Invoice();
+            $invoice->setSneaker($sneaker);
+        }
+
+        $invoice->setReceptionAddress($buyer->getAddress() . ' ' . $buyer->getCity());
+        $invoice->setPaymentStatus(Invoice::PENDING_STATUS);
+        $invoice->setBuyer($buyer);
+        $invoice->setDate(new \DateTime());
+        $invoice->setStripePI($session->payment_intent);
+        //$invoice->setPrice($sneaker->getPrice());
+
+        $this->entityManager->persist($invoice);
+        $this->entityManager->flush();
+
+        return $session->url;
+    }
+
+    public function generateShopIntent(Sneaker $sneaker, User $buyer){
+
+        $session = $this->generateStripeSession($sneaker);
+        $invoice = new Invoice();
+        $invoice->setSneaker($sneaker);
+
+        $invoice->setReceptionAddress($buyer->getAddress() . ' ' . $buyer->getCity());
+        $invoice->setPaymentStatus(Invoice::PENDING_STATUS);
+        $invoice->setBuyer($buyer);
+        $invoice->setDate(new \DateTime());
+        $invoice->setStripePI($session->payment_intent);
+        //$invoice->setPrice($sneaker->getPrice());
+
+        $this->entityManager->persist($invoice);
+        $this->entityManager->flush();
+
+        return $session->url;
+    }
+
+    public function generateStripeSession(Sneaker $sneaker){
         $stripe = new StripeClient($_ENV['STRIPE_SK']);
         $expires_at = ((new \DateTime())->modify('+1 hour'))->getTimeStamp();
 
@@ -56,23 +112,11 @@ class PaymentService
             'mode' => 'payment',
         ]);
 
-        if( !$invoice ){
-            $invoice = new Invoice();
-            $invoice->setSneaker($sneaker);
-        };
-
-        $invoice->setReceptionAddress($buyer->getAddress() . ' ' . $buyer->getCity());
-        $invoice->setPaymentStatus(Invoice::PENDING_STATUS);
-        $invoice->setBuyer($buyer);
-        $invoice->setDate(new \DateTime());
-        $invoice->setStripePI($session->payment_intent);
-        //$invoice->setPrice($sneaker->getPrice());
-
-        $this->entityManager->persist($invoice);
-        $this->entityManager->flush();
-
-        return $session->url;
+        return $session;
     }
+    /*
+     * ---->
+     */
 
     public function confirmPayment(Invoice $invoice){
         $sneaker = $invoice->getSneaker();

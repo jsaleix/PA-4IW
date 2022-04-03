@@ -11,7 +11,7 @@
     <div class="right">
         <span>{{sneaker.publicationDate is empty ? "" : sneaker.publicationDate|date("d/m/Y")}}</span>
         <span>Provided by <a href="{{  path('front_profile', { 'id': sneaker.publisher.id }) }}">{{ sneaker.publisher.name??'Unknown' }} {{ sneaker.publisher.surname }}</a></span>
-        {% if(not sold) %}
+        {% if(not sneaker.sold ) %}
             <a href="{{ path('marketplace_product_checkout', {'id': sneaker.id }) }}">
                 <button>${{ sneaker.price }} - BUY NOW</button>
             </a>

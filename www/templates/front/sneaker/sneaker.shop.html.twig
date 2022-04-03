@@ -11,7 +11,7 @@
     <div class="right">
         <span><b>{{ sneaker.stock??'Unknown quantity' }}</b> left in stock</span>
         <span>{{sneaker.publicationDate is empty ? "" : sneaker.publicationDate|date("m/d/Y")}}</span>
-        {% if(not sold) %}
+        {% if(not sneaker.sold ) %}
             <a href="{{ path('shop_product_checkout', {'id': sneaker.id })}}">
                 <button>${{ sneaker.price }} - BUY ON OUR SHOP</button>
             </a>
