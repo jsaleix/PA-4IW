@@ -31,7 +31,7 @@ class MarketplaceController extends AbstractController
             $filter['id'] = $orderParam;
         }
 
-        if( $statusParam && in_array($statusParam, ['', 'buyable']) ){
+        if( $statusParam && in_array($statusParam, ['sold', 'buyable']) ){
             $params['sold'] = $statusParam === 'sold' ? true : null;
         }
 
