@@ -47,7 +47,7 @@ class Sneaker
     private $description;
 
     /**
-     * @ORM\Column(type="time")
+     * @ORM\Column(type="date")
      */
     private $publicationDate;
 
