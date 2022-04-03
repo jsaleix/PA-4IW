@@ -28,7 +28,8 @@ class OrderController extends AbstractController
             $status = $statusParam;
         }
 
-        $invoices = $invoiceRepository->findInvoicesFromSneakerType($status);
+        $invoices = $invoiceRepository->findInvoicesByStatus($status);
+
         return $this->render('back/orders/index.html.twig', [
             'invoices' => $invoices,
             'statusList' => $statusList
