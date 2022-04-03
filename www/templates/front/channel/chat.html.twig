@@ -11,6 +11,7 @@
                 You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
             </div>
         {% endif %}
+
         <h1>Channel {{ channel.name }}</h1>
         <div class="container" style="height: 600px">
             <div class="container bg-light h-75 overflow-auto">
@@ -72,5 +73,6 @@
         })
     }
     {% endblock %}
+    const hubUrl = response.headers.get('Link').match(/<([^>]+)>;\s+rel=(?:mercure|"[^"]*mercure[^"]*")/)[1]; // Cf documentation Symfony - Mercure
 </script>
 
