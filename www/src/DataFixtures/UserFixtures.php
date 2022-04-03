@@ -26,7 +26,7 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $admin = (new User())
-            ->setEmail('admin@admin')
+            ->setEmail('admin@admin.fr')
             //->setIsVerified(true)
             ->setRoles(['ROLE_ADMIN'])
         ;
@@ -35,7 +35,7 @@ class UserFixtures extends Fixture
         $this->setReference(self::USER_ADMIN, $admin);
 
         $user = (new User())
-            ->setEmail('user@user')
+            ->setEmail('user@user.fr')
             //->setIsVerified(true)
             ->setRoles(['ROLE_USER'])
         ;
@@ -51,7 +51,7 @@ class UserFixtures extends Fixture
         $stripeAccount = $stripeAccount->id;
 
         $seller = (new User())
-            ->setEmail('seller@seller')
+            ->setEmail('seller@seller.fr')
             //->setIsVerified(true)
             ->setRoles(['ROLE_USER'])
             ->setStripeConnectId($stripeAccount)
