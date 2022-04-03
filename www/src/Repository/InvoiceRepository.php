@@ -59,6 +59,15 @@ class InvoiceRepository extends ServiceEntityRepository
                ;
     }
 
+    public function findInvoicesByStatus(string $status): ?Array
+    {
+        $entityManager = $this->getEntityManager();
+        return $entityManager->createQuery('SELECT invoice FROM App\Entity\Invoice invoice, App\Entity\Sneaker sneaker WHERE invoice.sneaker = sneaker.id AND invoice.paymentStatus = :status')
+            ->setParameter('status', $status)
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_OBJECT)
+            ;
+    }
+
     public function findInvoicesFromSneakerType(string $status, bool $isFromShop = true): ?Array
     {
         $entityManager = $this->getEntityManager();

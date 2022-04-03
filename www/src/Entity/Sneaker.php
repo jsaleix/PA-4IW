@@ -123,6 +123,11 @@ class Sneaker
      */
     private $sold;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $stock;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
@@ -470,6 +475,18 @@ class Sneaker
     public function setSold(?bool $sold): self
     {
         $this->sold = $sold;
+
+        return $this;
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(?int $stock): self
+    {
+        $this->stock = $stock;
 
         return $this;
     }

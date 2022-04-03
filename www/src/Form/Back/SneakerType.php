@@ -48,6 +48,14 @@ class SneakerType extends AbstractType
                 'multiple' => false
             ])
 
+            ->add('stock', NumberType::class, [
+                'attr' => [
+                    'placeholder' => "Stock",
+                    "required" => true,
+                    "default" => 1
+                ],
+            ])
+
             ->add('sneaker_model', EntityType::class, [
                 'class' => SneakerModel::class,
                 'choice_label' => 'Name',
