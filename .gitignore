@@ -25,4 +25,4 @@ www/.phpunit.result.cache
 **/.DS_Store
 ###< IDE/OS ###
 docker-compose.yml
-db_data
+db-data
