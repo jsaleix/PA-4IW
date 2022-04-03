@@ -66,6 +66,7 @@ class PaymentService
         $invoice->setBuyer($buyer);
         $invoice->setDate(new \DateTime());
         $invoice->setStripePI($session->payment_intent);
+        //$invoice->setPrice($sneaker->getPrice());
 
         $this->entityManager->persist($invoice);
         $this->entityManager->flush();
@@ -89,13 +90,18 @@ class PaymentService
 
     public function confirmPaymentShop(Invoice $invoice, Sneaker $sneaker){
         try{
+            $currStock = $sneaker->getStock() - 1 ;
+            $sneaker->setStock($currStock);
+
             //Checking sneaker stock and if stock arrives to 0, set Sold to true
-            /*$sneaker->setSold(true);
-            $this->entityManager->persist($sneaker);
-            $this->entityManager->flush();*/
+            if($currStock === 0){
+                $sneaker->setSold(true);
+                //$this->entityManager->persist($sneaker);
+                $this->entityManager->flush();
+            }
 
             $invoice->setPaymentStatus(Invoice::SOLD_STATUS);
-            $this->entityManager->persist($invoice);
+            //$this->entityManager->persist($invoice);
             $this->entityManager->flush();
             return true;
         }catch(\Exception $e){
