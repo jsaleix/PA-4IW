@@ -12,7 +12,7 @@ class ColorFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $finder = new Finder();
-        $finder->files()->in(__DIR__)->name('colors.json');
+        $finder->files()->in(__DIR__)->name('files/colors.json');
 
         if (!$finder->hasResults()) {
             return;
