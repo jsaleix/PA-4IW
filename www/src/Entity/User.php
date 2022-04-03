@@ -120,6 +120,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $productReports;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerified = false;
+
     /*public function __construct()
     {
         $this->invoices = new ArrayCollection();
@@ -510,6 +515,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $productReport->setReporter(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }
