@@ -13,5 +13,11 @@ Use the following command in the php container
 ```bash
 php bin/console doctrine:fixtures:load
 ```
+### Listen Stripe events locally
+Use the following command in your shell
+
+```bash
+stripe listen --forward-to localhost/webhook/stripe
+```
 
 
