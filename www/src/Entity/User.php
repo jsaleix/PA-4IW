@@ -120,16 +120,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $productReports;
 
-    /*public function __construct()
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerified;
+
+    public function __construct()
     {
-        $this->invoices = new ArrayCollection();
-        $this->publishedSneakers = new ArrayCollection();
-        $this->userReports = new ArrayCollection();
-        $this->userReportsMade = new ArrayCollection();
-        $this->conversations = new ArrayCollection();
-        $this->favoris = new ArrayCollection();
-        $this->productReports = new ArrayCollection();
-    }*/
+        $this->roles = array('ROLE_USER');
+        $this->isVerified = false;
+    }
 
     public function getId(): ?int
     {
@@ -510,6 +510,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $productReport->setReporter(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }
