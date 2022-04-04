@@ -123,18 +123,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isVerified = false;
+    private $isVerified;
 
-    /*public function __construct()
+    public function __construct()
     {
-        $this->invoices = new ArrayCollection();
-        $this->publishedSneakers = new ArrayCollection();
-        $this->userReports = new ArrayCollection();
-        $this->userReportsMade = new ArrayCollection();
-        $this->conversations = new ArrayCollection();
-        $this->favoris = new ArrayCollection();
-        $this->productReports = new ArrayCollection();
-    }*/
+        $this->roles = array('ROLE_USER');
+        $this->isVerified = false;
+    }
 
     public function getId(): ?int
     {
