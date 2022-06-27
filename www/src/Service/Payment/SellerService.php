@@ -49,19 +49,23 @@ class SellerService
 
     public function checkSellerCapabilities(User $user)
     {
-        $this->logger->info('CheckSellerCapabilities');
-        $stripe = new StripeClient($_ENV['STRIPE_SK']);
-        $account = $stripe->accounts->retrieve( $user->getStripeConnectId() ,[]);
-        if(!$account) return false;
+        try{
+            $this->logger->info('CheckSellerCapabilities');
+            $stripe = new StripeClient($_ENV['STRIPE_SK']);
+            $account = $stripe->accounts->retrieve( $user->getStripeConnectId(), []);
+            if(!$account) throw new \Exception('No Stripe account found');
 
-        $capabilities = $account->capabilities;
-        if($capabilities->transfers === 'inactive'){
+            $capabilities = $account->capabilities;
+            if($capabilities->transfers === 'inactive'){
+                throw new \Exception('Capabilities inactive');
+            }else if ($capabilities->transfers === 'active'){
+                return true;
+            }
+
+        }catch(\Exception $exception){
+            $this->logger->info($exception);
             return false;
-        }else if ($capabilities->transfers === 'active'){
-            return true;
         }
-
-        return false;
     }
 
 }
