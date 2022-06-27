@@ -62,7 +62,7 @@ class PaymentService
         $invoice->setBuyer($buyer);
         $invoice->setDate(new \DateTime());
         $invoice->setStripePI($session->payment_intent);
-        //$invoice->setPrice($sneaker->getPrice());
+        $invoice->setPrice($sneaker->getPrice());
 
         $this->entityManager->persist($invoice);
         $this->entityManager->flush();
@@ -81,7 +81,7 @@ class PaymentService
         $invoice->setBuyer($buyer);
         $invoice->setDate(new \DateTime());
         $invoice->setStripePI($session->payment_intent);
-        //$invoice->setPrice($sneaker->getPrice());
+        $invoice->setPrice($sneaker->getPrice());
 
         $this->entityManager->persist($invoice);
         $this->entityManager->flush();
@@ -170,7 +170,7 @@ class PaymentService
             $sneaker = $invoice->getSneaker();
             $seller = $sneaker->getPublisher();
             if( !$seller->getStripeConnectId() ) throw new \Exception('No stripe connect id set');
-            $feesAmount = $sneaker->getPrice()*$FEES;
+            $feesAmount = $invoice->getPrice()*$FEES;
 
             $stripe = new StripeClient($_ENV['STRIPE_SK']);
             $stripe->transfers->create([
