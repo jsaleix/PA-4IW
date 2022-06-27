@@ -174,7 +174,7 @@ class PaymentService
 
             $stripe = new StripeClient($_ENV['STRIPE_SK']);
             $stripe->transfers->create([
-                'amount' => ($sneaker->getPrice() - $feesAmount)*100,
+                'amount' => ($invoice->getPrice() - $feesAmount)*100,
                 'currency' => 'eur',
                 'destination' => $seller->getStripeConnectId(),
                 'description' => 'Your sale on SNKERS - '.$sneaker->getName(),
