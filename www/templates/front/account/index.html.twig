@@ -10,11 +10,11 @@
     <div class='account_items'>
         <a href="{{ path('front_account_profile') }}" class='account_item'>
             <h3>Edit your profile</h3>
-            <p>lorem</p>
+            <p>Edit your profile information and password here.</p>
         </a>
         <a href="{{ path('front_account_orders') }}" class='account_item'>
             <h3>Your orders</h3>
-                <p>lorem</p>
+            <p>List your orders</p>
         </a>
         {% if(is_granted('ROLE_SELLER')) %}
             {% if not transfersCapabilities %}
@@ -26,12 +26,12 @@
             
                 <a href="{{ path('front_account_seller_orders') }}" class='account_item'>
                     <h3>Your sellings</h3>
-                    <p>lorem</p>
+                    <p>Here are listed every sneakers you have sold and provided parcel id for your clients.</p>
                 </a>
 
                 <a href="{{ path('front_account_seller_products') }}" class='account_item'>
                     <h3>Your products</h3>
-                    <p>lorem</p>
+                    <p>Here are listed all the sneakers you're currently selling or you've sold.</p>
                 </a>
 
                 <a href="{{ path('front_account_sneaker_add') }}" class='account_item'>
@@ -41,13 +41,13 @@
 
                 <a href="{{ path('front_account_manage_stripe') }}" class='account_item'>
                     <h3>Manage your Stripe account</h3>
-                    <p>lorem</p>
+                    <p>Your Stripe panel in which you can see and manage all your payments from SNKERS</p>
                 </a>
             {% endif %}
         {% else %}
             <a href="{{ path('front_account_become_seller') }}" class='account_item'>
                 <h3>Become seller</h3>
-                <p>lorem</p>
+                <p>Want to be part of the Marketplace and start selling your own sneaker? Become a seller here!</p>
             </a>
         {% endif %}
 
@@ -58,7 +58,7 @@
 
         <a href="" class='account_item'>
             <h3>Help</h3>
-            <p>lorem</p>
+            <p>Any question or issue your encountering? Click here.</p>
         </a>
     </div>
 </div>
