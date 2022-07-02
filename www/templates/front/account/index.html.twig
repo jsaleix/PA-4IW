@@ -17,26 +17,33 @@
                 <p>lorem</p>
         </a>
         {% if(is_granted('ROLE_SELLER')) %}
-            <a href="{{ path('front_account_seller_orders') }}" class='account_item'>
-                <h3>Your sellings</h3>
-                <p>lorem</p>
-            </a>
+            {% if not transfersCapabilities %}
+                <a href="{{ path('front_account_manage_stripe') }}" class='account_item'>
+                    <h3>Manage your Stripe account</h3>
+                    <p>Your Stripe transfers capabilities are disabled, please fix this on your <strong>Stripe Dashboard </strong></p>
+                </a>
+            {% else %}
+            
+                <a href="{{ path('front_account_seller_orders') }}" class='account_item'>
+                    <h3>Your sellings</h3>
+                    <p>lorem</p>
+                </a>
 
-            <a href="{{ path('front_account_seller_products') }}" class='account_item'>
-                <h3>Your products</h3>
-                <p>lorem</p>
-            </a>
+                <a href="{{ path('front_account_seller_products') }}" class='account_item'>
+                    <h3>Your products</h3>
+                    <p>lorem</p>
+                </a>
 
-            <a href="{{ path('front_account_sneaker_add') }}" class='account_item'>
-                <h3>Publish</h3>
-                <p>Publish and sell your own sneakers</p>
-            </a>
+                <a href="{{ path('front_account_sneaker_add') }}" class='account_item'>
+                    <h3>Publish</h3>
+                    <p>Publish and sell your own sneakers</p>
+                </a>
 
-            <a href="{{ path('front_account_manage_stripe') }}" class='account_item'>
-                <h3>Manage your Stripe account</h3>
-                <p>lorem</p>
-            </a>
-
+                <a href="{{ path('front_account_manage_stripe') }}" class='account_item'>
+                    <h3>Manage your Stripe account</h3>
+                    <p>lorem</p>
+                </a>
+            {% endif %}
         {% else %}
             <a href="{{ path('front_account_become_seller') }}" class='account_item'>
                 <h3>Become seller</h3>

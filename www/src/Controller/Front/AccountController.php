@@ -16,14 +16,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\Payment\SellerService;
 
 #[Route('/account')]
 class AccountController extends AbstractController
 {
     #[Route('/', name: 'account_index', methods: ['GET'])]
-    public function index(): Response
+    public function index(SellerService $sellerService): Response
     {
-        return $this->render('front/account/index.html.twig', []);
+        $user = $this->getUser();
+        $transfersCapabilities = false;
+        if(in_array('ROLE_SELLER', $user->getRoles())){
+            $transfersCapabilities = $sellerService->checkSellerCapabilities($user);
+        }
+        return $this->render('front/account/index.html.twig', [
+            'transfersCapabilities' => $transfersCapabilities
+        ]);
     }
 
     #[Route('/profile', name: 'account_profile', methods: ['GET', 'POST'])]
@@ -181,13 +189,18 @@ class AccountController extends AbstractController
             
             header('Location:' . $link->url); 
         }else{
-            $newRoles = $user->getRoles();
-            $newRoles[] = 'ROLE_SELLER';
-
-            $user->setRoles($newRoles);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+            //if($status->capabilities->transfers === 'active'){
+                $newRoles = $user->getRoles();
+                $newRoles[] = 'ROLE_SELLER';
+    
+                $user->setRoles($newRoles);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+            /*}else{
+                $this->addFlash('warning', "Your transfers capabilities are disabled, please manage your Stripe account");
+            }*/
+            
             //return $this->redirectToRoute('front_index', [], Response::HTTP_SEE_OTHER);
         }
 

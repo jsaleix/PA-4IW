@@ -21,13 +21,23 @@
 
     {{ include('@front/components/header.html.twig') }}
 
+    {% if app.user and is_granted('ROLE_SELLER') %}
+        {%  if capabilitiesEnabled(app.user)  %}
+            <p>Enabled</p>
+        {% else %}
+            <div class="alert alert-danger container">Your Stripe transfers capabilities are disabled, please fix this on your <a style="text-decoration: underline"  href="{{ path('front_account_manage_stripe') }}">Stripe Dashboard</a></div>
+        {% endif %}
+    {% endif %}
+
     {% for type, messages in app.flashes() %}
         {% for message in messages %}
             <div class="alert alert-{{ type }} container">{{ message  }}</div>
         {% endfor %}
     {% endfor %}
 
-    {% block body %}{% endblock %}
+    {% block body %}
+
+    {% endblock %}
 
     {{ include('@front/components/footer.html.twig') }}
 

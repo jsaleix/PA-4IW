@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\Payment\SellerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Webhook;
 use App\Entity\User;
@@ -26,18 +27,16 @@ class WebhookController extends AbstractController
         UserRepository $userRepository,
         InvoiceRepository $invoiceRepository,
         EntityManagerInterface $entityManager,
-        PaymentService $paymentService
+        PaymentService $paymentService,
+        SellerService $sellerService,
+        LoggerInterface $logger
     ): Response
     {
-        $stripe= new StripeClient($_ENV['STRIPE_SK']);
-        $webhookSecret = $_ENV['STRIPE_WH_SK'];
-
-        $event = $request->query;
-        $signature = $request->headers->get('stripe-signature');
-
-        $entityManager = $this->getDoctrine()->getManager();
-
         try{
+            //$stripe= new StripeClient($_ENV['STRIPE_SK']);
+            $webhookSecret = $_ENV['STRIPE_WH_SK'];
+            $signature = $request->headers->get('stripe-signature');
+
             if( !$webhookSecret) { throw new \Exception('Missing secret'); }
             $event = \Stripe\Webhook::constructEvent(
                 $request->getcontent(),
@@ -48,21 +47,27 @@ class WebhookController extends AbstractController
             $type   = $event['type'];
             $object = $event['data']['object'];
 
-            $invoice = $invoiceRepository->findOneBy(['stripePI' => $object['id']]);
-            if(!$invoice) throw new \Exception('No invoice linked');
-
             switch ($type) {
                 case 'payment_intent.succeeded':
-                    //create bill
+                    //Retrieving invoice
+                    $invoice = $invoiceRepository->findOneBy(['stripePI' => $object['id']]);
+                    if(!$invoice) throw new \Exception('No invoice linked');
+                    //creates bill
                     $paymentService->confirmPayment($invoice);
                     break;
 
                 // case 'checkout.session.completed':
                 case 'checkout.session.expired':
                 case 'payment_intent.canceled':
+                    //Retrieving invoice
+                    $invoice = $invoiceRepository->findOneBy(['stripePI' => $object['id']]);
+                    if(!$invoice) throw new \Exception('No invoice linked');
                     $paymentService->removeInvoice($invoice);
                     break;
 
+                case 'account.updated';
+                    $sellerService->updateSellerCapabilities($event);
+                    break;
                 default:
                     throw new \Exception('Unhandled event');
             }
@@ -74,6 +79,7 @@ class WebhookController extends AbstractController
             //return new JsonResponse([['status' => 200], 403, [], true]);
 
         } catch (\Exception $e) {
+            $logger->error($e);
             $response = new Response();
             $response->setStatusCode(Response::HTTP_FORBIDDEN);
             return $response;
