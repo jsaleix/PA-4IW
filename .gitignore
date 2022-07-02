@@ -1,5 +1,6 @@
 
 ###> symfony/framework-bundle ###
+www/.env
 www/.env.local
 www/.env.local.php
 www/.env.*.local
