@@ -56,7 +56,6 @@ class WebhookController extends AbstractController
                     $paymentService->confirmPayment($invoice);
                     break;
 
-                // case 'checkout.session.completed':
                 case 'checkout.session.expired':
                 case 'payment_intent.canceled':
                     //Retrieving invoice
