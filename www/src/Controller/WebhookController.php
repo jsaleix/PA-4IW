@@ -65,9 +65,11 @@ class WebhookController extends AbstractController
                     $paymentService->removeInvoice($invoice);
                     break;
 
-                case 'account.updated';
+                case 'account.updated':
+                case 'capability.updated':
                     $sellerService->updateSellerCapabilities($event);
                     break;
+                
                 default:
                     throw new \Exception('Unhandled event');
             }

@@ -22,6 +22,10 @@ class SellerService
         private LoggerInterface $logger
     ) {}
 
+    public function promoteToSeller(User $user){
+
+    }
+    
     public function updateSellerCapabilities($event){
         $this->logger->info('updateSellerCapabilities');
 
@@ -36,12 +40,13 @@ class SellerService
                 $newRoles = array_filter($user->getRoles(), static function ($el){
                     return $el !== 'ROLE_SELLER';
                 });
-                $this->logger($newRoles);
-                //$user->setRoles($newRoles);
+                $user->setRoles($newRoles);
             }
         }else if($capabilities === 'active') { //Adding seller role if user is not yet granted of ROLE_SELLER
             if( !in_array('ROLE_SELLER', $user->getRoles()) ){
-                $user->setRoles('ROLE_SELLER');
+                $newRoles = $user->getRoles();
+                $newRoles[] = 'ROLE_SELLER';
+                $user->setRoles($newRoles);
             }
         }
         $this->entityManager->flush();

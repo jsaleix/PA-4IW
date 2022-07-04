@@ -160,51 +160,34 @@ class AccountController extends AbstractController
         }
 
         $stripe = new StripeClient($_ENV['STRIPE_SK']);
+        $account = null;
+
         if($user->getStripeConnectId()){
             $account = $user->getStripeConnectId();
         }else{
             $account = $stripe->accounts->create([
                 'type' => 'express'
             ]);
-
-            if($account){
-                $account = $account->id;
-                $user->setStripeConnectId($account);
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($user);
-                $entityManager->flush();
-            }
+            $account = $account->id;
+            $user->setStripeConnectId($account);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
         }
 
         //Checking if stripe registration is over else redirect to form
-        $status = $stripe->accounts->retrieve($account);
-        //dd($status);
-        if(/*!$status->charges_enabled*/ !$status->details_submitted){
-            $link = $stripe->accountLinks->create([
-                'account' => $account,
-                'refresh_url' => 'http://localhost/account/become_seller',
-                'return_url' => 'http://localhost/account/become_seller',
-                'type' => 'account_onboarding',
-            ]);
-            
-            header('Location:' . $link->url); 
-        }else{
-            //if($status->capabilities->transfers === 'active'){
-                $newRoles = $user->getRoles();
-                $newRoles[] = 'ROLE_SELLER';
-    
-                $user->setRoles($newRoles);
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($user);
-                $entityManager->flush();
-            /*}else{
-                $this->addFlash('warning', "Your transfers capabilities are disabled, please manage your Stripe account");
-            }*/
-            
-            //return $this->redirectToRoute('front_index', [], Response::HTTP_SEE_OTHER);
-        }
+        $localhost = $request->getHttpHost();
+        $protocol = $request->getScheme();
+        $url = "$protocol://$localhost";
 
+        $link = $stripe->accountLinks->create([
+            'account' => $account,
+            'refresh_url' => "$url/account/become_seller",
+            'return_url' => "$url/account",
+            'type' => 'account_onboarding',
+        ]);
         
+        header('Location:' . $link->url);
         return $this->render('front/account/becomeSeller/index.html.twig', []);
     }
 
