@@ -1,38 +1,43 @@
 <nav id="navigation">
-    <a class="logo_container" href="{{path('front_default') }}">
-        <img id="logo" src="{{asset('images/logo.png')}}" alt="SNKERS logo"/>
-    </a>
-    <ul class="tabs">
-        <li>
-            <a href="/shop">Shop</a>
-        </li>
-        <li>
-            <a href="/marketplace">Marketplace</a>
-        </li>
-        <li>
-            <a href="/about">About-us</a>
-        </li>
-        {% if ( app.user ) %}
-        <li class="auth-div">
-            <a href="{{ path('account_index') }}" >
-                {{app.user.username}}
-            </a>
-            <div class="">
+    <div class="container">
+        <a class="logo_container" href="{{path('front_default') }}">
+            <img id="logo" src="{{asset('images/logo.png')}}" alt="SNKERS logo"/>
+        </a>
+        <ul class="tabs">
+            <li>
+                <a href="/shop">Shop</a>
+            </li>
+            <li>
+                <a href="/marketplace">Marketplace</a>
+            </li>
+            <li>
+                <a href="/about">About-us</a>
+            </li>
+            {% if ( app.user ) %}
                 {% if ( is_granted('ROLE_ADMIN') ) %}
-                    <a href="{{ path('admin_dashboard_index') }}">Dashboard</a>
+                    <li>
+                        <a href="{{ path('admin_dashboard_index') }}">Dashboard</a>
+                    </li>
                 {% endif %}
-                <a href="/logout">Logout</a>
-            </div>
-        </li>
-        {% else %}
-        <li>
-            <a href="/login" 
-                class="btn btn-outline-success my-2 my-sm-0" 
-                type="submit">Login</a>
-        </li>
-        {% endif %}
-    </ul>
-    
+                <li class="auth-div">
+                    <a href="{{ path('account_index') }}" >
+                        {{app.user.username}}
+                    </a>
+                </li>
+                <li>
+                    <a href="/logout">Logout</a>
+                </li>
+            {% else %}
+            <li>
+                <a href="/login" 
+                    class="btn btn-outline-success my-2 my-sm-0" 
+                    type="submit">Login</a>
+            </li>
+            {% endif %}
+        </ul>
+        
+    </div>
+
 </nav>
 
 <style>

@@ -1,3 +1,11 @@
 @import "colors";
+@import "base";
+@import "color-font";
 
+@import "components/container";
 @import "components/navbar";
+@import "components/sneaker";
+@import "components/section-page";
+
+
+@import "tpl/front/home";

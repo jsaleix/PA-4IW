@@ -4,79 +4,86 @@
 
 {% block body %}
 
-<div class="home">
-    <ul class="horizontal_list_item">
-        {% for category in categories %}
-            <li><a href="{{ path('front_category_show', {'id':  category.id}) }}">{{ category.name }}</a></li>
-        {% else %}
-            <li>No category found </li>
-        {% endfor %}
-        <li><a href="{{ path('front_category_index') }}" >More ></a></li>
-    </ul>
-
-    <div id="home_banner">
+<div id="home">
+    <section>
+        <ul class="horizontal_list_item">
+            {% for category in categories %}
+                <li><a href="{{ path('front_category_show', {'id':  category.id}) }}">{{ category.name }}</a></li>
+            {% else %}
+                <li>No category found </li>
+            {% endfor %}
+            <li><a href="{{ path('front_category_index') }}" >More ></a></li>
+        </ul>
+    </section>
+    <section class="home_banner">
         <img alt="banner" 
             src="https://images.unsplash.com/photo-1552066344-2464c1135c32?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"/>
-    </div>
-
-    <ul class="horizontal_list_item">
-        {% for brand in brands %}
-            <li><a href="{{ path('front_brand_show', {'id': brand.id}) }}">{{brand.name }}</a></li>
-        {% else %}
-            <li>No brand found </li>
-        {% endfor %}
-        <li><a href="{{ path('front_brand_index') }}" >More ></a></li>
-    </ul>
-
-    <section class="home_section">
-        <div class="home_section_header">
-            <h2>Popular Sneakers from the Shop</h2>
-            <a href="{{path('front_shop_index') }}" class="red-font">See All ></a>
-        </div>
-        <div class="sneakers_items">
-            {% for sneaker in popularSneakersFromShop %}
-                {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
-            {% else %}
-                <p>No sneakers found </p>
-            {% endfor %}
-        </div>
     </section>
 
-    <section class="home_section">
-        <div class="home_section_header">
-            <h2>Popular Sneakers from the MarketPlace</h2>
-            <a href="{{path('front_marketplace_index') }}" class="red-font">See All ></a>
-        </div>
-        <div class="sneakers_items">
-            {% for sneaker in popularSneakersFromMP %}
-                {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
+    <section>
+        <ul class="horizontal_list_item">
+            {% for brand in brands %}
+                <li><a href="{{ path('front_brand_show', {'id': brand.id}) }}">{{brand.name }}</a></li>
             {% else %}
-                <p>No sneakers found </p>
+                <li>No brand found </li>
             {% endfor %}
-        </div>
+            <li><a href="{{ path('front_brand_index') }}" >More ></a></li>
+        </ul>
     </section>
 
-    <section class="home_section">
-        <div class="home_section_header">
-            <h2>Last models listed</h2>
-            <a href="{{path('front_sneaker_model_index') }}" class="red-font">See All ></a>
+    <section class="home_products container">
+        <div class="home_section">
+            <div class="home_section_header">
+                <h2>Popular Sneakers from the Shop</h2>
+                <a href="{{path('front_shop_index') }}" class="red-font">See All ></a>
+            </div>
+            <div class="sneakers_items">
+                {% for sneaker in popularSneakersFromShop %}
+                    {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
+                {% else %}
+                    <p>No sneakers found </p>
+                {% endfor %}
+            </div>
         </div>
-        <div class="sneakers_items">
-            {% for sneaker_model in lastModels %}
-                <a href="{{ path('front_sneaker_model_show', {'id': sneaker_model.id}) }}" class="model-item">
-                    <img src=""/>
-                    <h3>{{ sneaker_model.name }}</h3>
-                </a>
-            {% else %}
-                <p>No model found </p>
-            {% endfor %}
+
+        <div class="home_section">
+            <div class="home_section_header">
+                <h2>Popular Sneakers from the MarketPlace</h2>
+                <a href="{{path('front_marketplace_index') }}" class="red-font">See All ></a>
+            </div>
+            <div class="sneakers_items">
+                {% for sneaker in popularSneakersFromMP %}
+                    {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
+                {% else %}
+                    <p>No sneakers found </p>
+                {% endfor %}
+            </div>
         </div>
+
+        <div class="home_section">
+            <div class="home_section_header">
+                <h2>Last models listed</h2>
+                <a href="{{path('front_sneaker_model_index') }}" class="red-font">See All ></a>
+            </div>
+            <div class="sneakers_items">
+                {% for sneaker_model in lastModels %}
+                    <a href="{{ path('front_sneaker_model_show', {'id': sneaker_model.id}) }}" class="model-item">
+                        <img src=""/>
+                        <h3>{{ sneaker_model.name }}</h3>
+                    </a>
+                {% else %}
+                    <p>No model found </p>
+                {% endfor %}
+            </div>
+        </div>
+        
     </section>
+    
 </div>
 
 <style>
 
-    #home_banner{
+    {# #home_banner{
         height: 300px;
         overflow: hidden;
         position: relative;
@@ -152,7 +159,7 @@
         color: black;
         text-decoration: none;
         color: #BA0000;
-    }
+    } #}
 
 
 </style>
