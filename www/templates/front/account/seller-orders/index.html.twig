@@ -9,9 +9,16 @@
             <h1>Orders received</h1>
         </div>
         <div class="invoices-list">
+        {% if 
+            (invoicesList['waiting for tracking']|length > 0) 
+            or (invoicesList['delivering']|length > 0) 
+            or (invoicesList['finished']|length > 0) 
+        %}
+            {# invoicesList['']; #}
+        
             {% for label, invoices in invoicesList %}
-                <div>
-                    {% if invoices is not empty %}
+                {% if invoices is not empty %}
+                    <div>
                         <h1>{{ label }}</h1>
                         {% for invoice in invoices %}
                             <a href="{{ path('front_account_seller_order', { 'id': invoice.id}) }}" class="invoice-item">
@@ -25,10 +32,12 @@
                                 </div>
                             </a>
                         {% endfor %}
-                    {% endif %}
-                </div>
+                    </div>
+                {% endif %}
             {% endfor %}
-
+        {% else %}
+            <p>It looks like you haven't sold anything yet</p>
+        {% endif %}
         </div>
     </div>
 

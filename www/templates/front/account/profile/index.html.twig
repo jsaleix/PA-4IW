@@ -4,12 +4,12 @@
 
 {% block body %}
 
-<div class="account container">
-    <div class="account_profile">
+<div class="account container" id="account_profile">
+    <div class="account_profile_left">
         <h1>Edit your profile</h1>
         {{ form_start(form) }}
             {{ form_rest(form) }}
-            <button type="submit" class="btn btn-primary">SAVE</button>
+            <button type="submit" class="btn btn-success">SAVE</button>
         {{ form_end(form) }}
         <div class="buttons-row">
             <a href="{{ path('account_profile_password') }}">
@@ -21,47 +21,17 @@
         </div>
     </div>
 
-    <div class="right"></div>
+    {# <div style="background-image: url('{{ asset('images/assets/visuals/ryan-plomp-76w_eDO1u1E-unsplash.jpg') }}')"
+        class="account_profile_right"></div> #}
+
+    <div class="account_profile_right">
+        <div style="background-image: url('{{ asset('images/assets/visuals/ryan-plomp-76w_eDO1u1E-unsplash.jpg') }}')"></div>
+    </div>
 </div>
 
 <style>
 
-    .buttons-row{
-        margin-top: 10px;
-    }
-
-    .buttons-row a {
-        margin-bottom: 10px;
-    }
-
-    .account{
-        display: flex;
-    }
-
-    .account a{
-        text-decoration: none;
-        color: black;
-    }
-
-    .account_profile{
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        padding: 10px;
-    }
-
-    .left{
-        width: 70%;
-    }
-
-    .right{
-        width: 30%;
-        height: 100vh;
-        background-image: url('{{ asset('images/assets/visuals/ryan-plomp-76w_eDO1u1E-unsplash.jpg') }}');
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position-x: center;
-    }
+    
 </style>
 
 {% endblock %}

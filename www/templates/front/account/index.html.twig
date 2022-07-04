@@ -17,10 +17,10 @@
             <p>List your orders</p>
         </a>
         {% if(is_granted('ROLE_SELLER')) %}
-            {% if not transfersCapabilities %}
+            {% if not capabilitiesEnabled(app.user) %}
                 <a href="{{ path('front_account_manage_stripe') }}" class='account_item'>
                     <h3>Manage your Stripe account</h3>
-                    <p>Your Stripe transfers capabilities are disabled, please fix this on your <strong>Stripe Dashboard </strong></p>
+                    <p class="red-font">Your Stripe transfers capabilities are disabled, please fix this on your <strong>Stripe Dashboard </strong></p>
                 </a>
             {% else %}
             
@@ -62,43 +62,5 @@
         </a>
     </div>
 </div>
-
-<style>
-
-    .account{
-    }
-
-    .account > h1{
-        margin-bottom: 20px;
-    }
-
-    .account a{
-        text-decoration: none;
-        color: black;
-    }
-
-    .account_items{
-        display: flex;
-        flex-direction: row;
-        /*justify-content: space-between;*/
-        flex-wrap: wrap;
-        width: 100%;
-    }
-
-    .account_item{
-        width: calc(100%/3.1);
-        margin-bottom: 15px;
-        border: 1px solid gray;
-        padding: 30px;
-        border-radius: 10px;
-        margin-right: 5px;
-        cursor: pointer;
-        transition: 0.5s;
-    }
-
-    .account_item:hover{
-        background-color: #f0f0f0;
-    }
-</style>
 
 {% endblock %}

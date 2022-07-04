@@ -8,20 +8,25 @@
         <div class="orders-header">
             <h1>Your orders</h1>
         </div>
-        <div class="invoices-list">
-            {% for invoice in invoices %}
-                <a href="{{ path('front_account_order', { 'id': invoice.id}) }}" class="invoice-item">
-                    <div class="invoice-img">
-                        <img src="{{ vich_uploader_asset(invoice.sneaker.images[0]) }}" alt="picture"/>
-                    </div>
-                    <div class="invoice-data">
-                        <h3>{{ invoice.sneaker.name }}</h3>
-                        <p>{{ invoice.date|date("d/m/Y") }} - {{ invoice.paymentStatus }}</p>
-                        <p>{{ invoice.sneaker.price }}$</p>
-                    </div>
-                </a>
-            {% endfor %}
-        </div>
+        {% if invoices is not empty %}
+            <div class="invoices-list">
+                {% for invoice in invoices %}
+                    <a href="{{ path('front_account_order', { 'id': invoice.id}) }}" class="invoice-item">
+                        <div class="invoice-img">
+                            <img src="{{ vich_uploader_asset(invoice.sneaker.images[0]) }}" alt="picture"/>
+                        </div>
+                        <div class="invoice-data">
+                            <h3>{{ invoice.sneaker.name }}</h3>
+                            <p>{{ invoice.date|date("d/m/Y") }} - {{ invoice.paymentStatus }}</p>
+                            <p>{{ invoice.sneaker.price }}$</p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+                <p>It looks like you haven't ordered anything yet</p>
+        {% endif %}
+        
     </div>
 
     <style>
