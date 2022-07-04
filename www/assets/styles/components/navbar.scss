@@ -1,0 +1,42 @@
+#navigation{
+    height: 80px;
+    border: 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+
+    .logo_container{
+        width: 150px;
+
+        img{
+            object-fit: contain;
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    .tabs{
+        width: fit-content;
+        //margin-left: auto;
+        height: fit-content;
+        display: flex;
+        align-items: center;
+        gap: 50px;
+        margin: 0;
+        padding: 0;
+        li{
+            height: fit-content;
+            width: fit-content;
+            margin: 0 !important;
+            padding: 0 !important;
+            
+            &.auth-div{
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+        }
+    }
+
+}
