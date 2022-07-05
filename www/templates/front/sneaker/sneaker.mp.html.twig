@@ -13,7 +13,7 @@
         <span>Provided by <a href="{{  path('front_profile', { 'id': sneaker.publisher.id }) }}">{{ sneaker.publisher.name??'Unknown' }} {{ sneaker.publisher.surname }}</a></span>
         {% if(not sneaker.sold ) %}
             <a href="{{ path('marketplace_product_checkout', {'id': sneaker.id }) }}">
-                <button>${{ sneaker.price }} - BUY NOW</button>
+                <button class="btn btn-primary">${{ sneaker.price }} - BUY NOW</button>
             </a>
         {% else %}
             <h4>Sold</h4>
@@ -36,7 +36,9 @@
                     <span>Not specified</span>
                 {% endif %}
             </div>
-            <a href="{{ path('report-sneaker', { 'id': sneaker.id }) }}"><button>Report this product</button></a>
+            <a href="{{ path('report-sneaker', { 'id': sneaker.id }) }}">
+                <button class="btn btn-secondary">Report this product</button>
+            </a>
         </div>
 
     </div>

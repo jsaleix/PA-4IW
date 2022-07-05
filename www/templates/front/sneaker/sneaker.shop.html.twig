@@ -13,7 +13,7 @@
         <span>{{sneaker.publicationDate is empty ? "" : sneaker.publicationDate|date("m/d/Y")}}</span>
         {% if(not sneaker.sold ) %}
             <a href="{{ path('shop_product_checkout', {'id': sneaker.id })}}">
-                <button>${{ sneaker.price }} - BUY ON OUR SHOP</button>
+                <button class="btn btn-primary">${{ sneaker.price }} - BUY ON OUR SHOP</button>
             </a>
         {% else %}
             <h4>Sold</h4>
@@ -36,7 +36,9 @@
                     <span>Not specified</span>
                 {% endif %}
             </div>
-            <a href="{{ path('report-sneaker', { 'id': sneaker.id }) }}"><button>Report this product</button></a>
+            <a href="{{ path('report-sneaker', { 'id': sneaker.id }) }}">
+                <button class="btn btn-secondary">Report this product</button>
+            </a>
         </div>
     </div>
 
