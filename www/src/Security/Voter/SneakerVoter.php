@@ -81,7 +81,7 @@ class SneakerVoter extends Voter
             || $subject->getFromShop()
             || $subject->getSold() === true
             || !$subject->getStripeProductId() 
-            || $sellerService->checkSellerCapabilities($subject->getPublisher() )
+            || !$sellerService->checkSellerCapabilities($subject->getPublisher() )
         ){
             return false;
         }

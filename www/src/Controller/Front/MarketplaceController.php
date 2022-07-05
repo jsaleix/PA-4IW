@@ -49,7 +49,6 @@ class MarketplaceController extends AbstractController
     #[IsGranted(SneakerVoter::BUY_FROM_MP, 'sneaker')]
     public function checkout( Sneaker $sneaker, Request $request, PaymentService $paymentService ): Response
     {
-
         if( !$this->getUser()->getAddress() || !$this->getUser()->getCity() ){
             $this->addFlash('warning', "You must specify the address and city to which you want to be delivered.");
             return $this->redirectToRoute('account_profile', [], Response::HTTP_SEE_OTHER);
