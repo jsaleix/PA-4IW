@@ -18,6 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Service\Payment\PaymentService;
 
+use App\Security\Voter\SneakerVoter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 
 #[Route('/shop')]
 class ShopController extends AbstractController
@@ -49,17 +52,9 @@ class ShopController extends AbstractController
     }
 
     #[Route('/checkout/{id}', name: 'shop_product_checkout', methods: ['GET'])]
+    #[IsGranted(SneakerVoter::BUY_FROM_SHOP, 'sneaker')]
     public function checkout( Sneaker $sneaker, Request $request, PaymentService $paymentService): Response
     {
-        
-        if( !$sneaker->getFromShop() || !$sneaker->getStripeProductId() ){
-            return $this->redirectToRoute('front_default', [], Response::HTTP_SEE_OTHER);
-        }
-
-        if( !$this->getUser() ){
-            return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
-        }
-
         if( !$this->getUser()->getAddress() || !$this->getUser()->getCity() ){
             $this->addFlash('warning', "You must specify the address and city to which you want to be delivered.");
             return $this->redirectToRoute('account_profile', [], Response::HTTP_SEE_OTHER);

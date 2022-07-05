@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Service\Payment\SellerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Webhook;
 use App\Entity\User;
@@ -16,6 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Psr\Log\LoggerInterface;
 use App\Entity\Invoice;
+use App\Service\Payment\SellerService;
 use App\Service\Payment\PaymentService;
 
 #[Route('/webhook')]
@@ -77,8 +77,6 @@ class WebhookController extends AbstractController
             $response->setStatusCode(Response::HTTP_OK);
             return $response;
             
-            //return new JsonResponse([['status' => 200], 403, [], true]);
-
         } catch (\Exception $e) {
             $logger->error($e);
             $response = new Response();

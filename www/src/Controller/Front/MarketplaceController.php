@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\Payment\PaymentService;
+use App\Security\Voter\SneakerVoter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 use Stripe\StripeClient;
 
@@ -44,25 +46,13 @@ class MarketplaceController extends AbstractController
     }
 
     #[Route('/checkout/{id}', name: 'marketplace_product_checkout', methods: ['GET'])]
+    #[IsGranted(SneakerVoter::BUY_FROM_MP, 'sneaker')]
     public function checkout( Sneaker $sneaker, Request $request, PaymentService $paymentService ): Response
     {
-        if( $sneaker->getFromShop() || !$sneaker->getStripeProductId() ){
-            return $this->render('front/marketplace/index.html.twig', []);
-        }
-
-        if( !$this->getUser() ){
-            return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
-        }
 
         if( !$this->getUser()->getAddress() || !$this->getUser()->getCity() ){
             $this->addFlash('warning', "You must specify the address and city to which you want to be delivered.");
             return $this->redirectToRoute('account_profile', [], Response::HTTP_SEE_OTHER);
-        }
-
-        $seller = $sneaker->getPublisher();
-
-        if(!$seller->getStripeConnectId() ){
-            return $this->render('front/marketplace/index.html.twig', []);
         }
 
         $buyer  = $this->getUser();
