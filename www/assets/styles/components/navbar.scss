@@ -44,15 +44,40 @@
                 border-bottom: 3px solid transparent;
                 transition: 0.5s;
                 
-                &.auth-div{
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                }
-
                 &:hover{
                     border-bottom: 3px solid gray;
                 }
+
+                &.profile-div{
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    border-bottom: 3px solid transparent;
+                    
+                    &:hover{
+                        border-bottom: 3px solid transparent;
+                    }
+
+                    .profile{
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+
+                &.auth-div{
+                    display: flex;
+                    align-items: center;
+                    border-bottom: 3px solid transparent;
+                    &:hover{
+                        border-bottom: 3px solid transparent;
+                    }
+
+                    .profile{
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+
             }
         }
     }
