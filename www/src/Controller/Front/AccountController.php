@@ -3,20 +3,25 @@
 namespace App\Controller\Front;
 
 use App\Entity\Invoice;
-use App\Form\Front\Invoice\TrackingNumberFormType;
-use App\Form\Front\UserMailType;
-use App\Form\Front\UserType;
+
 use App\Form\Front\UserPasswordType;
 use App\Repository\InvoiceRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Stripe\StripeClient;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+
+use App\Form\Front\Invoice\TrackingNumberFormType;
+use App\Form\Front\UserMailType;
+use App\Form\Front\UserType;
+
 use App\Service\Payment\SellerService;
+
+use Stripe\StripeClient;
 
 #[Route('/account')]
 class AccountController extends AbstractController
@@ -192,6 +197,7 @@ class AccountController extends AbstractController
     }
 
     #[Route('/stripe-managing', name: 'account_manage_stripe', methods: ['GET'])]
+    #[IsGranted("ROLE_SELLER")]
     public function manageStripeAccount(Request $request): Response
     {
         $user = $this->getUser();
@@ -222,6 +228,7 @@ class AccountController extends AbstractController
     }
 
     #[Route('/seller-orders', name: 'account_seller_orders', methods: ['GET'])]
+    #[IsGranted("ROLE_SELLER")]
     public function sellerOrders(InvoiceRepository $invoiceRepository): Response
     {
         $user = $this->getUser();
@@ -239,6 +246,7 @@ class AccountController extends AbstractController
     }
 
     #[Route('/seller-orders/{id}', name: 'account_seller_order', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_SELLER")]
     public function sellerOder(Invoice $invoice, Request $request, EntityManagerInterface $entityManager): Response
     {
         $canSetTrackingNb = $invoice->getPaymentStatus() === Invoice::SOLD_STATUS;

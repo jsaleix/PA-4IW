@@ -12,6 +12,7 @@ use App\Repository\SneakerRepository;
 use App\Security\Voter\SneakerVoter;
 
 use App\Service\Front\SneakerService;
+use App\Service\SneakerServiceGlobal;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -81,8 +82,20 @@ class SneakersController extends AbstractController
 
     #[Route('/account/sneaker/delete/{id}', name: 'front_sneaker_delete', requirements: ['id' => '^\d+$'], methods: ['POST'])]
     #[IsGranted(SneakerVoter::DELETE, 'sneaker')]
-    public function delete(Sneaker $sneaker, Request $request, EntityManagerInterface $entityManager, InvoiceRepository $invoiceRepository): Response
+    public function delete(
+                            Sneaker $sneaker, 
+                            Request $request, 
+                            EntityManagerInterface $entityManager, 
+                            InvoiceRepository $invoiceRepository,
+                            SneakerServiceGlobal $sneakerServiceGlobal
+    ): Response
     {
+        //checking the current sneaker has no transaction pending
+        if($sneakerServiceGlobal->hasActiveTransaction($sneaker)){
+            $this->addFlash('warning', "You cannot delete this sneaker since its buyer has not yet received it");
+            return $this->redirectToRoute('front_account_seller_products', [], Response::HTTP_SEE_OTHER);
+        }
+
         if ($this->isCsrfTokenValid('delete'.$sneaker->getId(), $request->request->get('_token'))) {
             $invoice = $invoiceRepository->findOneBy(['sneaker' => $sneaker]);
             if($invoice){

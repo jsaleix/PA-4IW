@@ -25,16 +25,8 @@ class SneakerService
             $isLiked = true;
         }
 
-        /*$invoice = $this->invoiceRepository->findOneBy(['sneaker' => $sneaker]);
-        if($invoice && $invoice->getPaymentStatus() === Invoice::SOLD_STATUS ){
-            $sold = true;
-        }else{
-            $sold = false;
-        }*/
-
         return [
             'sneaker'=>$sneaker,
-            //'sold' => $sold,
             'isLiked' => $isLiked
         ];
     }
