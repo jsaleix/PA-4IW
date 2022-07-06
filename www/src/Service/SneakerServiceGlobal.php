@@ -33,10 +33,10 @@ class SneakerServiceGlobal
                 'sneaker' => $sneaker,
                 'paymentStatus' => Invoice::FINISHED_STATUS
             ]);
-            if($invoice !== null) return false;
+            if($invoice !== null) return true;
         }
 
-        return true;
+        return false;
     }
 
 }

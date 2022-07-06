@@ -1,5 +1,4 @@
 <a href="{{ path('front_sneaker_item_by_slug', { 'slug': sneaker.slug }) }}" class="sneaker_item">
-    <img src=""/>
     <div class="sneaker_data">
         {% if( sneaker.getImages() is not empty) %}
             <img src="{{ vich_uploader_asset(sneaker.getImages()[0]) }}" alt="{{ sneaker. name }}" />

@@ -90,6 +90,7 @@ class SneakersController extends AbstractController
                             SneakerServiceGlobal $sneakerServiceGlobal
     ): Response
     {
+
         //checking the current sneaker has no transaction pending
         if($sneakerServiceGlobal->hasActiveTransaction($sneaker)){
             $this->addFlash('warning', "You cannot delete this sneaker since its buyer has not yet received it");
