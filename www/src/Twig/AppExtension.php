@@ -18,12 +18,16 @@ class AppExtension extends AbstractExtension
     {
         return [
             new TwigFunction('capabilitiesEnabled', [$this, 'capabilitiesEnabled']),
+            new TwigFunction('waitingActionFromSeller', [$this, 'waitingActionFromSeller']),
         ];
     }
 
     public function capabilitiesEnabled(User $user): bool
     {
-        $this->logger->info('test');
         return $this->sellerService->checkSellerCapabilities($user);
+    }
+
+    public function waitingActionFromSeller(User $user): bool{
+        return $this->sellerService->waitingActionFromSeller($user);
     }
 }

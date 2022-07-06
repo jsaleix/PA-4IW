@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Invoice;
 use App\Entity\Sneaker;
 use App\Repository\UserRepository;
+use App\Repository\SneakerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\Boolean;
 use Psr\Log\LoggerInterface;
@@ -19,7 +20,10 @@ class SellerService
     public function __construct(
         private UserRepository $userRepository,
         private EntityManagerInterface $entityManager,
-        private LoggerInterface $logger
+        private LoggerInterface $logger,
+        private SneakerRepository $sneakerRepository,
+        private InvoiceRepository $invoiceRepository
+
     ) {}
 
     public function promoteToSeller(User $user){
@@ -71,6 +75,13 @@ class SellerService
             $this->logger->info($exception);
             return false;
         }
+    }
+
+    public function waitingActionFromSeller(User $user): bool
+    {
+        $invoices = $this->invoiceRepository->findUserInvoicesByStatus(Invoice::SOLD_STATUS, $user);
+        if( $invoices ) return true;
+        return false;
     }
 
 }

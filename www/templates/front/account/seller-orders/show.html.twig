@@ -7,14 +7,16 @@
     <div class="account container">
         <div class="orders-header">
             <h1>Order no.{{ invoice.id }}</h1>
+            <span><p>You don't know what to do?</p><b>Go to Help</b></span>
             <p><i>Bought on {{ invoice.date|date('d/m/Y') }}</i></p>
             <hr/>
             <p>Status: {{ invoice.paymentStatus }}</p>
-            <p>Delivery details</p>
+            <h3>Delivery details</h3>
             <p>Reception address: <b>{{ invoice.receptionAddress }}</b></p>
             <hr/>
             {% if form is not null %}
                 {{ form_start(form) }}
+                    <p>You have to provide the UPS parcel tracking number corresponding to the one you got when you posted the order here</p>
                     {{ form_rest(form) }}
                 {{ form_end(form) }}
             {% endif %}
