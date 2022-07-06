@@ -2,10 +2,7 @@
 
 namespace App\Controller\Front;
 
-use App\Entity\User;
-use App\Entity\Brand;
 use App\Entity\Sneaker;
-use App\Repository\BrandRepository;
 use App\Repository\SneakerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,8 +11,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Service\Payment\PaymentService;
 use App\Security\Voter\SneakerVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-
-use Stripe\StripeClient;
 
 #[Route('/marketplace')]
 class MarketplaceController extends AbstractController

@@ -8,7 +8,9 @@ use App\Entity\Sneaker;
 use App\Form\Front\SneakerType;
 use App\Repository\InvoiceRepository;
 use App\Repository\SneakerRepository;
+
 use App\Security\Voter\SneakerVoter;
+
 use App\Service\Front\SneakerService;
 
 use Doctrine\ORM\EntityManager;
@@ -23,12 +25,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class SneakersController extends AbstractController
 {
     #[Route('/account/publish', name: 'front_account_sneaker_add')]
+    #[IsGranted("ROLE_SELLER")]
     public function addMP(Request $request, SneakerService $sneakerService)//Adding sneakers on the Marketplace
     {
         $user = $this->getUser();
-        if( !in_array('ROLE_SELLER',  $user->getRoles()) ){
-            return $this->redirectToRoute('front_account_index', [], Response::HTTP_SEE_OTHER);
-        }
 
         $sneaker = $sneakerService->generateSneakerWithEmptyImages();
         $form = $this->createForm(SneakerType::class, $sneaker);
@@ -49,16 +49,11 @@ class SneakersController extends AbstractController
     }
 
     #[Route('/account/your-products', name: 'front_account_seller_products')]
+    #[IsGranted("ROLE_SELLER")]
     public function sellerList(SneakerRepository $sneakerRepository){//Displays the products a seller user owns/is selling
         $user = $this->getUser();
 
-        if( !in_array('ROLE_SELLER',  $user->getRoles()) ){
-            return $this->redirectToRoute('front_account_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        //$sales = $invoiceRepository->findBy(['paymentStatus'=> Invoice::SOLD_STATUS]);
         $sales = $sneakerRepository->findUserSneakersByInvoiceStatus(Invoice::SOLD_STATUS, $user);
-        //dd( $sales);
         return $this->render('front/account/sneakers/list.html.twig', [
             'sneakers' => $user->getPublishedSneakers(),
             'sales' => $sales
@@ -95,7 +90,6 @@ class SneakersController extends AbstractController
             }
             foreach($sneaker->getImages() as $img){
                 $sneaker->removeImage($img);
-                //$entityManager->remove($img);
             }
             $entityManager->remove($sneaker);
             $entityManager->flush();
@@ -104,18 +98,6 @@ class SneakersController extends AbstractController
         }
 
         return $this->redirectToRoute('front_account_seller_products', [], Response::HTTP_SEE_OTHER);
-
-        /*if ($this->isCsrfTokenValid('delete_sneaker', $token)) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($sneaker);
-            $em->flush();
-
-            $this->addFlash('success', "Sneaker {$sneaker->getName()} has been successfuly removed.");
-
-            return $this->redirectToRoute('front_account_seller_sales');
-        }
-
-        throw new Exception('Invalid token');*/
     }
 
     #[Route('/sneaker/like/{id}', name: 'front_like_sneaker_item', requirements: ['id' => '^\d+$'], methods: ['POST'])]
