@@ -11,9 +11,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 #[Route('/admin/sneakers')]
 class AdminSneakerController extends AbstractController
 {
+
     #[Route('/panel', name: 'admin_sneaker_dashboard', methods: ['GET'])]
     public function index(SneakerRepository $sneakerRepository): Response
     {
@@ -33,8 +36,10 @@ class AdminSneakerController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'admin_sneaker_edit', methods: ['GET','POST'])]
-    public function edit(Request $request, Sneaker $sneaker): Response
+    public function edit(Request $request, Sneaker $sneaker, EntityManagerInterface $entityManager): Response
     {
+        $lastImgs = $sneaker->getImages();
+
         $form = $this->createForm(SneakerType::class, $sneaker);
         $form->handleRequest($request);
 
@@ -42,8 +47,7 @@ class AdminSneakerController extends AbstractController
             if($sneaker->getStock() > 1 && $sneaker->getSold()){
                 $sneaker->setSold(null);
             }
-            $this->getDoctrine()->getManager()->flush();
-
+            $entityManager->flush();
             return $this->redirectToRoute('admin_sneaker_dashboard', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -54,10 +58,9 @@ class AdminSneakerController extends AbstractController
     }
 
     #[Route('/{id}', name: 'admin_sneaker_delete', methods: ['POST'])]
-    public function delete(Request $request, Sneaker $sneaker): Response
+    public function delete(Request $request, Sneaker $sneaker, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$sneaker->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($sneaker);
             $entityManager->flush();
         }

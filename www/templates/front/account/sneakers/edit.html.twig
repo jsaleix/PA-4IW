@@ -3,8 +3,8 @@
 {% block title %}Edit {{sneaker.name}}{% endblock %}
 
 {% block body %}
-<div class="account container">
-    <h1>Edit sneaker: {{sneaker.name}}</h1>
+<div class="account container sneaker-form">
+    <h1>Edit sneaker {{sneaker.name}}</h1>
 
     {{ form_start(form) }}
         {{ form_rest(form) }}

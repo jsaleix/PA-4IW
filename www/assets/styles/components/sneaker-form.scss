@@ -1,0 +1,35 @@
+.sneaker-form{
+
+  #sneaker_images{
+    display: flex;
+    width: 100%;
+    gap: 5px;
+    border: 1px solid red;
+    fieldset{
+      padding: 10px;
+      transition: 0.5s;
+
+      .vich-image{
+        overflow: hidden;
+        max-height: 250px;
+
+        a{
+          max-height: 250px !important;
+          overflow: hidden;
+          border: 1px solid gray;
+          img{
+            height: 100%;
+            object-fit: contain;
+            transition: 0.5s;
+
+            &:hover{
+              transform: scale(0.9);
+            }
+          }
+        }
+
+      }
+
+    }
+  }
+}

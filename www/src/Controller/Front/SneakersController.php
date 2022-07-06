@@ -69,11 +69,6 @@ class SneakersController extends AbstractController
     #[IsGranted(SneakerVoter::EDIT, 'sneaker')]
     public function editSneaker(Request $request, Sneaker $sneaker)//Edit sneakers as seller
     {
-        $user = $this->getUser();
-        if( !in_array('ROLE_SELLER',  $user->getRoles()) ){
-            return $this->redirectToRoute('front_account_index', [], Response::HTTP_SEE_OTHER);
-        }
-
         $form = $this->createForm(SneakerType::class, $sneaker);
         $form->handleRequest($request);
 
