@@ -49,6 +49,7 @@ class SneakerType extends AbstractType
             ])
 
             ->add('stock', NumberType::class, [
+                "html5" => true,
                 'attr' => [
                     'placeholder' => "Stock",
                     "required" => true,
@@ -64,15 +65,21 @@ class SneakerType extends AbstractType
             ])
 
             ->add('size', NumberType::class, [
+                "scale" => 2,
+                "html5" => true,
                 'attr' => [
-                    'placeholder' => "Size"
+                    'placeholder' => "Size",
+                    'min' => 1
                 ],
             ])
 
             ->add('price', NumberType::class, [
+                "scale" => 2,
+                "html5" => true,
                 'attr' => [
                     'type' => 'number',
-                    'placeholder' => "Enter amount($)"
+                    'placeholder' => "Enter amount($)",
+                    'min' => 1
                 ]
             ])
             ->add('images', CollectionType::class, [

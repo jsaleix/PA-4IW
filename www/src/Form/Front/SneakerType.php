@@ -56,21 +56,29 @@ class SneakerType extends AbstractType
             ])
 
             ->add('size', NumberType::class, [
+                "scale" => 2,
+                "html5" => true,
                 'attr' => [
-                    'placeholder' => "Size"
+                    'placeholder' => "Size",
+                    'min' => 1
                 ],
             ])
 
             ->add('price', NumberType::class, [
+                "scale" => 2,
+                "html5" => true,
                 'attr' => [
                     'type' => 'number',
-                    'placeholder' => "Enter amount($)"
+                    'placeholder' => "Enter amount($)",
+                    'min' => 1
                 ]
             ])
             ->add('images', CollectionType::class, [
                 'entry_type' => SneakerImageFormType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => false,
+                'allow_delete' => true,
+                'required' => true
             ])
             ->add('Submit', SubmitType::class);
     }
