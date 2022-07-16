@@ -7,9 +7,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+
+use App\Form\Front\ProfileImageType;
 
 class UserType extends AbstractType
 {
@@ -18,12 +21,7 @@ class UserType extends AbstractType
         $builder
             ->add('name')
             ->add('surname')
-            ->add('imageFile', VichImageType::class, [
-                'required' => false,
-                'image_uri' => true,
-                'allow_delete' => false,
-                'download_uri' => false
-            ])
+            ->add('profileImage', ProfileImageType::class)
             ->add('city')
             ->add('address')
             ->add('phone')

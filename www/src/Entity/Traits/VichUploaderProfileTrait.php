@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 trait VichUploaderProfileTrait
 {
     /**
-     * @Vich\UploadableField(mapping="profiles", fileNameProperty="imagePath")
+     * @Vich\UploadableField(mapping="profiles", fileNameProperty="path")
      * @Assert\Image(mimeTypes="image/jpeg", maxSize="1000k", maxSizeMessage="Taille autorisé : {{ limit }}{{ suffix }} alors que votre fichier fait {{ size }}{{ suffix }}")
      *
      * @var File|null

@@ -3,6 +3,7 @@
 namespace App\Controller\Front;
 
 use App\Entity\Invoice;
+use App\Entity\ProfileImage;
 
 use App\Form\Front\UserPasswordType;
 use App\Repository\InvoiceRepository;
@@ -43,6 +44,9 @@ class AccountController extends AbstractController
     public function profile(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        if( !$user->getProfileImage() ){
+            $user->setProfileImage(new ProfileImage());
+        }
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -50,6 +54,7 @@ class AccountController extends AbstractController
             try{
                 $entityManager->flush();
                 $this->addFlash('success', 'Success');
+                $user->getProfileImage()->setImageFile(null);
                 return $this->redirectToRoute('front_account_profile', [], Response::HTTP_SEE_OTHER);
             }catch(\Exception $e){
                 $this->addFlash('warning', $e->getMessage());
@@ -58,6 +63,7 @@ class AccountController extends AbstractController
 
         }
 
+        //$user->setImageFile(null);
         return $this->render('front/account/profile/index.html.twig', [
             'user' => $user,
             'form' => $form->createView()

@@ -2,14 +2,12 @@
 
 namespace App\Entity;
 
-use App\Entity\Traits\VichUploaderProfileTrait;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -17,13 +15,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
- * @Vich\Uploadable
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-
-    use VichUploaderProfileTrait;
-
     const ROLES = array(
         'roles.admin' => 'ROLE_ADMIN',
         'roles.seller' => 'ROLE_SELLER',
@@ -81,12 +75,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $name;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @var string|null
-     */
-    private $imagePath;
-
-    /**
      * @ORM\Column(type="string", length=80, nullable=true)
      */
     private $surname;
@@ -130,6 +118,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="boolean")
      */
     private $isVerified;
+
+    /**
+     * @ORM\OneToOne(targetEntity=ProfileImage::class, mappedBy="owner", cascade={"persist", "remove"})
+     */
+    private $profileImage;
 
     public function __construct()
     {
@@ -531,15 +524,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
- 
-    public function getImagePath(): ?string
+
+    public function getProfileImage(): ?ProfileImage
     {
-        return $this->imagePath;
+        return $this->profileImage;
     }
 
-    public function setImagePath(?string $path): self
+    public function setProfileImage(?ProfileImage $profileImage): self
     {
-        $this->imagePath = $path;
+        // unset the owning side of the relation if necessary
+        if ($profileImage === null && $this->profileImage !== null) {
+            $this->profileImage->setOwner(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($profileImage !== null && $profileImage->getOwner() !== $this) {
+            $profileImage->setOwner($this);
+        }
+
+        $this->profileImage = $profileImage;
 
         return $this;
     }
