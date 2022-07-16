@@ -157,42 +157,15 @@ class AccountController extends AbstractController
 
 
     #[Route('/become_seller', name: 'account_become_seller', methods: ['GET'])]
-    public function becomeSeller(Request $request): Response
+    public function becomeSeller(Request $request, SellerService $sellerService): Response
     {
         $user = $this->getUser();
-        if( in_array('ROLE_SELLER',  $user->getRoles()) ){
+        $url = $sellerService->promoteOrRedirect($user, $request);
+        if(!$url){
             return $this->redirectToRoute('front_account_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        $stripe = new StripeClient($_ENV['STRIPE_SK']);
-        $account = null;
-
-        if($user->getStripeConnectId()){
-            $account = $user->getStripeConnectId();
         }else{
-            $account = $stripe->accounts->create([
-                'type' => 'express'
-            ]);
-            $account = $account->id;
-            $user->setStripeConnectId($account);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+            header('Location:' . $url);
         }
-
-        //Checking if stripe registration is over else redirect to form
-        $localhost = $request->getHttpHost();
-        $protocol = $request->getScheme();
-        $url = "$protocol://$localhost";
-
-        $link = $stripe->accountLinks->create([
-            'account' => $account,
-            'refresh_url' => "$url/account/become_seller",
-            'return_url' => "$url/account",
-            'type' => 'account_onboarding',
-        ]);
-        
-        header('Location:' . $link->url);
         return $this->render('front/account/becomeSeller/index.html.twig', []);
     }
 

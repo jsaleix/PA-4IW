@@ -30,7 +30,8 @@ class SellerService
 
     }
     
-    public function updateSellerCapabilities($event){
+    public function updateSellerCapabilities($event): void
+    {
         $this->logger->info('updateSellerCapabilities');
 
         $account = $event['account'];
@@ -56,7 +57,8 @@ class SellerService
         $this->entityManager->flush();
     }
 
-    public function checkSellerCapabilities(User $user)
+    //Checks if a Stripe connected account has achieved its registration
+    public function checkSellerCapabilities(User $user): bool
     {
         try{
             $this->logger->info('CheckSellerCapabilities');
@@ -70,7 +72,7 @@ class SellerService
             }else if ($capabilities->transfers === 'active'){
                 return true;
             }
-
+            return false;
         }catch(\Exception $exception){
             $this->logger->info($exception);
             return false;
@@ -82,6 +84,55 @@ class SellerService
         $invoices = $this->invoiceRepository->findUserInvoicesByStatus(Invoice::SOLD_STATUS, $user);
         if( $invoices ) return true;
         return false;
+    }
+
+    /*Checks if a user has finished the Stripe registration form 
+    * and should be promoted to seller
+    * or not and should fill the form
+    */
+    public function promoteOrRedirect(User $user, Request $request): ?String
+    {
+        if( in_array('ROLE_SELLER',  $user->getRoles()) ){
+            return null;
+        }
+
+        $stripe = new StripeClient($_ENV['STRIPE_SK']);
+        $account = null;
+
+        if( $user->getStripeConnectId() ){
+            /*  If the user has achieved the stripe form and still is not a seller
+            *   promoting his role to Seller
+            */
+            if( $this->checkSellerCapabilities($user) ){
+                $newRoles = $user->getRoles();
+                $newRoles[] = 'ROLE_SELLER';
+                $user->setRoles($newRoles);
+                $this->entityManager->flush();
+                return null;
+            }
+            $account = $user->getStripeConnectId();
+        }else{
+            $account = $stripe->accounts->create([
+                'type' => 'express'
+            ]);
+            $account = $account->id;
+            $user->setStripeConnectId($account);
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+        }
+
+        $localhost = $request->getHttpHost();
+        $protocol = $request->getScheme();
+        $url = "$protocol://$localhost";
+
+        $link = $stripe->accountLinks->create([
+            'account' => $account,
+            'refresh_url' => "$url/account/become_seller",
+            'return_url' => "$url/account",
+            'type' => 'account_onboarding',
+        ]);
+        
+        return $link->url;
     }
 
 }
