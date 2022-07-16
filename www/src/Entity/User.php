@@ -81,6 +81,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $name;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     * @var string|null
+     */
+    private $imagePath;
+
+    /**
      * @ORM\Column(type="string", length=80, nullable=true)
      */
     private $surname;
@@ -522,6 +528,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+ 
+    public function getImagePath(): ?string
+    {
+        return $this->imagePath;
+    }
+
+    public function setImagePath(?string $path): self
+    {
+        $this->imagePath = $path;
 
         return $this;
     }

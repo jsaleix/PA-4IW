@@ -48,7 +48,6 @@ class AccountController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try{
-                $user->setImageFile(null);
                 $entityManager->flush();
                 $this->addFlash('success', 'Success');
                 return $this->redirectToRoute('front_account_profile', [], Response::HTTP_SEE_OTHER);
@@ -59,7 +58,6 @@ class AccountController extends AbstractController
 
         }
 
-        $user->setImageFile(null);
         return $this->render('front/account/profile/index.html.twig', [
             'user' => $user,
             'form' => $form->createView()

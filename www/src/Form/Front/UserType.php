@@ -18,7 +18,12 @@ class UserType extends AbstractType
         $builder
             ->add('name')
             ->add('surname')
-            //->add('email')
+            ->add('imageFile', VichImageType::class, [
+                'required' => false,
+                'image_uri' => true,
+                'allow_delete' => false,
+                'download_uri' => false
+            ])
             ->add('city')
             ->add('address')
             ->add('phone')

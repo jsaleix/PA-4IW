@@ -11,26 +11,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 trait VichUploaderProfileTrait
 {
     /**
-     * @Vich\UploadableField(mapping="profiles", fileNameProperty="imageName", size="imageSize")
-     * @Assert\Image(mimeTypes="image/jpeg", maxSize="500k", maxSizeMessage="Taille autorisé : {{ limit }}{{ suffix }} alors que votre fichier fait {{ size }}{{ suffix }}")
+     * @Vich\UploadableField(mapping="profiles", fileNameProperty="imagePath")
+     * @Assert\Image(mimeTypes="image/jpeg", maxSize="1000k", maxSizeMessage="Taille autorisé : {{ limit }}{{ suffix }} alors que votre fichier fait {{ size }}{{ suffix }}")
      *
      * @var File|null
      */
     private $imageFile;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     *
-     * @var string|null
-     */
-    private $imageName;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     *
-     * @var int|null
-     */
-    private $imageSize;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -56,23 +42,4 @@ trait VichUploaderProfileTrait
         return $this->imageFile;
     }
 
-    public function setImageName(?string $imageName): void
-    {
-        $this->imageName = $imageName;
-    }
-
-    public function getImageName(): ?string
-    {
-        return $this->imageName;
-    }
-
-    public function setImageSize(?int $imageSize): void
-    {
-        $this->imageSize = $imageSize;
-    }
-
-    public function getImageSize(): ?int
-    {
-        return $this->imageSize;
-    }
 }
