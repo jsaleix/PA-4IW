@@ -174,13 +174,12 @@ class AccountController extends AbstractController
     public function manageStripeAccount(Request $request): Response
     {
         $user = $this->getUser();
-        if( !in_array('ROLE_SELLER',  $user->getRoles()) ){
-            return $this->redirectToRoute('front_account_index', [], Response::HTTP_SEE_OTHER);
-        }
 
         $stripe = new StripeClient($_ENV['STRIPE_SK']);
         if($user->getStripeConnectId()){
             $account = $user->getStripeConnectId();
+        }else{
+            return $this->redirectToRoute('front_account_index', [], Response::HTTP_SEE_OTHER);
         }
 
         $link = $stripe->accounts->createLoginLink(
