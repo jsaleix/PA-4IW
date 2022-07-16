@@ -25,6 +25,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SneakersController extends AbstractController
 {
+   
+    #[Route('/account/your-products', name: 'front_account_seller_products')]
+    #[IsGranted("ROLE_SELLER")]
+    public function sellerList(SneakerRepository $sneakerRepository){//Displays the products a seller user owns/is selling
+        $user = $this->getUser();
+
+        $sales = $sneakerRepository->findUserSneakersByInvoiceStatus(Invoice::SOLD_STATUS, $user);
+        return $this->render('front/account/sneakers/list.html.twig', [
+            'sneakers' => $user->getPublishedSneakers(),
+            'sales' => $sales
+        ]);
+    }
+
     #[Route('/account/publish', name: 'front_account_sneaker_add')]
     #[IsGranted("ROLE_SELLER")]
     public function addMP(Request $request, SneakerService $sneakerService)//Adding sneakers on the Marketplace
@@ -49,29 +62,22 @@ class SneakersController extends AbstractController
         ]);
     }
 
-    #[Route('/account/your-products', name: 'front_account_seller_products')]
-    #[IsGranted("ROLE_SELLER")]
-    public function sellerList(SneakerRepository $sneakerRepository){//Displays the products a seller user owns/is selling
-        $user = $this->getUser();
-
-        $sales = $sneakerRepository->findUserSneakersByInvoiceStatus(Invoice::SOLD_STATUS, $user);
-        return $this->render('front/account/sneakers/list.html.twig', [
-            'sneakers' => $user->getPublishedSneakers(),
-            'sales' => $sales
-        ]);
-    }
 
     #[Route('/account/sneaker/{id}', name: 'front_account_sneaker_edit', methods: ['GET', 'POST'])]
     #[IsGranted(SneakerVoter::EDIT, 'sneaker')]
-    public function editSneaker(Request $request, Sneaker $sneaker)//Edit sneakers as seller
+    public function editSneaker(Request $request, Sneaker $sneaker, SneakerService $sneakerService)
     {
         $form = $this->createForm(SneakerType::class, $sneaker);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('front_account_seller_products', [], Response::HTTP_SEE_OTHER);
+            $error = $sneakerService->edit($sneaker);
+            if( $error !== null ){
+                $this->addFlash('warning', $error);
+            }else{
+                return $this->redirectToRoute('front_account_seller_products', [], Response::HTTP_SEE_OTHER);
+            }
+            
         }
 
         return $this->render('front/account/sneakers/edit.html.twig', [

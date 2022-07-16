@@ -11,7 +11,7 @@ trait VichUploaderImageTrait
 {
     /**
      * @Vich\UploadableField(mapping="sneakers", fileNameProperty="path", size="imageSize")
-     * @Assert\Image(mimeTypes="image/jpeg", maxSize="500k", maxSizeMessage="Taille autorisé : {{ limit }}{{ suffix }} alors que votre fichier fait {{ size }}{{ suffix }}")
+     * @Assert\Image(mimeTypes="image/jpeg", maxSize="5000k", maxSizeMessage="Taille autorisé : {{ limit }}{{ suffix }} alors que votre fichier fait {{ size }}{{ suffix }}")
      *
      * @var File|null
      */
@@ -60,7 +60,7 @@ trait VichUploaderImageTrait
         return $this->path;
     }
 
-    public function setPath(string $path): self
+    public function setPath(?string $path): self
     {
         $this->path = $path;
 

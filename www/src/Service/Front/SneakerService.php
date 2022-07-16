@@ -82,4 +82,27 @@ class SneakerService
         return true;
     }
 
+    public function edit(Sneaker $sneaker): ?String
+    {
+        try{
+            //dd($sneaker->getImages());
+            /*foreach($sneaker->getImages() as $image){
+                if($image->getImageFile()){
+                    //dd($image);
+                    $image->setSneaker($sneaker);
+                    $this->entityManager->persist($image);
+                }else{
+                    //dd($image);
+                    //$sneaker->removeImage($image);
+                }
+            }*/
+            $this->entityManager->flush();
+            return null;
+        }catch(\Exception $e){
+            dd($e);
+            return "An error occurred";
+        }
+        
+    }
+
 }

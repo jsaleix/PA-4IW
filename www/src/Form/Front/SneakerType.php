@@ -56,7 +56,7 @@ class SneakerType extends AbstractType
             ])
 
             ->add('size', NumberType::class, [
-                "scale" => 2,
+                "scale" => 1,
                 "html5" => true,
                 'attr' => [
                     'placeholder' => "Size",
