@@ -50,7 +50,7 @@ class MarketplaceController extends AbstractController
         }
 
         $buyer  = $this->getUser();
-        $url = $paymentService->generatePaymentIntent($sneaker, $buyer);
+        $url = $paymentService->generatePaymentIntent($sneaker, $buyer, $request);
 
         if($url){
             header('Location:' . $url);

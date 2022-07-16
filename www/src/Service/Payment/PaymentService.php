@@ -22,21 +22,25 @@ class PaymentService
     /*
      * <--- Payment intents functions
      */
-    public function generatePaymentIntent(Sneaker $sneaker, User $buyer)
+    public function generatePaymentIntent(Sneaker $sneaker, User $buyer, Request $request)
     {
         if($sneaker->getSold()){
             return false;
         }
 
+        $localhost = $request->getHttpHost();
+        $protocol   = $request->getScheme();
+        $url        = "$protocol://$localhost";
+
         if(!$sneaker->getFromShop()){
-            return $this->generateMPIntent($sneaker, $buyer);
+            return $this->generateMPIntent($sneaker, $buyer, $url);
         }else{
-            return $this->generateShopIntent($sneaker, $buyer);
+            return $this->generateShopIntent($sneaker, $buyer, $url);
         }
 
     }
 
-    public function generateMPIntent(Sneaker $sneaker, User $buyer){
+    public function generateMPIntent(Sneaker $sneaker, User $buyer, String $url){
         $invoice = $this->invoiceRepository->findOneBy(['sneaker' => $sneaker->getId()]);
         /*
          * Checking if there is already an invoice created with either
@@ -49,7 +53,7 @@ class PaymentService
             return false;
         }
 
-        $session = $this->generateStripeSession($sneaker);
+        $session = $this->generateStripeSession($sneaker, $url);
         $invoice = $this->invoiceRepository->findOneBy(['sneaker' => $sneaker->getId()]);
 
         if( !$invoice ){
@@ -70,9 +74,9 @@ class PaymentService
         return $session->url;
     }
 
-    public function generateShopIntent(Sneaker $sneaker, User $buyer){
+    public function generateShopIntent(Sneaker $sneaker, User $buyer, String $url){
 
-        $session = $this->generateStripeSession($sneaker);
+        $session = $this->generateStripeSession($sneaker, $url);
         $invoice = new Invoice();
         $invoice->setSneaker($sneaker);
 
@@ -89,8 +93,9 @@ class PaymentService
         return $session->url;
     }
 
-    public function generateStripeSession(Sneaker $sneaker){
-        $stripe = new StripeClient($_ENV['STRIPE_SK']);
+    public function generateStripeSession(Sneaker $sneaker, String $url){
+
+        $stripe     = new StripeClient($_ENV['STRIPE_SK']);
         $expires_at = ((new \DateTime())->modify('+1 hour'))->getTimeStamp();
 
         $price = $stripe->prices->create([
@@ -100,8 +105,8 @@ class PaymentService
         ]);
 
         $session = $stripe->checkout->sessions->create([
-            'success_url' => 'http://localhost?success',
-            'cancel_url' =>  'http://localhost?failed',
+            'success_url' => "$url?success",
+            'cancel_url' => "$url?failed",
             'line_items' => [
                 [
                     'price' => $price->id,
