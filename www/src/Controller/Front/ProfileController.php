@@ -14,6 +14,7 @@ class ProfileController extends AbstractController
     #[Route('/{id}', name: 'front_profile')]
     public function index(User $user): Response
     {
+        //dd($user);
         return $this->render('@front/profile/index.html.twig', [
             'user' => $user,
         ]);

@@ -5,7 +5,13 @@
     <div class="container profile">
         <div class="left-part">
             <h2>{{ user.name }} {{ user.surname }}</h2>
-            <img src="" alt="profile picture"/>
+            <div class="img_container">
+                {% if user.profileImage is not empty %}
+                    <img src="{{ vich_uploader_asset(user.profileImage) }}" alt="profile picture"/>
+                {% else %}
+                    <img src="https://images.unsplash.com/photo-1571601035754-5c927f2d7edc" alt="profile picture"/>
+                {% endif %}
+            </div>
             <a href="{{ path('report-user', { 'id': user.id }) }}"><button>Report this user</button></a>
         </div>
         <div class="right-part">
@@ -18,22 +24,28 @@
                 </select>
             </div>
             {% if user.publishedSneakers %}
-            <div class="sneakers_items">
-            {% for sneaker in user.publishedSneakers %}
-                <a href="{{ path('front_sneaker_item_by_slug', { 'slug': sneaker.slug }) }}" class="sneaker_item">
-                    <img src=""/>
-                    <div class="sneaker_data">
-                        {% if( sneaker.getImages() is not empty) %}
-                            <img src="{{ vich_uploader_asset(sneaker.getImages()[0]) }}" alt="{{ sneaker. name }}" />
-                        {% endif %}
-                        <h3>{{sneaker.name}}</h3>
-                        <span>{{ sneaker.brand.name}} </span>
-                        <span>${{sneaker.price}}</span>
-                        <span class="source">{{sneaker.fromShop ? 'From Shop' : 'From Marketplace'}}</span>
-                    </div>
-                </a>
-            {% endfor %}
-            </div>
+                <div class="sneakers_items">
+                    {% if( user.publishedSneakers is not empty) %}
+                        {% for sneaker in user.publishedSneakers %}
+                            <a href="{{ path('front_sneaker_item_by_slug', { 'slug': sneaker.slug }) }}" class="sneaker_item">
+                                <img src=""/>
+                                <div class="sneaker_data">
+                                    {% if( sneaker.getImages() is not empty) %}
+                                        <img src="{{ vich_uploader_asset(sneaker.getImages()[0]) }}" alt="{{ sneaker. name }}" />
+                                    {% endif %}
+                                    <h3>{{sneaker.name}}</h3>
+                                    <span>{{ sneaker.brand.name}} </span>
+                                    <span>${{sneaker.price}}</span>
+                                    <span class="source">{{sneaker.fromShop ? 'From Shop' : 'From Marketplace'}}</span>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <p>This user has no sneaker</p>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p>This user has no sneaker</p>
             {% endif %}
         </div>
     </div>
@@ -53,8 +65,25 @@
             border-radius: 10px;
             display: flex;
             flex-direction: column;
+            align-items: center;
             width: 25%;
             padding: 20px 40px;
+        }
+
+        .left-part > .img_container{
+            height: 180px;
+            width: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 10px;
+            box-shadow: 0px 11px 15px -10px rgba(0, 0, 0, 0.25);
+            border: 1px solid gray;
+        }
+
+        .left-part > .img_container > img{
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
         }
 
         .right-part{
