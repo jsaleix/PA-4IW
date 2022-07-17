@@ -1,12 +1,9 @@
 
-# PA-Symfony
-
-Repository projet annuel en Symfony 4a
-
+# PA-Symfony - SNCKERS
+Annual project with Symfony
 
 ## Getting started
 
-  
 
 ```bash
 
@@ -14,6 +11,19 @@ docker-compose build --pull --no-cache
 
 docker-compose up -d
 
+```
+
+## Compiling Sass files
+
+#### Installing dependencies
+```bash
+cd www/ && npm i
+```
+
+#### Compiling Sass
+Still in ./www
+```bash
+npm run watch
 ```
 
 ## Loading data fixtures
