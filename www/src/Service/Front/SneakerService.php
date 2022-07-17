@@ -8,6 +8,7 @@ use App\Repository\InvoiceRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\StripeClient;
+use Exception;
 
 class SneakerService
 {
@@ -43,6 +44,14 @@ class SneakerService
 
     public function publish(Sneaker $sneaker, $user, bool $fromShop = true)
     {
+        if($sneaker->getPrice() < 1){
+            throw new \Exception('The price cannot be inferior to 1$');
+        }
+
+        if($sneaker->getSize() < 1){
+            throw new \Exception('The size cannot be inferior to 1');
+        }
+
         $sneaker->setFromShop( $fromShop );
         $sneaker->setUnused( true );
         $sneaker->setPublicationDate( new \DateTime() );
@@ -82,26 +91,18 @@ class SneakerService
         return true;
     }
 
-    public function edit(Sneaker $sneaker): ?String
+    public function edit(Sneaker $sneaker)
     {
-        try{
-            //dd($sneaker->getImages());
-            /*foreach($sneaker->getImages() as $image){
-                if($image->getImageFile()){
-                    //dd($image);
-                    $image->setSneaker($sneaker);
-                    $this->entityManager->persist($image);
-                }else{
-                    //dd($image);
-                    //$sneaker->removeImage($image);
-                }
-            }*/
-            $this->entityManager->flush();
-            return null;
-        }catch(\Exception $e){
-            dd($e);
-            return "An error occurred";
+        if($sneaker->getPrice() < 1){
+            throw new Exception('The price cannot be inferior to 1$');
         }
+
+        if($sneaker->getSize() < 1){
+            throw new Exception('The size cannot be inferior to 1');
+        }
+
+        $this->entityManager->flush();
+        return null;
         
     }
 

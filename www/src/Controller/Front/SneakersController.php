@@ -71,13 +71,13 @@ class SneakersController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $error = $sneakerService->edit($sneaker);
-            if( $error !== null ){
-                $this->addFlash('warning', $error);
-            }else{
+            try{
+                $sneakerService->edit($sneaker);
                 return $this->redirectToRoute('front_account_seller_products', [], Response::HTTP_SEE_OTHER);
+            }catch(Exception $e){
+                $this->addFlash( 'warning', $e->getMessage()??'An error occurred' );
             }
-            
+         
         }
 
         return $this->render('front/account/sneakers/edit.html.twig', [
