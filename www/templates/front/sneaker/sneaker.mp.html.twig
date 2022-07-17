@@ -4,13 +4,22 @@
 
 {% block body %}
 
-<div class="container">
+<div class="container" id="sneaker-page">
     <div class="left">
         {{ include('@front/sneaker/components/sneaker_left_column.html.twig') }}
     </div>
     <div class="right">
+        <div class="profile-part">
+            <a href="{{  path('front_profile', { 'id': sneaker.publisher.id }) }}" class="img_container">
+                {% if sneaker.publisher.profileImage is not empty %}
+                    <img src="{{ vich_uploader_asset(sneaker.publisher.profileImage) }}" alt="profile picture"/>
+                {% else %}
+                    <img src="https://images.unsplash.com/photo-1571601035754-5c927f2d7edc" alt="profile picture"/>
+                {% endif %}
+            </a>
+            <span>Provided by <a style="font-weight: bolder;" href="{{  path('front_profile', { 'id': sneaker.publisher.id }) }}">{{ sneaker.publisher.name??'Unknown' }} {{ sneaker.publisher.surname }}</a></span>
+        </div>
         <span>{{sneaker.publicationDate is empty ? "" : sneaker.publicationDate|date("d/m/Y")}}</span>
-        <span>Provided by <a href="{{  path('front_profile', { 'id': sneaker.publisher.id }) }}">{{ sneaker.publisher.name??'Unknown' }} {{ sneaker.publisher.surname }}</a></span>
         {% if(not sneaker.sold ) %}
             <a href="{{ path('marketplace_product_checkout', {'id': sneaker.id }) }}">
                 <button class="btn btn-primary">${{ sneaker.price }} - BUY NOW</button>

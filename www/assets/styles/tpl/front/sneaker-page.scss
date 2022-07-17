@@ -1,0 +1,80 @@
+#sneaker-page{
+    display: flex;
+    gap: 10px;
+
+    .left{
+        width: 60%;
+
+        .sneaker-title{
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+
+        .like-form {
+            width: fit-content;
+            button{
+                background-color: transparent;
+                border: none;
+                width: fit-content;
+
+                svg{
+                    width: fit-content !important;
+                }
+            }
+        }
+
+        & > .images {
+            display: flex;
+
+            & > img{
+                width: 80%;
+                height: 500px;
+                object-fit: cover;
+            }
+
+            & > #images-column{
+                display: flex;
+                flex-direction: column;
+                /*justify-content: space-between;*/
+                width: 20%;
+
+                & > img{
+                    cursor: pointer;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+
+    }
+
+    .right{
+        width: 35%;
+        padding: 20px 0;
+        display: flex;
+        flex-direction: column;
+
+        .profile-part{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            
+            .img_container{
+                width: 60px;
+                //height: 90px;
+                aspect-ratio: 1;
+                border-radius: 50%;
+                overflow: hidden;
+                box-shadow: 0px 11px 15px -10px rgba(0, 0, 0, 0.25);
+
+                img{
+                    height: 100%;
+                    width: 100%;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+}
