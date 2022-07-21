@@ -1,0 +1,74 @@
+{% extends 'base_front.html.twig' %}
+
+{% block title %}SNKER - About-us{% endblock %}
+
+{% block body %}
+
+<div id="about-us">
+    <section id="introduction">
+        <div class="content container">
+            <div class="left">
+                <h2>The current Culture Marketplace</h2>
+                <p>Our mission is to provide access to the world’s most coveted items in the smartest way possible. Find, Buy and Sell the hottest sneakers</p>
+            </div>
+
+            <div class="right">
+
+                <div class="img_container">
+                    <img src="{{ asset('images/assets/about-us/items.jpg') }}" alt=""/>
+                </div>
+
+                <div class="bg_container">
+                    <img src="{{ asset('images/assets/about-us/dots.png') }}" alt=""/>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <section id="tutorial">
+        <div class="content container">
+            <div class="left">
+                <h2>Become a seller on SNKERS</h2>
+                <p>At SNKERS, we are not pretending to own the monopol on the sneakers, hence, we allow anybody to be able to sell on our Marketplace.</p>
+                <p>We will be glad to have you on our Marketplace, so that you can grow your business and make a profit.</p>
+                <p>However, we make sure our Marketplace sellers are trustworthy by letting our payment partner, Stripe, make some checkings before allowing them to earn any amount.</p>
+                <p>Thus, be sure no scam is going to happen on our Marketplace.</p>
+            </div>
+
+            <div class="right">
+                <div>
+                    <img src="{{ asset('images/assets/about-us/how_it_works.png') }}" alt=""/>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq">
+        <div class="content container">
+            <h3>FAQ</h3>
+
+            <div class="list">
+                <div class="faq-item">
+                    <h6>How do I buy on SNKERS?</h6>
+                    <p>StockX is a marketplace where Buyers and Sellers can make anonymous offers on a wide variety of shoes, streetwear, electronics and collectibles, based both on the item's current valuation on the site, but also how much you're willing to pay for it or sell it for. StockX's anonymous nature aims to make buying and selling a hassle-free experience: Buyers see the lowest available sale price, and Sellers see the highest available buying offer.
+                    Since both Buyers and Sellers can set their respective offers, a sale on StockX doesn’t begin until a Seller and a Buyer agree on a price through a Buyer's Bid matching a Seller's Ask, or vice versa. 
+                    As a Buyer, you have two ways to match with a Seller on StockX—through utilizing the “Buy Now” and “Bid” features.</p>
+                </div>
+                <div class="faq-item">
+                    <h6>How do I sell SNKERS?</h6>
+                    <p>StockX is a marketplace where Buyers and Sellers can make anonymous offers on a wide variety of current culture items such as sneakers, streetwear, electronics and collectibles, based both on the item's current valuation on the site, but also how much you're willing to sell it for. StockX's anonymous nature aims to make buying and selling a hassle-free experience: Buyers see the lowest available sale price, and Sellers see the highest available buying offer.
+                        Since both Buyers and Sellers can set their respective offers, a sale on StockX doesn’t begin until a Seller and a Buyer agree on a price through a Buyer's Bid matching a Seller's Ask or vice versa. You as a Seller have two ways to match with a Buyer on StockX, through utilizing the “Sell Now” and “Ask” features.
+                    </p>
+                </div>
+                <div class="faq-item">
+                    <h6>How do I pay an item on SNKERS?</h6>
+                    <p>As a buyer, you can pay for your item with all mahor credit cards including Visa, MasterCard, American Express, JCB, UnionPay and Discover.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+</div>
+
+{% endblock %}

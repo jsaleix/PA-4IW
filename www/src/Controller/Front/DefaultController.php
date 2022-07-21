@@ -29,4 +29,10 @@ class DefaultController extends AbstractController
             'lastModels' => $sneakerModelRepository->findBy([], ['id' => 'DESC'], 4, 0)
         ]);
     }
+
+    #[Route('/about-us', name: 'about-us')]
+    public function aboutUs(): Response
+    {
+        return $this->render('front/default/about-us.html.twig');
+    }
 }

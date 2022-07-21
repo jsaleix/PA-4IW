@@ -11,7 +11,7 @@
                 <a href="/marketplace">Marketplace</a>
             </li>
             <li>
-                <a href="/about">About-us</a>
+                <a href="{{ path("about-us") }}">About-us</a>
             </li>
             {% if ( app.user ) %}
                 {% if ( is_granted('ROLE_ADMIN') ) %}
