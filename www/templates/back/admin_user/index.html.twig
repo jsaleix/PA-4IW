@@ -27,7 +27,13 @@
         {% for user in users %}
             <tr>
                 <td>{{ user.id }}</td>
-                <td class="preview_container"><img src="{{ vich_uploader_asset(user.profileImage) }}" alt="user picture"/></td>
+                <td class="preview_container">
+                    {% if user.profileImage is not empty %}
+                        <img src="{{ vich_uploader_asset(user.profileImage) }}" alt="user picture"/>
+                    {% else %}
+                        <img src="https://images.unsplash.com/photo-1571601035754-5c927f2d7edc" alt="profile picture"/>
+                    {% endif %}
+                </td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.name??"Unset" }}</td>
                 <td>{{ user.surname??"Unset" }}</td>
