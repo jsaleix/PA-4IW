@@ -4,16 +4,16 @@
 
 {% block body %}
 
-    <div class="container account">
+    <div class="container" id="admin_index">
         <h1>Your Dashboard</h1>
 
-        <div class='account_items'>
+        <div class='items'>
             <a href="{{ path('admin_user_dashboard') }}" class='account_item'>
-                <h3>User interface</h3>
+                <h3>User Management</h3>
                 <p>User Panel</p>
             </a>
             <a href="{{ path('admin_sneaker_dashboard') }}" class='account_item'>
-                <h3>Sneakers interface</h3>
+                <h3>Sneakers Management</h3>
                 <p>Sneakers panel</p>
             </a>
             <a href="{{ path('admin_orders_index') }}" class='account_item'>
@@ -28,9 +28,22 @@
                 <h3>Marketplace</h3>
                 <p>Manage the marketplace</p>
             </a>
+
+        </div>
+
+        <h2>Entities management</h2>
+        <div class='items'>
             <a href="{{ path('back_sneaker_model_index') }}" class='account_item'>
                 <h3>Sneaker models</h3>
                 <p>Manage the sneakers models listed</p>
+            </a>
+            <a href="{{ path('back_sneaker_model_index') }}" class='account_item'>
+                <h3>Categories</h3>
+                <p>Manage the categories listed</p>
+            </a>
+            <a href="{{ path('back_sneaker_model_index') }}" class='account_item'>
+                <h3>Brands</h3>
+                <p>Manage the brands listed</p>
             </a>
         </div>
     </div>

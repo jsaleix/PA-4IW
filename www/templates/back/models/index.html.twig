@@ -18,7 +18,7 @@
                 <tr>
                     <td>{{ sneaker_model.id }}</td>
                     <td>{{ sneaker_model.name }}</td>
-                    <td>{{ sneaker_model.description }}</td>
+                    <td>{{ sneaker_model.description|slice(0, 10) }}</td>
                     <td>
                         <a href="{{ path('back_sneaker_model_show', {'id': sneaker_model.id}) }}">show</a>
                         <a href="{{ path('back_sneaker_model_edit', {'id': sneaker_model.id}) }}">edit</a>

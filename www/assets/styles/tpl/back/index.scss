@@ -1,0 +1,11 @@
+#admin_index{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .items{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+}
