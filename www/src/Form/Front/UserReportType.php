@@ -21,7 +21,7 @@ class UserReportType extends AbstractType
         $builder
             ->add('reason', EntityType::class, [
                 'class' => ReportReason::class,
-                'choices'=> $this->reasonRepository->findBy(['type' => 1]),
+                'choices'=> $this->reasonRepository->findBy(['type' => ReportReason::TYPE_USER]),
                 'choice_label' => 'name',
                 'multiple' => false
             ])

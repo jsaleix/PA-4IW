@@ -1,0 +1,22 @@
+[
+    {
+        "type": "PRODUCT",
+        "name": "FAKE PRODUCT",
+        "description": ""
+    },
+    {
+        "type": "PRODUCT",
+        "name": "Product damaged",
+        "description": ""
+    },
+    {
+        "type": "USER",
+        "name": "Bad behavior (insults, threats, etc.)",
+        "description": ""
+    },
+    {
+        "type": "USER",
+        "name": "bot",
+        "description": ""
+    }
+]

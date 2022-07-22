@@ -22,7 +22,7 @@ class ProductReportFormType extends AbstractType
         $builder
             ->add('reason', EntityType::class, [
                 'class' => ReportReason::class,
-                'choices'=> $this->reasonRepository->findBy(['type' => 2]),
+                'choices'=> $this->reasonRepository->findBy(['type' => ReportReason::TYPE_PRODUCT]),
                 'choice_label' => 'name',
                 'multiple' => false
             ])

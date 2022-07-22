@@ -30,7 +30,7 @@ class ReportController extends AbstractController
             return $this->redirectToRoute('front_profile', [ 'id' => $user->getId()]);
         }
 
-        $reasons = $reasonRepository->findBy(['type' => '1']);
+        //$reasons = $reasonRepository->findBy(['type' => '1']);
         $report = new UserReport();
         $form = $this->createForm( UserReportType::class, $report);
         $form->handleRequest($request);
@@ -60,7 +60,7 @@ class ReportController extends AbstractController
             $this->addFlash('warning', 'You\'ve already reported this product');
             return $this->redirectToRoute('front_sneaker_item_by_slug', [ 'slug' => $sneaker->getSlug()]);
         }
-        $reasons = $reasonRepository->findBy(['type' => '2']);
+        //$reasons = $reasonRepository->findBy(['type' => '2']);
         $report = new ProductReport();
         $form = $this->createForm( ProductReportFormType::class, $report);
         $form->handleRequest($request);
