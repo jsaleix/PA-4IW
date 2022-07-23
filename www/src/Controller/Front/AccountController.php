@@ -20,7 +20,7 @@ use App\Form\Front\Invoice\TrackingNumberFormType;
 use App\Form\Front\UserMailType;
 use App\Form\Front\UserType;
 
-use App\Service\Payment\SellerService;
+use App\Service\Front\SellerService;
 
 use Stripe\StripeClient;
 

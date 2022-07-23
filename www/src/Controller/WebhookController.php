@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Psr\Log\LoggerInterface;
 use App\Entity\Invoice;
-use App\Service\Payment\SellerService;
+use App\Service\Front\SellerService;
 use App\Service\Payment\PaymentService;
 
 #[Route('/webhook')]

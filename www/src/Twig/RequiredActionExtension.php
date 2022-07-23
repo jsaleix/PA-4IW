@@ -2,16 +2,18 @@
 namespace App\Twig;
 
 use App\Entity\User;
-use App\Service\Payment\SellerService;
-use phpDocumentor\Reflection\Types\Boolean;
+use App\Service\Front\SellerService;
+use App\Service\Back\ShopService;
+
 use Psr\Log\LoggerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class AppExtension extends AbstractExtension
+class RequiredActionExtension extends AbstractExtension
 {
     function __construct(private SellerService $sellerService,
-                         private LoggerInterface $logger)
+                        private ShopService $shopService,
+                        private LoggerInterface $logger)
     {}
 
     public function getFunctions()
@@ -19,6 +21,7 @@ class AppExtension extends AbstractExtension
         return [
             new TwigFunction('capabilitiesEnabled', [$this, 'capabilitiesEnabled']),
             new TwigFunction('waitingActionFromSeller', [$this, 'waitingActionFromSeller']),
+            new TwigFunction('waitingActionFromShop', [$this, 'waitingActionFromShop']),
         ];
     }
 
@@ -29,5 +32,10 @@ class AppExtension extends AbstractExtension
 
     public function waitingActionFromSeller(User $user): bool{
         return $this->sellerService->waitingActionFromSeller($user);
+    }
+
+    public function waitingActionFromShop(): bool
+    {
+        return $this->shopService->waitingActionFromShop();
     }
 }

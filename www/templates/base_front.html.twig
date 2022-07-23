@@ -29,7 +29,7 @@
 
     {% if app.user and is_granted('ROLE_SELLER') %}
         {%  if waitingActionFromSeller(app.user)  %}
-            <div class="alert alert-warning container">There is sneakers that are waiting for you intervention, please go to <a style="text-decoration: underline"  href="{{ path('account_seller_orders') }}">orders received</a></div>
+            <div class="alert alert-warning container">There is sneakers that are waiting for your intervention, please go to <a style="text-decoration: underline"  href="{{ path('account_seller_orders') }}">orders received</a></div>
         {% endif %}
     {% endif %}
 
