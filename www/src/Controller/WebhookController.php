@@ -85,37 +85,37 @@ class WebhookController extends AbstractController
         }
     }
 
-    #[Route('/stripe/{id}', name: 'stripe_event_visualizer', requirements: ['id' => '^\d+$'], methods: ['GET'])]
-    public function event(
-        Request $request,
-        $id,
-        InvoiceRepository $invoiceRepository,
-        LoggerInterface $logger
-    ): Response
-    {
-        $logger->info('I just got the logger');
+    // #[Route('/stripe/{id}', name: 'stripe_event_visualizer', requirements: ['id' => '^\d+$'], methods: ['GET'])]
+    // public function event(
+    //     Request $request,
+    //     $id,
+    //     InvoiceRepository $invoiceRepository,
+    //     LoggerInterface $logger
+    // ): Response
+    // {
+    //     $logger->info('I just got the logger');
 
-        $stripe= new StripeClient($_ENV['STRIPE_SK']);
-        $event = $stripe->events->retrieve($id);
-        $stripePI = $event['data']['object']['id'];
-        //dd($stripePI);
-        $invoice = $invoiceRepository->findOneBy(['stripePI' => $stripePI]);
-        //dd($invoice);
+    //     $stripe= new StripeClient($_ENV['STRIPE_SK']);
+    //     $event = $stripe->events->retrieve($id);
+    //     $stripePI = $event['data']['object']['id'];
+    //     //dd($stripePI);
+    //     $invoice = $invoiceRepository->findOneBy(['stripePI' => $stripePI]);
+    //     //dd($invoice);
 
-        return new JsonResponse([$event]);
-    }
+    //     return new JsonResponse([$event]);
+    // }
 
-    #[Route('/stripe/transfers', name: 'stripe_transfers_visualizer', methods: ['GET'])]
-    public function transfersList(
-        InvoiceRepository $invoiceRepository,
-        PaymentService $paymentService
-    ): Response
-    {
-        $invoice = $invoiceRepository->findOneBy(['id' => 13]);
-        //$test = $paymentService->confirmPaymentMP($invoice);
-        $stripe= new StripeClient($_ENV['STRIPE_SK']);
-        $transfers = $stripe->transfers->all(['limit' => 3]);
+    // #[Route('/stripe/transfers', name: 'stripe_transfers_visualizer', methods: ['GET'])]
+    // public function transfersList(
+    //     InvoiceRepository $invoiceRepository,
+    //     PaymentService $paymentService
+    // ): Response
+    // {
+    //     $invoice = $invoiceRepository->findOneBy(['id' => 13]);
+    //     //$test = $paymentService->confirmPaymentMP($invoice);
+    //     $stripe= new StripeClient($_ENV['STRIPE_SK']);
+    //     $transfers = $stripe->transfers->all(['limit' => 3]);
 
-        return new JsonResponse([]);
-    }
+    //     return new JsonResponse([]);
+    // }
 }
