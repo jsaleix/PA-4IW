@@ -20,6 +20,8 @@ use App\Form\Front\Invoice\TrackingNumberFormType;
 use App\Form\Front\UserMailType;
 use App\Form\Front\UserType;
 
+use App\Security\Voter\InvoiceVoter;
+
 use App\Service\Front\SellerService;
 
 use Stripe\StripeClient;
@@ -134,6 +136,7 @@ class AccountController extends AbstractController
     }
 
     #[Route('/orders/{id}', name: 'account_order', methods: ['GET'])]
+    #[IsGranted(InvoiceVoter::VIEW, 'invoice')]
     public function order(Invoice $invoice): Response
     {
         return $this->render('front/account/orders/show.html.twig', [
@@ -144,6 +147,7 @@ class AccountController extends AbstractController
 
 
     #[Route('/orders/receive/{id}', name: 'account_receive_order', requirements: ['id' => '^\d+$'], methods: ['POST'])]
+    #[IsGranted(InvoiceVoter::REPORT_AS_RECEIVED, 'invoice')]
     public function receiveParcel( Invoice $invoice, EntityManagerInterface $entityManager, Request $request)
     {
         if ($this->isCsrfTokenValid('receive'. $invoice->getId(), $request->request->get('_token'))) {
@@ -223,6 +227,7 @@ class AccountController extends AbstractController
 
     #[Route('/seller-orders/{id}', name: 'account_seller_order', methods: ['GET', 'POST'])]
     #[IsGranted("ROLE_SELLER")]
+    #[IsGranted(InvoiceVoter::VIEW_AS_SELLER, 'invoice')]
     public function sellerOder(Invoice $invoice, Request $request, EntityManagerInterface $entityManager): Response
     {
         $canSetTrackingNb = $invoice->getPaymentStatus() === Invoice::SOLD_STATUS;
