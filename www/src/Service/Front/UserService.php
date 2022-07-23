@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Service\Back;
+namespace App\Service\Front;
 
 use App\Entity\User;
 use App\Entity\Invoice;
 use App\Entity\Sneaker;
-
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\SneakerRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Boolean;
 use Psr\Log\LoggerInterface;
-use App\Repository\InvoiceRepository;
-
 use Stripe\StripeClient;
+use App\Repository\InvoiceRepository;
+use Symfony\Component\HttpFoundation\Request;
 
-class ShopService
+class UserService
 {
     public function __construct(
         private UserRepository $userRepository,
@@ -25,11 +25,14 @@ class ShopService
 
     ) {}
 
-    public function waitingActionFromShop(): bool
+    public function waitingReceivingFromUser(User $user): bool
     {
-        $invoices = $this->invoiceRepository->findShopInvoicesByStatus(Invoice::SOLD_STATUS);
+        $invoices = $this->invoiceRepository->findBy([
+            'paymentStatus' => Invoice::DELIVERING_STATUS,
+            'buyer' => $user
+        ]);
+        
         if( $invoices ) return true;
         return false;
     }
-    
 }

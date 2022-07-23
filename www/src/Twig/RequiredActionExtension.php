@@ -3,6 +3,7 @@ namespace App\Twig;
 
 use App\Entity\User;
 use App\Service\Front\SellerService;
+use App\Service\Front\UserService;
 use App\Service\Back\ShopService;
 
 use Psr\Log\LoggerInterface;
@@ -13,6 +14,7 @@ class RequiredActionExtension extends AbstractExtension
 {
     function __construct(private SellerService $sellerService,
                         private ShopService $shopService,
+                        private UserService $userService,
                         private LoggerInterface $logger)
     {}
 
@@ -22,6 +24,7 @@ class RequiredActionExtension extends AbstractExtension
             new TwigFunction('capabilitiesEnabled', [$this, 'capabilitiesEnabled']),
             new TwigFunction('waitingActionFromSeller', [$this, 'waitingActionFromSeller']),
             new TwigFunction('waitingActionFromShop', [$this, 'waitingActionFromShop']),
+            new TwigFunction('waitingReceivingFromUser', [$this, 'waitingReceivingFromUser']),
         ];
     }
 
@@ -37,5 +40,10 @@ class RequiredActionExtension extends AbstractExtension
     public function waitingActionFromShop(): bool
     {
         return $this->shopService->waitingActionFromShop();
+    }
+
+    public function waitingReceivingFromUser(User $user): bool
+    {
+        return $this->userService->waitingReceivingFromUser($user);
     }
 }

@@ -21,15 +21,21 @@
 
     {{ include('@front/components/header.html.twig') }}
 
-    {% if app.user and is_granted('ROLE_SELLER') %}
-        {%  if not capabilitiesEnabled(app.user)  %}
-            <div class="alert alert-danger container">Your Stripe transfers capabilities are disabled, please fix this on your <a style="text-decoration: underline"  href="{{ path('front_account_manage_stripe') }}">Stripe Dashboard</a></div>
+    {% if app.user %}
+        {% if is_granted('ROLE_SELLER') %}
+            {%  if not capabilitiesEnabled(app.user)  %}
+                <div class="alert alert-danger container">Your Stripe transfers capabilities are disabled, please fix this on your <a style="text-decoration: underline"  href="{{ path('front_account_manage_stripe') }}">Stripe Dashboard</a></div>
+            {% endif %}
         {% endif %}
-    {% endif %}
 
-    {% if app.user and is_granted('ROLE_SELLER') %}
-        {%  if waitingActionFromSeller(app.user)  %}
-            <div class="alert alert-warning container">There is sneakers that are waiting for your intervention, please go to <a style="text-decoration: underline"  href="{{ path('account_seller_orders') }}">orders received</a></div>
+        {% if is_granted('ROLE_SELLER') %}
+            {%  if waitingActionFromSeller(app.user)  %}
+                <div class="alert alert-warning container">There is sneakers that are waiting for your intervention, please go to <a style="text-decoration: underline"  href="{{ path('account_seller_orders') }}">orders received</a></div>
+            {% endif %}
+        {% endif %}
+
+        {%  if waitingReceivingFromUser(app.user)  %}
+            <div class="alert alert-primary container">You have order(s) out for delivery, please when you receive them, don't forget to report it<br/>To do so, go to <a style="text-decoration: underline"  href="{{ path('front_account_orders') }}">Your orders</a></div>
         {% endif %}
     {% endif %}
 
