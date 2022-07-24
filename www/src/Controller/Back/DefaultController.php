@@ -16,4 +16,5 @@ class DefaultController extends AbstractController
             'categories' => $categoryRepository->findAll()
         ]);
     }
+
 }

@@ -68,4 +68,9 @@ class SneakerRepository extends ServiceEntityRepository
             ;
     }
 
+
+    public function findSearch(): array
+    {
+        return $this -> findAll();
+    }
 }
