@@ -19,11 +19,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Form\Front\Invoice\TrackingNumberFormType;
 use App\Form\Front\UserMailType;
 use App\Form\Front\UserType;
+use App\Form\Front\UserDeleteSelfType;
 
 use App\Security\Voter\InvoiceVoter;
 
 use App\Service\Front\SellerService;
+use App\Service\Front\UserService;
 
+use Exception;
 use Stripe\StripeClient;
 
 #[Route('/account')]
@@ -59,7 +62,7 @@ class AccountController extends AbstractController
                 $user->getProfileImage()->setImageFile(null);
                 return $this->redirectToRoute('front_account_profile', [], Response::HTTP_SEE_OTHER);
             }catch(\Exception $e){
-                $this->addFlash('warning', $e->getMessage());
+                //$this->addFlash('warning', $e->getMessage());
                 $this->addFlash('warning', 'An error occured');
             }
 
@@ -122,6 +125,50 @@ class AccountController extends AbstractController
             }
         }
         return $this->render('front/account/profile/change_mail.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/account/profile/delete', name: 'account_profile_delete', methods: ['GET', 'POST'])]
+    public function delete(
+                            Request $request, 
+                            EntityManagerInterface $entityManager,
+                            UserService $userService,
+                            UserPasswordHasherInterface $passwordHasher
+    ): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserDeleteSelfType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try{
+                $requestParams = $request->get('user_delete_self');
+                $pwd = $requestParams['password'];
+
+                if( !$pwd ){
+                    throw new Exception('Empty password field');
+                }
+                if( !$passwordHasher->isPasswordValid($user, $pwd) ){
+                    throw new Exception('Wrong password');
+                }
+                if( $userService->hasActiveTransaction($user) ){
+                    throw new Exception("You cannot delete your account since you have transaction(s) pending");
+                }
+                $img = $user->getProfileImage();
+                if($img){
+                    $entityManager->remove($img);
+                }
+                $entityManager->remove($user);
+                $entityManager->flush();
+                
+                return $this->redirectToRoute('default', [], Response::HTTP_SEE_OTHER);
+            }catch(Exception $e){
+                $this->addFlash('danger', $e->getMessage());
+            }
+        }
+
+        return $this->render('front/account/profile/delete_account.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -246,6 +293,5 @@ class AccountController extends AbstractController
             'form' => $canSetTrackingNb ? $form->createView() : null
         ]);
     }
-
 
 }

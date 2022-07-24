@@ -20,7 +20,6 @@ class UserService
         private UserRepository $userRepository,
         private EntityManagerInterface $entityManager,
         private LoggerInterface $logger,
-        private SneakerRepository $sneakerRepository,
         private InvoiceRepository $invoiceRepository
 
     ) {}
@@ -33,6 +32,29 @@ class UserService
         ]);
         
         if( $invoices ) return true;
+        return false;
+    }
+
+    public function hasActiveTransaction(User $user): bool{
+
+        //Checking if the user has not orders not finished yet
+        foreach( array(Invoice::SOLD_STATUS, Invoice::DELIVERING_STATUS) as $status){
+            $invoices = $this->invoiceRepository->findBy([
+                'paymentStatus' => $status,
+                'buyer' => $user
+            ]);
+            if( $invoices ) return true;
+        }
+
+        //Checking if the user has any active transaction as a seller
+        if( in_array('ROLE_SELLER', $user->getRoles()) ){
+            foreach( array(Invoice::SOLD_STATUS, Invoice::DELIVERING_STATUS) as $status){
+                $invoices = $this->invoiceRepository->findUserInvoicesByStatus($status, $user);
+            }
+            
+            if( $invoices ) return true;
+        }
+
         return false;
     }
 }
