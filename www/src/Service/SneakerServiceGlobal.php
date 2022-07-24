@@ -29,11 +29,15 @@ class SneakerServiceGlobal
     public function hasActiveTransactionMP(Sneaker $sneaker): bool
     {
         if($sneaker->getSold()){
+            /**
+             * Looking for an invoice with this sneaker and status "sold"
+             * If this is the case, the sneaker has no active transaction
+             */
             $invoice = $this->invoiceRepository->findOneBy([
                 'sneaker' => $sneaker,
                 'paymentStatus' => Invoice::FINISHED_STATUS
             ]);
-            if($invoice !== null) return true;
+            if(!$invoice) return true;
         }
 
         return false;
