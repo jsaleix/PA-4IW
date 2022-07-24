@@ -19,14 +19,23 @@ class DefaultController extends AbstractController
                           SneakerRepository $sneakerRepository,
                           SneakerModelRepository $sneakerModelRepository
     ): Response
-    {        
-        
+    {
+
         return $this->render('front/default/index.html.twig', [
             'categories' => $categoryRepository->findAll(),
             'brands' => $brandRepository->findBy(array(), array(), 4, 0),
             'popularSneakersFromShop' => $sneakerRepository->findBy(['from_shop' => true, 'sold' => null ], ['id' => 'DESC'], 4, 0),
             'popularSneakersFromMP' => $sneakerRepository->findBy(['from_shop' => false, 'sold' => null], ['id' => 'DESC'], 4, 0),
             'lastModels' => $sneakerModelRepository->findBy([], ['id' => 'DESC'], 4, 0)
+        ]);
+    }
+
+    #[Route('/search')]
+    public function findSneakersOverall(SneakerRepository $repository)
+    {
+        $sneakers = $repository -> findSearch();
+        return $this ->render('front/search/index.html.twig', [
+            'sneakers' => $sneakers,
         ]);
     }
 }
