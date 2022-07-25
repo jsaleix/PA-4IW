@@ -54,3 +54,12 @@
     }
     
 }
+
+.items_row{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+
+    margin : 20px;
+
+}

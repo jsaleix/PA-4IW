@@ -4,7 +4,15 @@
 
 {% block body %}
 
-    <div class="account container">
+<div class="flex flex-row flex-wrap justify-content-start">    
+    <div class="flex flex-column" style="
+        width: 30%;
+    ">
+    {{ include('@front/account/menu/menu.html.twig') }}
+    </div>
+    <div class="account container" style="
+        width: 60%;
+    ">
         <div class="orders-header">
             <h1>Your orders</h1>
         </div>
@@ -28,6 +36,8 @@
         {% endif %}
         
     </div>
+</div>
+
 
     <style>
         .invoices-list{

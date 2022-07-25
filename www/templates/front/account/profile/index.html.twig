@@ -4,7 +4,15 @@
 
 {% block body %}
 
-<div class="bg-white shadow overflow-hidden sm:rounded-lg m-8">
+<div class="flex flex-row flex-wrap justify-content-start">    
+<div class="flex flex-column" style="
+    width: 30%;
+">
+{{ include('@front/account/menu/menu.html.twig') }}
+</div>
+<div class="bg-white shadow overflow-hidden sm:rounded-lg m-8" style="
+    width: 60%;
+">
   <div class="px-4 py-5 sm:px-6">
     <h3 class="text-lg leading-6 font-medium text-gray-900">Edit your profile</h3>
     <p class="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p>
@@ -77,5 +85,5 @@
     </div>
 
 </div>
-
+</div>
 {% endblock %}

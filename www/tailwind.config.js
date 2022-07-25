@@ -8,9 +8,13 @@ module.exports = {
     './assets/js/**/*.js',
     './assets/js/**/*.jsx', // Si vous utilisez des fichiers React JSX
     ], 
-  theme: {
-    extend: {},
-  },
+    theme: {
+      extend: {
+        gridTemplateRows: {
+          '[auto,auto,1fr]': 'auto auto 1fr',
+        },
+      },
+    },
   plugins: [
     require('@tailwindcss/forms'),
     require("daisyui"),

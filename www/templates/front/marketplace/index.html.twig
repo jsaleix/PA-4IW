@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<div class="marketplace container">
+{# <div class="marketplace container">
     <div class="header">
         <h1>Our marketplace</h1>
         <p>lorem ipsum</p>
@@ -35,7 +35,50 @@
             <p>No sneakers found </p>
         {% endfor %}
     </div>
+</div> #}
+
+<h2 class="text-2xl font-extrabold tracking-tight text-gray-900 m-8">Marketplace</h2>
+
+<div class="flex flex-row flex-wrap m-8">
+    {% for sneaker in sneakers %}
+<a href="{{ path('front_sneaker_item_by_slug', { 'slug': sneaker.slug }) }}">
+
+    <div class="bg-white">
+        <div class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+
+            <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+            <div class="group relative">
+                <div class="w-64 min-h-64 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
+                    {% if( sneaker.getImages() is not empty) %}
+                        <div class="img_container">
+                            <img src="{{ vich_uploader_asset(sneaker.getImages()[0]) }}" class="w-64 min-h-64 object-center object-cover lg:w-full lg:h-full" alt="{{ sneaker. name }}" />
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mt-4 flex justify-between">
+                <div>
+                    <h3 class="text-sm text-gray-700">
+                        <span aria-hidden="true" class="absolute inset-0"></span>
+                        {{sneaker.name}}
+                    </h3>
+                    <p class="mt-1 text-sm text-gray-500">{{sneaker.brand.name}}</p>
+                </div>
+                <p class="text-sm font-medium text-gray-900">${{sneaker.price}}</p>
+                </div>
+            </div>
+            <!-- More products... -->
+            </div>
+        </div>
+    </div>
+</a>
+
+    
+    {% else %}
+        <p>No sneakers found </p>
+    {% endfor %}
+
 </div>
+
 
 <style>
     .filters{

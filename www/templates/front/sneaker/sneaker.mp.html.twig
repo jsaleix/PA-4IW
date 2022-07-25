@@ -5,53 +5,171 @@
 {% block body %}
 
 <div class="container" id="sneaker-page">
-    <div class="left">
+    {# <div class="left">
         {{ include('@front/sneaker/components/sneaker_left_column.html.twig') }}
-    </div>
-    <div class="right">
-        <div class="profile-part">
-            <a href="{{  path('front_profile', { 'id': sneaker.publisher.id }) }}" class="img_container">
-                {% if sneaker.publisher.profileImage is not empty %}
-                    <img src="{{ vich_uploader_asset(sneaker.publisher.profileImage) }}" alt="profile picture"/>
-                {% else %}
-                    <img src="https://images.unsplash.com/photo-1571601035754-5c927f2d7edc" alt="profile picture"/>
-                {% endif %}
-            </a>
-            <span>Provided by <a style="font-weight: bolder;" href="{{  path('front_profile', { 'id': sneaker.publisher.id }) }}">{{ sneaker.publisher.name??'Unknown' }} {{ sneaker.publisher.surname }}</a></span>
-        </div>
-        <span>{{sneaker.publicationDate is empty ? "" : sneaker.publicationDate|date("d/m/Y")}}</span>
-        {% if(not sneaker.sold ) %}
-            <a href="{{ path('marketplace_product_checkout', {'id': sneaker.id }) }}">
-                <button class="btn btn-primary">${{ sneaker.price }} - BUY NOW</button>
-            </a>
-        {% else %}
-            <h4>Sold</h4>
-        {%  endif %}
+    </div> #}
+    
 
+</div>
+
+<div class="flex flex-row flex-wrap justify-content-center m-8">
+<div class="bg-white">
+  <div class="pt-6">
+    <nav aria-label="Breadcrumb">
+      <ol role="list" class="max-w-2xl mx-auto px-4 flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
+        <li>
+          <div class="flex items-center">
+            <a href="#" class="mr-2 text-sm font-medium text-gray-900"> Sneakers </a>
+            <svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="w-4 h-5 text-gray-300">
+              <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
+            </svg>
+          </div>
+        </li>
+
+        
+
+        <li class="text-sm">
+          <a href="#" aria-current="page" class="font-medium text-gray-500 hover:text-gray-600">{{sneaker.name}}  </a>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- Image gallery -->
+    <div class="mt-6 max-w-2xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8">
+        <div class="flex flex-row flex-wrap justify-content-center">
+        {% if( sneaker.getImages() is not empty) %}
+            {% for image in sneaker.getImages %}
+            <div class="aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
+                <img src="{{ vich_uploader_asset(image) }}" style="
+                    width: 400px;
+                " />
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if( sneaker.getImages() is not empty) %}
+        <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
+            <img id="main-picture" src="{{ vich_uploader_asset(sneaker.getImages()[0]) }}" alt="{{ sneaker. name }}" />
+        </div>
+        
+        {% endif %}
+        </div>
+        
+     
+    </div>
+
+    <!-- Product info -->
+    <div class="max-w-2xl mx-auto pt-10 pb-16 px-4 sm:px-6 lg:max-w-7xl lg:pt-16 lg:pb-24 lg:px-8 lg:grid lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8">
+      <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+        <h1 class="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">{{sneaker.name}}</h1>
+      </div>
+
+      <!-- Options -->
+      <div class="mt-4 lg:mt-0 lg:row-span-3">
+  
+        <p class="text-3xl text-gray-900">${{sneaker.price}}</p>
+
+        {# <!-- Reviews -->
+        <div class="mt-6">
+          <h3 class="sr-only">Reviews</h3>
+          <div class="flex items-center">
+            <div class="flex items-center">
+              <!--
+                Heroicon name: solid/star
+
+                Active: "text-gray-900", Default: "text-gray-200"
+              -->
+              <svg class="text-gray-900 h-5 w-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+
+              <!-- Heroicon name: solid/star -->
+              <svg class="text-gray-900 h-5 w-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+
+              <!-- Heroicon name: solid/star -->
+              <svg class="text-gray-900 h-5 w-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+
+              <!-- Heroicon name: solid/star -->
+              <svg class="text-gray-900 h-5 w-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+
+              <!-- Heroicon name: solid/star -->
+              <svg class="text-gray-200 h-5 w-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            </div>
+            <p class="sr-only">4 out of 5 stars</p>
+            <a href="#" class="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">117 reviews</a>
+          </div>
+        </div> #}
+
+        <form class="mt-10">
+          {% if sneaker.sneakerModel is not null %}
+                <h3 class="text-sm text-gray-900 font-medium"><a href="{{ path('front_sneaker_model_show', {'id': sneaker.sneakerModel.id }) }}">{{ sneaker.sneakerModel.name }}</a></h3>
+            {% endif %}
+          <!-- Sizes -->
+          <div class="mt-10">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm text-gray-900 font-medium">Size</h3>
+              
+            </div>
+
+            <fieldset class="mt-4">
+              <legend class="sr-only">Choose a size</legend>
+              <div class="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
+                <!-- Active: "ring-2 ring-indigo-500" -->
+                <label class="group relative border rounded-md py-3 px-4 m-8 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6 bg-white shadow-sm text-gray-900 cursor-pointer">
+                  <input type="radio" name="size-choice" value="XS" class="sr-only" aria-labelledby="size-choice-1-label">
+                  <span id="size-choice-1-label"> {{sneaker.size}} </span>
+
+                  <!--
+                    Active: "border", Not Active: "border-2"
+                    Checked: "border-indigo-500", Not Checked: "border-transparent"
+                  -->
+                  <span class="absolute -inset-px rounded-md pointer-events-none" aria-hidden="true"></span>
+                </label>
+
+                </div>
+            </fieldset>
+          </div>
+            
+        </form>
+      </div>
+
+      <div class="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+        <!-- Description and details -->
         <div>
-            <div style="border-bottom: 1px solid gray">
-                <h4>Materials</h4>
-                {%  if(sneaker.getMaterials is not empty) %}
+          <h3 class="sr-only">Description</h3>
 
-                {% else %}
-                    <span>Not specified</span>
-                {% endif %}
-            </div>
-            <div style="border-bottom: 1px solid gray">
-                <h4>Colors</h4>
-                {%  if(sneaker.getColors is not empty) %}
+          <div class="space-y-6">
+            <p class="text-base text-gray-900">{{ sneaker.description }}</p>
+          </div>
 
+            <div class="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
+            {% if(not sneaker.sold ) %}
+                    <a href="{{ path('marketplace_product_checkout', {'id': sneaker.id }) }}" class="m-6">
+                        <button class="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">BUY NOW</button>
+                    </a>
                 {% else %}
-                    <span>Not specified</span>
-                {% endif %}
+                    <h4>Sold</h4>
+                {%  endif %}
+
+                <a href="{{ path('report-sneaker', { 'id': sneaker.id }) }}" class="m-6">
+                    <button class="mt-10 w-full bg-red-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Report this post</button>
+                </a>
             </div>
-            <a href="{{ path('report-sneaker', { 'id': sneaker.id }) }}">
-                <button class="btn btn-secondary">Report this product</button>
-            </a>
         </div>
 
+        
+      </div>
     </div>
-
+  </div>
+</div>
 </div>
 
 {{ include('@front/sneaker/components/sneaker_css.html.twig') }}

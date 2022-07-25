@@ -1,5 +1,4 @@
-<a href="{{ path('front_sneaker_item_by_slug', { 'slug': sneaker.slug }) }}" 
-    class="sneaker_item">
+<a href="{{ path('front_sneaker_item_by_slug', { 'slug': sneaker.slug }) }}" class="sneaker_item">
     <div class="sneaker_data">
         {% if( sneaker.getImages() is not empty) %}
         <div class="img_container">
@@ -12,3 +11,22 @@
         <span class="source">{{sneaker.fromShop ? 'From Shop' : 'From Marketplace'}}</span>
     </div>
 </a>
+
+{# <a href="{{ path('front_sneaker_item_by_slug', { 'slug': sneaker.slug }) }}" class="sneaker_item">
+
+<div>
+    <h3 class="text-sm text-gray-700">
+        <a href="#">
+        {% if( sneaker.getImages() is not empty) %}
+        <div class="img_container">
+            <img src="{{ vich_uploader_asset(sneaker.getImages()[0]) }}" alt="{{ sneaker. name }}" style="width=300px;"/>
+        </div>
+        {% endif %}
+        {{sneaker.name}}
+        </a>
+    </h3>
+    <p class="mt-1 text-sm text-gray-500">{{ sneaker.brand.name}} </p>
+</div>
+<p class="text-sm font-medium text-gray-900">${{sneaker.price}}</p>
+<p class="text-sm font-medium text-gray-900">{{sneaker.fromShop ? 'From Shop' : 'From Marketplace'}}</p>
+</a> #}
