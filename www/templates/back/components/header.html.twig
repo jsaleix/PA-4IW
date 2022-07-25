@@ -1,43 +1,51 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="{{path('front_default') }}">
-        <img id="logo" src="{{asset('images/logo.png')}}" alt="SNKERS logo"/>
+<header class="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
+  <div class="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
+    <a class="logo_container" href="{{path('front_default') }}">
+        <img id="logo" src="{{asset('images/logo.png')}}" class="w-22 h-12" alt="SNKERS logo"/>
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('admin_dashboard_index') }}">Dashboard</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('admin_shop_index') }}">Shop</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('admin_marketplace_index') }}">Marketplace</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('admin_user_dashboard') }}">Users</a>
-            </li>
-            {% if ( app.user ) %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{app.user.username}}
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="{{ path('default') }}">Front</a>
-                        <a class="dropdown-item" href="/account">Account</a>
-                        <a class="dropdown-item" href="/logout">Logout</a>
-                    </div>
-                </li>
-            {% else %}
-                <li>
-                    <a href="/login" class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</a>
-                </li>
-            {% endif %}
-        </ul>
+    <!-- Search input -->
+    <div class="flex justify-center flex-1 lg:mr-32">
+      <div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
+        <div class="absolute inset-y-0 flex items-center pl-2">
+          <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+          </svg>
+        </div>
+        <input class="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input" type="text" placeholder="Search for projects" aria-label="Search">
+      </div>
     </div>
-</nav>
+    <ul class="flex items-center flex-shrink-0 space-x-6">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('admin_dashboard_index') }}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('admin_shop_index') }}">Shop</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('admin_marketplace_index') }}">Marketplace</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('admin_user_dashboard') }}">Users</a>
+        </li>
+        {% if ( app.user ) %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{app.user.username}}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{{ path('default') }}">Front</a>
+                    <a class="dropdown-item" href="/account">Account</a>
+                    <a class="dropdown-item" href="/logout">Logout</a>
+                </div>
+            </li>
+        {% else %}
+            <li>
+                <a href="/login" class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</a>
+            </li>
+        {% endif %}
+    </ul>
+  </div>
+</header>
 
 
 <style>

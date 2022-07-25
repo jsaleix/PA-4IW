@@ -12,7 +12,7 @@
                 <h2>Basic information</h2>
                 <span>{{ user.id }} - {{ user.email }}</span>
                 <span>{{ user.roles ? user.roles|json_encode : '' }}</span>
-                <span>{{ user.name??'No name set'}} }}</span>
+                <span>{{ user.name ? 'No name set'}}</span>
                 <span>{{ user.surname??'No surname set' }}</span>
                 <span>{{ user.city??'No city set' }}</span>
                 <span>{{ user.address??'No address set' }}</span>

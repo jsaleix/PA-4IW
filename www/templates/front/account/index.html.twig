@@ -4,63 +4,154 @@
 
 {% block body %}
 
-<div class="container account">
-    <h1>Your account</h1>
+  <div class="d-flex flex-row justify-content-center">
+        <div class="container mt-4 mx-auto">
+          <a href="{{ path('front_account_profile') }}" class='account_item'>
 
-    <div class='account_items'>
-        <a href="{{ path('front_account_profile') }}" class='account_item'>
-            <h3>Edit your profile</h3>
-            <p>Edit your profile information and password here.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div class="card m-2 cursor-pointer border border-gray-400 rounded-lg hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200">
+                <div class="m-3">
+                <h2 class="text-lg mb-2">Edit your profile</h2>
+                <p class="font-light font-mono text-sm text-gray-700 hover:text-gray-900 transition-all duration-200">Edit your profile information and password here</p>
+                </div>
+            </div>
+        </div>
         </a>
-        <a href="{{ path('front_account_orders') }}" class='account_item'>
-            <h3>Your orders</h3>
-            <p>List your orders</p>
-        </a>
-        {% if(is_granted('ROLE_SELLER')) %}
-            {% if not capabilitiesEnabled(app.user) %}
+
+        </div>
+
+  <div class="container mt-4 mx-auto">
+    <a href="{{ path('front_account_orders') }}" class='account_item'>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div class="card m-2 cursor-pointer border border-gray-400 rounded-lg hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200">
+        <div class="m-3">
+          <h2 class="text-lg mb-2">Your orders
+        <p class="font-light font-mono text-sm text-gray-700 hover:text-gray-900 transition-all duration-200">List your orders</p>
+        </div>
+      </div>
+    </div>
+    </a>
+  </div>
+
+  {% if(is_granted('ROLE_SELLER')) %}
+        {% if not capabilitiesEnabled(app.user) %}
+            <div class="container mt-4 mx-auto">
                 <a href="{{ path('front_account_manage_stripe') }}" class='account_item'>
-                    <h3>Manage your Stripe account</h3>
-                    <p class="red-font">Your Stripe transfers capabilities are disabled, please fix this on your <strong>Stripe Dashboard </strong></p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                <div class="card m-2 cursor-pointer border border-gray-400 rounded-lg hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200">
+                    <div class="m-3">
+                    <h2 class="text-lg mb-2">Manage your Stripe account
+                    <span class="text-sm text-teal-800 font-mono bg-teal-100 inline rounded-full px-2 align-top float-right animate-pulse">Tag</span></h2>
+                    <p class="font-light font-mono text-sm text-gray-700 hover:text-gray-900 transition-all duration-200">Your Stripe transfers capabilities are disabled, please fix this on your <strong>Stripe Dashboard </strong></p>
+                    </div>
+                </div>
+                </div>
                 </a>
+            </div>
             {% else %}
-            
+            <div class="container mt-4 mx-auto">
                 <a href="{{ path('front_account_seller_orders') }}" class='account_item'>
-                    <h3>Your sellings</h3>
-                    <p>Here are listed every sneakers you have sold and provided parcel id for your clients.</p>
-                </a>
 
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                <div class="card m-2 cursor-pointer border border-gray-400 rounded-lg hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200">
+                    <div class="m-3">
+                    <h2 class="text-lg mb-2">Your sellings
+                    <span class="text-sm text-teal-800 font-mono bg-teal-100 inline rounded-full px-2 align-top float-right animate-pulse">Tag</span></h2>
+                    <p class="font-light font-mono text-sm text-gray-700 hover:text-gray-900 transition-all duration-200">Here are listed every sneakers you have sold and provided parcel id for your clients.</p>
+                    </div>
+                </div>
+                </div>
+                </a>
+            </div>
+
+            <div class="container mt-4 mx-auto">
                 <a href="{{ path('front_account_seller_products') }}" class='account_item'>
-                    <h3>Your products</h3>
-                    <p>Here are listed all the sneakers you're currently selling or you've sold.</p>
-                </a>
 
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                <div class="card m-2 cursor-pointer border border-gray-400 rounded-lg hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200">
+                    <div class="m-3">
+                    <h2 class="text-lg mb-2">Your products
+                    <p class="font-light font-mono text-sm text-gray-700 hover:text-gray-900 transition-all duration-200">Here are listed all the sneakers you're currently selling or you've sold.</p>
+                    </div>
+                </div>
+                </div>
+                </a>
+            </div>
+
+            <div class="container mt-4 mx-auto">
                 <a href="{{ path('front_account_sneaker_add') }}" class='account_item'>
-                    <h3>Publish</h3>
-                    <p>Publish and sell your own sneakers</p>
-                </a>
 
-                <a href="{{ path('front_account_manage_stripe') }}" class='account_item'>
-                    <h3>Manage your Stripe account</h3>
-                    <p>Your Stripe panel in which you can see and manage all your payments from SNKERS</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                <div class="card m-2 cursor-pointer border border-gray-400 rounded-lg hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200">
+                    <div class="m-3">
+                    <h2 class="text-lg mb-2">Publish
+                    <p class="font-light font-mono text-sm text-gray-700 hover:text-gray-900 transition-all duration-200">Publish and sell your own sneakers</p>
+                    </div>
+                </div>
+                </div>
                 </a>
+            </div>
+
+            <div class="container mt-4 mx-auto">
+                <a href="{{ path('front_account_manage_stripe') }}" class='account_item'>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                <div class="card m-2 cursor-pointer border border-gray-400 rounded-lg hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200">
+                    <div class="m-3">
+                    <h2 class="text-lg mb-2">Manage your Stripe account
+                    <p class="font-light font-mono text-sm text-gray-700 hover:text-gray-900 transition-all duration-200">Your Stripe panel in which you can see and manage all your payments from SNKERS</p>
+                    </div>
+                </div>
+                </div>
+                </a>
+            </div>
+               
             {% endif %}
         {% else %}
+
+        <div class="container mt-4 mx-auto">
             <a href="{{ path('front_account_become_seller') }}" class='account_item'>
-                <h3>Become seller</h3>
-                <p>Want to be part of the Marketplace and start selling your own sneaker? Become a seller here!</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    <div class="card m-2 cursor-pointer border border-gray-400 rounded-lg hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200">
+                        <div class="m-3">
+                            <h2 class="text-lg mb-2">Become seller
+                            <p class="font-light font-mono text-sm text-gray-700 hover:text-gray-900 transition-all duration-200">Want to be part of the Marketplace and start selling your own sneaker? Become a seller here!</p>
+                        </div>
+                    </div>
+                </div>
             </a>
+        </div>
         {% endif %}
 
-        <a href="{{ path('front_account_likes') }}" class='account_item'>
-            <h3>Your likes</h3>
-            <p>Show every sneakers you've liked</p>
-        </a>
+        <div class="container mt-4 mx-auto">
+            <ahref="{{ path('front_account_likes') }}" class='account_item'>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    <div class="card m-2 cursor-pointer border border-gray-400 rounded-lg hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200">
+                        <div class="m-3">
+                            <h2 class="text-lg mb-2">Your likes
+                            <p class="font-light font-mono text-sm text-gray-700 hover:text-gray-900 transition-all duration-200">Show every sneakers you've liked</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
 
-        <a href="" class='account_item'>
-            <h3>Help</h3>
-            <p>Any question or issue your encountering? Click here.</p>
-        </a>
-    </div>
+        <div class="container mt-4 mx-auto">
+            <a href="{{ path('front_account_become_seller') }}" class='account_item'>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    <div class="card m-2 cursor-pointer border border-gray-400 rounded-lg hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200">
+                        <div class="m-3">
+                            <h2 class="text-lg mb-2">Help
+                            <p class="font-light font-mono text-sm text-gray-700 hover:text-gray-900 transition-all duration-200">Any question or issue your encountering? Click here.</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
 </div>
 
 {% endblock %}
