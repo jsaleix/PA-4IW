@@ -27,7 +27,7 @@ class UserFixtures extends Fixture
     {
         $admin = (new User())
             ->setEmail('admin@admin.fr')
-            //->setIsVerified(true)
+            ->setIsVerified(true)
             ->setRoles(['ROLE_ADMIN'])
         ;
         $admin->setPassword($this->userPasswordHasher->hashPassword($admin, 'test'));
@@ -36,7 +36,7 @@ class UserFixtures extends Fixture
 
         $user = (new User())
             ->setEmail('user@user.fr')
-            //->setIsVerified(true)
+            ->setIsVerified(true)
             ->setRoles(['ROLE_USER'])
         ;
         $user->setPassword($this->userPasswordHasher->hashPassword($user, 'test'));
@@ -52,7 +52,7 @@ class UserFixtures extends Fixture
 
         $seller = (new User())
             ->setEmail('seller@seller.fr')
-            //->setIsVerified(true)
+            ->setIsVerified(true)
             ->setRoles(['ROLE_USER'])
             ->setStripeConnectId($stripeAccount)
         ;
