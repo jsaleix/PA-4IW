@@ -1,54 +1,34 @@
 {% extends 'base_back.html.twig' %}
 
-{% block title %}Hello DefaultController!{% endblock %}
+{% block title %}Category index{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper {
-            margin: 1em auto;
-            max-width: 800px;
-            width: 95%;
-            font: 18px/1.5 sans-serif;
-        }
-
-        .example-wrapper code {
-            background: #F5F5F5;
-            padding: 2px 6px;
-        }
-    </style>
-
-    <div class="example-wrapper">
-        <h1>Gérer les sneakers</h1>
-
-        <table class="table">
-            <thead>
+<div class="container">
+    <table class="table">
+        <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
             </tr>
-            </thead>
-            <tbody>
+        </thead>
+        <tbody>
+        {% for category in categories %}
             <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <td>{{ category.id }}</td>
+                <td>{{ category.name }}</td>
+                <td>{{ category.description }}</td>
+                <td>
+                    <a href="{{ path('back_brand_show', {'id': category.id}) }}">show</a>
+                    <a href="{{ path('back_brand_edit', {'id': category.id}) }}">edit</a>
+                </td>
             </tr>
+        {% else %}
             <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
+                <td colspan="5">no records found</td>
             </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    {{ dump(sneakers) }}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
