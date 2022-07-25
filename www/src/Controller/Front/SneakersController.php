@@ -2,9 +2,11 @@
 
 namespace App\Controller\Front;
 
+use App\Datas\SearchData;
 use App\Entity\Image;
 use App\Entity\Invoice;
 use App\Entity\Sneaker;
+use App\Form\Front\SearchForm;
 use App\Form\Front\SneakerType;
 use App\Repository\InvoiceRepository;
 use App\Repository\SneakerRepository;
@@ -165,6 +167,19 @@ class SneakersController extends AbstractController
         }else{
             return $this->render('front/sneaker/sneaker.mp.html.twig', $vars);
         }
+    }
+
+    #[Route('/search')]
+    public function findSneakersOverall(SneakerRepository $repository, Request $request)
+    {
+        $data = new SearchData();
+        $form = $this ->createForm(SearchForm::class, $data);
+        $form->handleRequest($request);
+        $sneakers = $repository -> findSearch($data);
+        return $this ->render('front/search/index.html.twig', [
+            'sneakers' => $sneakers,
+            'form' =>$form ->createView()
+        ]);
     }
 
 }

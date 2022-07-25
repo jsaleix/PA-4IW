@@ -3,13 +3,23 @@
 {% block title %} Our products {% endblock %}
 
 {% block body %}
-    <div class="sneakers_items">
-        {% for sneaker in sneakers %}
-            {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
-        {% else %}
-            <p>No sneakers found </p>
-        {% endfor %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                {%  include 'front/search/filter.html.twig' with {form: form} only %}
+            </div>
+            <div class="col-md-9">
+                <div class="sneakers_items">
+                    {% for sneaker in sneakers %}
+                        {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
+                    {% else %}
+                        <p>No sneakers found </p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
+
 
     <script>
         let selector = document.forms[0];

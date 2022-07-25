@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Datas\SearchData;
 use App\Entity\Sneaker;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -68,9 +69,40 @@ class SneakerRepository extends ServiceEntityRepository
             ;
     }
 
-
-    public function findSearch(): array
+    /**
+     * @param SearchData $search
+     * @return Sneaker[]
+     */
+    public function findSearch(SearchData $search): array
     {
-        return $this -> findAll();
+        $query = $this
+            ->createQueryBuilder('p')
+            ->select('c', 'p')
+            ->join('p.brand', 'c');
+        if (!empty($search-> q)) {
+            $query = $query
+                -> andWhere('p.name LIKE :q')
+                ->setParameter('q', "%{$search-> q}%");
+        }
+
+        if (!empty($search->min)) {
+            $query = $query
+                ->andWhere('p.price >= :min')
+                ->setParameter('min', $search->min);
+        }
+
+        if (!empty($search->max)) {
+            $query = $query
+                ->andWhere('p.price <= :max')
+                ->setParameter('max', $search->max);
+        }
+
+        if (!empty($search->categories)) {
+            $query = $query
+                ->andWhere('c.id IN (:sneaker)')
+                ->setParameter('sneaker', $search->categories);
+        }
+
+         return $query->getQuery()->getResult();
     }
 }

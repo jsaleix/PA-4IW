@@ -35,13 +35,4 @@ class DefaultController extends AbstractController
     {
         return $this->render('front/default/about-us.html.twig');
     }
-    
-    #[Route('/search')]
-    public function findSneakersOverall(SneakerRepository $repository)
-    {
-        $sneakers = $repository -> findSearch();
-        return $this ->render('front/search/index.html.twig', [
-            'sneakers' => $sneakers,
-        ]);
-    }
 }
