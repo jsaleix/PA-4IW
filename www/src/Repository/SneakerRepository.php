@@ -97,6 +97,12 @@ class SneakerRepository extends ServiceEntityRepository
                 ->setParameter('max', $search->max);
         }
 
+        if (!is_null($search->fromShop)) {
+            $query = $query
+                ->andWhere('p.from_shop = (:fromShop)')
+                ->setParameter('fromShop', $search->fromShop);
+        }
+
         if (!empty($search->categories)) {
             $query = $query
                 ->andWhere('c.id IN (:sneaker)')

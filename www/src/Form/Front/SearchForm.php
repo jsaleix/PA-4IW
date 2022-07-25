@@ -8,6 +8,7 @@ use App\Entity\Sneaker;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -47,6 +48,16 @@ class SearchForm extends AbstractType
                 'attr' => [
                     'placeholder' => 'Maximal price'
                 ]
+            ])
+
+            ->add('fromShop', ChoiceType::class,[
+                'label' => false,
+                'required' => false,
+                'choices'  => [
+                    'All' => null,
+                    'Marketplace' => false,
+                    'Shop' => true,
+                  ],
             ])
         ;
     }

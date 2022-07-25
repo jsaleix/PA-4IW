@@ -27,4 +27,10 @@ class SearchData
      * @var null|integer
      */
     public $max;
+
+    /**
+     * @var null|bool
+     */
+    public $fromShop;
+
 }
