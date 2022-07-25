@@ -16,7 +16,7 @@ class ColorType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom de la paire'
+                'label' => 'Nom de la couleur'
             ])
             ->add('description')
             ->add('hexa_value')
