@@ -38,6 +38,8 @@ class UserFixtures extends Fixture
             ->setEmail('user@user.fr')
             ->setIsVerified(true)
             ->setRoles(['ROLE_USER'])
+            ->setCity('Paris')
+            ->setAddress('242')
         ;
         $user->setPassword($this->userPasswordHasher->hashPassword($user, 'test'));
         $manager->persist($user);
