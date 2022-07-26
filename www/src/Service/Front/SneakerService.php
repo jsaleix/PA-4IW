@@ -73,18 +73,21 @@ class SneakerService
         }
 
         $sneaker->setStripeProductId($sneakerId->id);
-        foreach($sneaker->getImages() as $image){
-            if($image->getImageFile()){
-                $image->setSneaker($sneaker);
-                $this->entityManager->persist($image);
-            }else{
-                $sneaker->removeImage($image);
-            }
-        }
 
-        if( count($sneaker->getImages()) < 3){
-            throw new \Exception('Missing image(s) (required: 3, got: '. count($sneaker->getImages()) . ')' );
-        }
+        // Disabling image verification for performance testing
+        
+        // foreach($sneaker->getImages() as $image){
+        //     if($image->getImageFile()){
+        //         $image->setSneaker($sneaker);
+        //         $this->entityManager->persist($image);
+        //     }else{
+        //         $sneaker->removeImage($image);
+        //     }
+        // }
+
+        // if( count($sneaker->getImages()) < 3){
+        //     throw new \Exception('Missing image(s) (required: 3, got: '. count($sneaker->getImages()) . ')' );
+        // }
 
         $this->entityManager->persist($sneaker);
         $this->entityManager->flush();

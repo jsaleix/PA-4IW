@@ -6,7 +6,6 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Finder\Finder;
 
 use Stripe\StripeClient;
 
@@ -26,41 +25,6 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-
-        //  <--- PERFORMANCE TESTING
-
-        //Fetching base user json
-        $finder = new Finder();
-        $finder->files()->in(__DIR__."//files//")->name('base_user.json');
-
-        if (!$finder->hasResults()) {
-            return;
-        }
-
-        foreach ($finder as $file) {
-            $absoluteFilePath = $file->getRealPath();
-            $fileNameWithExtension = $file->getRelativePathname();
-            $baseUser = json_decode(file_get_contents($absoluteFilePath));
-        }
-
-        if( !$baseUser ) throw new \Exception('Base user not found');
-
-        for($i = 0; $i < 50; $i++) {
-            $email = $baseUser->emailStart . $i . $baseUser->emailEnd;
-            $user = (new User())
-                ->setEmail($email)
-                ->setName($baseUser->lastname)
-                ->setSurname($baseUser->firstname)
-                ->setIsVerified(true)
-                ->setRoles(['ROLE_USER'])
-            ;
-            $user->setPassword($this->userPasswordHasher->hashPassword($user, 'test'));
-            $manager->persist($user);
-            $this->setReference(self::USER_USER, $user);
-        }
-
-        //  ---> END PERFORMANCE TESTING
-
         $admin = (new User())
             ->setEmail('admin@admin.fr')
             ->setIsVerified(true)
@@ -69,6 +33,15 @@ class UserFixtures extends Fixture
         $admin->setPassword($this->userPasswordHasher->hashPassword($admin, 'test'));
         $manager->persist($admin);
         $this->setReference(self::USER_ADMIN, $admin);
+
+        $user = (new User())
+            ->setEmail('user@user.fr')
+            ->setIsVerified(true)
+            ->setRoles(['ROLE_USER'])
+        ;
+        $user->setPassword($this->userPasswordHasher->hashPassword($user, 'test'));
+        $manager->persist($user);
+        $this->setReference(self::USER_USER, $user);
 
         //SELLER STILL NEEDS TO FILL IN STRIPE FORM BEFORE BEING GRANTED OF THE SELLER STATUS
         $stripe = new StripeClient($_ENV['STRIPE_SK']);
