@@ -11,8 +11,11 @@
             <p><i>Bought on {{ invoice.date|date('d/m/Y') }}</i></p>
             <hr/>
             <p>Status: {{ invoice.paymentStatus }}</p>
-            <h3>Delivery details</h3>
-            <p>Reception address: <b>{{ invoice.receptionAddress }}</b></p>
+            <div>
+                <p>Delivery details</p>
+                <p>Reception address: <b>{{ invoice.receptionAddress }}</b></p>
+                <p>Name {{ invoice.buyer.name}} {{ invoice.buyer.surname }}</p>
+            </div>
             <hr/>
             {% if form is not null %}
                 {{ form_start(form) }}

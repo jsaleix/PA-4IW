@@ -1,0 +1,57 @@
+{% extends 'base_front.html.twig' %}
+
+{% block title %}SNKER - Delete your account {% endblock %}
+
+{% block body %}
+
+<div class="account container">
+    <div class="account_profile">
+        <h1>Deleting your account</h1>
+        <p>You won't be able to delete your account if you have transaction pending, both as a buyer and a seller.</p>
+        <p>If that's the case, you will have to finish the process for each of your orders to be able to delete your account.</p>
+        
+        {{ form_start(form) }}
+            {{ form_rest(form) }}
+            <button type="submit" class="btn btn-danger">Delete my account</button>
+        {{ form_end(form) }}
+        <div style="margin-top: 10px">
+            <a href="{{ path('account_profile') }}"><button class="btn btn-primary">Go back</button></a>
+        </div>
+    </div>
+
+    <div class="right"></div>
+</div>
+
+<style>
+
+    .account{
+        display: flex;
+    }
+
+    .account a{
+        text-decoration: none;
+        color: black;
+    }
+
+    .account_profile{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 10px;
+    }
+
+    .left{
+        width: 70%;
+    }
+
+    .right{
+        width: 30%;
+        height: 100vh;
+        background-image: url('{{ asset('images/assets/visuals/ryan-plomp-76w_eDO1u1E-unsplash.jpg') }}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position-x: center;
+    }
+</style>
+
+{% endblock %}

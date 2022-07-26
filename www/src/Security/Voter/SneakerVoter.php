@@ -7,7 +7,7 @@ use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
-use App\Service\Payment\SellerService;
+use App\Service\Front\SellerService;
 use App\Service\SneakerServiceGlobal;
 
 class SneakerVoter extends Voter

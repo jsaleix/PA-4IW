@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Payment;
+namespace App\Service\Front;
 
 use App\Entity\User;
 use App\Entity\Invoice;
@@ -13,7 +13,6 @@ use Psr\Log\LoggerInterface;
 use Stripe\StripeClient;
 use App\Repository\InvoiceRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class SellerService
 {
@@ -25,10 +24,6 @@ class SellerService
         private InvoiceRepository $invoiceRepository
 
     ) {}
-
-    public function promoteToSeller(User $user){
-
-    }
     
     public function updateSellerCapabilities($event): void
     {

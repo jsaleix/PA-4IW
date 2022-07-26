@@ -23,6 +23,10 @@ class ReportController extends AbstractController
     #[Route('/report/user/{id}', name: 'report-user')]
     public function reportUser(User $user, Request $request, EntityManagerInterface $entityManager, ReportReasonRepository $reasonRepository, UserReportRepository $reportRepository): Response
     {
+        if( !$this->getUser() ){
+            return $this->redirectToRoute('front_profile', [ 'id' => $user->getId()]);
+        }
+
         //Checking if user has not already reported this user
         $isAlreadyReported = $reportRepository->findBy(['reported' => $user, 'reporter' => $this->getUser() ]);
         if($isAlreadyReported){
@@ -30,7 +34,7 @@ class ReportController extends AbstractController
             return $this->redirectToRoute('front_profile', [ 'id' => $user->getId()]);
         }
 
-        $reasons = $reasonRepository->findBy(['type' => '1']);
+        //$reasons = $reasonRepository->findBy(['type' => '1']);
         $report = new UserReport();
         $form = $this->createForm( UserReportType::class, $report);
         $form->handleRequest($request);
@@ -54,13 +58,17 @@ class ReportController extends AbstractController
     #[Route('/report/sneaker/{id}', name: 'report-sneaker')]
     public function reportSneaker(Sneaker $sneaker, Request $request, EntityManagerInterface $entityManager, ReportReasonRepository $reasonRepository, ProductReportRepository $productReportRepository): Response
     {
+        if( !$this->getUser() ){
+            return $this->redirectToRoute('front_sneaker_item_by_slug', [ 'slug' => $sneaker->getSlug()]);
+        }
+
         //Checking if user has not already reported this sneaker
         $isAlreadyReported = $productReportRepository->findBy(['product' => $sneaker, 'reporter' => $this->getUser() ]);
         if($isAlreadyReported){
             $this->addFlash('warning', 'You\'ve already reported this product');
             return $this->redirectToRoute('front_sneaker_item_by_slug', [ 'slug' => $sneaker->getSlug()]);
         }
-        $reasons = $reasonRepository->findBy(['type' => '2']);
+        //$reasons = $reasonRepository->findBy(['type' => '2']);
         $report = new ProductReport();
         $form = $this->createForm( ProductReportFormType::class, $report);
         $form->handleRequest($request);

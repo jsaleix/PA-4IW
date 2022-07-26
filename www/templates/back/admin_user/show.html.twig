@@ -3,25 +3,38 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-    <div class="user-data-page container">
+    <div class="container" id="user-admin-page">
         <div class="header">
             <a href="{{ path('admin_user_dashboard') }}">Back to list</a>
         </div>
         <div class="user-data">
             <div class="left-col">
-                <h2>Basic information</h2>
-                <span>{{ user.id }} - {{ user.email }}</span>
+                <div class="top">               
+                    <h2>Basic information</h2>
+                    <div class="buttons-row">
+                        <a href="{{ path('admin_user_edit', {'id': user.id}) }}"><button class="btn-primary">Edit</button></a>
+                        {{ include('back/admin_user/_delete_form.html.twig') }}
+                    </div>
+                </div>
+                <div class="name-row">
+                    <div class="picture_container">
+                         {% if user.profileImage is not empty %}
+                            <img src="{{ vich_uploader_asset(user.profileImage) }}" alt="profile picture"/>
+                        {% else %}
+                            <img src="https://images.unsplash.com/photo-1571601035754-5c927f2d7edc" alt="profile picture"/>
+                        {% endif %}
+                    </div>
+                    <h3>{{ user.id }} - {{ user.email }}</h3>
+                </div>
+                
                 <span>{{ user.roles ? user.roles|json_encode : '' }}</span>
-                <span>{{ user.name ? 'No name set'}}</span>
+                <span>{{ user.name??'No name set'}} </span>
                 <span>{{ user.surname??'No surname set' }}</span>
                 <span>{{ user.city??'No city set' }}</span>
                 <span>{{ user.address??'No address set' }}</span>
                 <span>{{ user.phone??'No phone number set' }}</span>
                 <span>{{ user.stripeConnectId??'No stripe connect id' }}</span>
-                <div class="buttons-row">
-                    <a href="{{ path('admin_user_edit', {'id': user.id}) }}"><button class="btn-primary">Edit</button></a>
-                    {{ include('back/admin_user/_delete_form.html.twig') }}
-                </div>
+
             </div>
 
             <div class="right-col">
@@ -81,59 +94,7 @@
 
     </div>
 
-    <!-- This example requires Tailwind CSS v2.0+ -->
-<div class="bg-white shadow overflow-hidden sm:rounded-lg">
-  <div class="px-4 py-5 sm:px-6">
-    <h3 class="text-lg leading-6 font-medium text-gray-900">#{{ user.id }} - {{ user.email }}</h3>
-    <p class="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p>
-  </div>
-  <div class="border-t border-gray-200">
-    <dl>
-      <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-        <dt class="text-sm font-medium text-gray-500">Name</dt>
-        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ user.name ? 'No name set'}}</dd>
-      </div>
-      <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-        <dt class="text-sm font-medium text-gray-500">Surname</dt>
-        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ user.surname ? 'No surname set'}}</dd>
-      </div>
-      <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-        <dt class="text-sm font-medium text-gray-500">Roles</dt>
-        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ user.roles ? user.roles|json_encode : '' }}</dd>
-      </div>
-      <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-        <dt class="text-sm font-medium text-gray-500">Email address</dt>
-        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ user.email ? 'No email set'}}</dd>
-      </div>
-      <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-        <dt class="text-sm font-medium text-gray-500">Address</dt>
-        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ user.address ? 'No address set'}}</dd>
-      </div>
-
-      <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-        <dt class="text-sm font-medium text-gray-500">City</dt>
-        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ user.city ? 'No city set'}}</dd>
-      </div>
-
-      <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-        <dt class="text-sm font-medium text-gray-500">Phone</dt>
-        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ user.phone ? 'No phone set'}}</dd>
-      </div>
-      <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-        <dt class="text-sm font-medium text-gray-500">Address</dt>
-        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ user.address ? 'No name set'}}</dd>
-      </div>
-      <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-        <dt class="text-sm font-medium text-gray-500">StripeConnect ID</dt>
-        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ user.stripeConnectId??'No stripe connect id' }}</dd>
-      </div>
-      
-    </dl>
-  </div>
-</div>
-
-
-    <style>
+    {# <style>
         .user-data-page{
             display: flex;
             flex-direction: column;
@@ -175,5 +136,5 @@
             border: 1px solid gray;
 
         }
-    </style>
+    </style> #}
 {% endblock %}

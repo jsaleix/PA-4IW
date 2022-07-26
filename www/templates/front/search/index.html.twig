@@ -1,0 +1,18 @@
+{% extends 'base_front.html.twig' %}
+
+{% block title %} Our products {% endblock %}
+
+{% block body %}
+    <div class="sneakers_items">
+        {% for sneaker in sneakers %}
+            {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
+        {% else %}
+            <p>No sneakers found </p>
+        {% endfor %}
+    </div>
+
+    <script>
+        let selector = document.forms[0];
+        selector.addEventListener('change', () => selector.submit());
+    </script>
+{% endblock %}

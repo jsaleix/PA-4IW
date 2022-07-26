@@ -3,12 +3,11 @@
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
-<div class="m-8">
     <h1>Edit User</h1>
-    <a href="{{ path('admin_user_dashboard') }}" class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">back to list</a>
 
     {{ include('back/admin_user/_form.html.twig', {'button_label': 'Update'}) }}
 
+    <a href="{{ path('admin_user_dashboard') }}">back to list</a>
+
     {{ include('back/admin_user/_delete_form.html.twig') }}
-</div>
 {% endblock %}

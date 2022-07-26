@@ -43,7 +43,7 @@ class UserFixtures extends Fixture
         $manager->persist($user);
         $this->setReference(self::USER_USER, $user);
 
-        //SELLER STILL NEEDS TO FILL IN STRIPE FORM BEFORE EARNING SELLER STATUS
+        //SELLER STILL NEEDS TO FILL IN STRIPE FORM BEFORE BEING GRANTED OF THE SELLER STATUS
         $stripe = new StripeClient($_ENV['STRIPE_SK']);
         $stripeAccount = $stripe->accounts->create([
             'type' => 'express'

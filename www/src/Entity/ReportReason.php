@@ -12,6 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ReportReason
 {
+
+    const TYPE_PRODUCT = "PRODUCT";
+    const TYPE_USER = "USER";
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

@@ -19,9 +19,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Form\Front\Invoice\TrackingNumberFormType;
 use App\Form\Front\UserMailType;
 use App\Form\Front\UserType;
+use App\Form\Front\UserDeleteSelfType;
 
-use App\Service\Payment\SellerService;
+use App\Security\Voter\InvoiceVoter;
 
+use App\Service\Front\SellerService;
+use App\Service\Front\UserService;
+
+use Exception;
 use Stripe\StripeClient;
 
 #[Route('/account')]
@@ -57,7 +62,7 @@ class AccountController extends AbstractController
                 $user->getProfileImage()->setImageFile(null);
                 return $this->redirectToRoute('front_account_profile', [], Response::HTTP_SEE_OTHER);
             }catch(\Exception $e){
-                $this->addFlash('warning', $e->getMessage());
+                //$this->addFlash('warning', $e->getMessage());
                 $this->addFlash('warning', 'An error occured');
             }
 
@@ -124,6 +129,50 @@ class AccountController extends AbstractController
         ]);
     }
 
+    #[Route('/account/profile/delete', name: 'account_profile_delete', methods: ['GET', 'POST'])]
+    public function delete(
+                            Request $request, 
+                            EntityManagerInterface $entityManager,
+                            UserService $userService,
+                            UserPasswordHasherInterface $passwordHasher
+    ): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserDeleteSelfType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try{
+                $requestParams = $request->get('user_delete_self');
+                $pwd = $requestParams['password'];
+
+                if( !$pwd ){
+                    throw new Exception('Empty password field');
+                }
+                if( !$passwordHasher->isPasswordValid($user, $pwd) ){
+                    throw new Exception('Wrong password');
+                }
+                if( $userService->hasActiveTransaction($user) ){
+                    throw new Exception("You cannot delete your account since you have transaction(s) pending");
+                }
+                $img = $user->getProfileImage();
+                if($img){
+                    $entityManager->remove($img);
+                }
+                $entityManager->remove($user);
+                $entityManager->flush();
+                
+                return $this->redirectToRoute('default', [], Response::HTTP_SEE_OTHER);
+            }catch(Exception $e){
+                $this->addFlash('danger', $e->getMessage());
+            }
+        }
+
+        return $this->render('front/account/profile/delete_account.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
     #[Route('/orders', name: 'account_orders', methods: ['GET'])]
     public function orders(Request $request): Response
     {
@@ -134,6 +183,7 @@ class AccountController extends AbstractController
     }
 
     #[Route('/orders/{id}', name: 'account_order', methods: ['GET'])]
+    #[IsGranted(InvoiceVoter::VIEW, 'invoice')]
     public function order(Invoice $invoice): Response
     {
         return $this->render('front/account/orders/show.html.twig', [
@@ -144,6 +194,7 @@ class AccountController extends AbstractController
 
 
     #[Route('/orders/receive/{id}', name: 'account_receive_order', requirements: ['id' => '^\d+$'], methods: ['POST'])]
+    #[IsGranted(InvoiceVoter::REPORT_AS_RECEIVED, 'invoice')]
     public function receiveParcel( Invoice $invoice, EntityManagerInterface $entityManager, Request $request)
     {
         if ($this->isCsrfTokenValid('receive'. $invoice->getId(), $request->request->get('_token'))) {
@@ -223,6 +274,7 @@ class AccountController extends AbstractController
 
     #[Route('/seller-orders/{id}', name: 'account_seller_order', methods: ['GET', 'POST'])]
     #[IsGranted("ROLE_SELLER")]
+    #[IsGranted(InvoiceVoter::VIEW_AS_SELLER, 'invoice')]
     public function sellerOder(Invoice $invoice, Request $request, EntityManagerInterface $entityManager): Response
     {
         $canSetTrackingNb = $invoice->getPaymentStatus() === Invoice::SOLD_STATUS;
@@ -241,6 +293,5 @@ class AccountController extends AbstractController
             'form' => $canSetTrackingNb ? $form->createView() : null
         ]);
     }
-
 
 }

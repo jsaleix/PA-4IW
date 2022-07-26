@@ -110,6 +110,7 @@ class SneakersController extends AbstractController
             }
             foreach($sneaker->getImages() as $img){
                 $sneaker->removeImage($img);
+                $entityManager->remove($img);
             }
             $entityManager->remove($sneaker);
             $entityManager->flush();
