@@ -10,6 +10,8 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 class BrandFixtures extends Fixture
 {
+    public const FIRST_BRAND = 'first-brand';
+
     public function load(ObjectManager $manager): void
     {
         $output = new ConsoleOutput();
@@ -29,12 +31,18 @@ class BrandFixtures extends Fixture
         }
         
         $faker = \Faker\Factory::create();
+
+        $first=true;
         foreach($brands as $brand){
             $object = (new Brand())
                     ->setName($brand->name)
-                    ->setDescription($faker->realText(200))
+                    ->setDescription($faker->realText(130))
                     ;
             $manager->persist($object);
+            if($first){
+                $this->addReference(self::FIRST_BRAND, $object);
+                $first=false;
+            }
         };
         
         $manager->flush();
