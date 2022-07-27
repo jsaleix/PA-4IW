@@ -36,6 +36,7 @@ class ShopProducts extends Fixture
                 ->setDescription("Mock product description")
                 ->setBrand($brand)
                 ->setFromShop(true)
+                ->setStock(2)
             ;
 
             $this->sneakerService->publish($sneaker, null, true);
