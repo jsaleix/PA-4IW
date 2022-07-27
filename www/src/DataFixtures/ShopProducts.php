@@ -16,21 +16,10 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserProducts extends Fixture
+class ShopProducts extends Fixture
 {
-    const USER_ADMIN = 'admin';
-    const USER_SELLER = 'seller';
-    const USER_USER = 'user';
-
-    /** @var UserPasswordHasherInterface $userPasswordHasher */
-    private $userPasswordHasher;
-
-    public function __construct(
-            UserPasswordHasherInterface $userPasswordHasher, 
-            SneakerService $sneakerService
-    )
+    public function __construct(SneakerService $sneakerService)
     {
-        $this->userPasswordHasher = $userPasswordHasher;
         $this->sneakerService = $sneakerService;
     }
 
@@ -39,35 +28,18 @@ class UserProducts extends Fixture
         $brand = $this->getReference(BrandFixtures::FIRST_BRAND);
         $faker = \Faker\Factory::create();
 
-        for($i = 0; $i <15; $i++) {
-            $user = (new User())
-                ->setEmail($faker->email())
-                ->setName($faker->lastName())
-                ->setSurname($faker->name())
-                ->setCity("Paris")
-                ->setAddress("242 rue du faubourg st. Antoine")
-                ->setIsVerified(true)
-                ->setRoles(['ROLE_SELLER'])
-            ;
-            $user->setPassword($this->userPasswordHasher->hashPassword($user, $faker->password()));
-
-
+        for($i = 0; $i <5; $i++) {
             $sneaker = ($this->createSneakerWithImages())
                 ->setName('MOCK PRODUCT - DO NO BUY')
                 ->setSize(44)
-                ->setPrice(100)
+                ->setPrice(120)
                 ->setDescription("Mock product description")
-                ->setPublisher($user)
                 ->setBrand($brand)
+                ->setFromShop(true)
             ;
 
-            $manager->persist($user);
-
-            $this->sneakerService->publish($sneaker, $user, false);
-
+            $this->sneakerService->publish($sneaker, null, true);
         }
-
-        $manager->flush();
     }
 
     private function createSneakerWithImages()
@@ -83,14 +55,14 @@ class UserProducts extends Fixture
 
     private function generateImg($index)
     {
-        $src = __DIR__."/files/sneaker_default.jpeg";
-        $newFile = __DIR__."/files/sneaker_default-". $index .".jpeg";
+        $src = __DIR__."/files/sneaker_shop_default.jpeg";
+        $newFile = __DIR__."/files/sneaker_shop_default-". $index .".jpeg";
         
         copy($src, $newFile);
 
         $file = new UploadedFile(
             $newFile,
-            'sneaker_default.jpeg',
+            'sneaker_shop_default.jpeg',
             'image/jpeg',
             UPLOAD_ERR_OK,
             true //  Set test mode true !!! " Local files are used in test mode hence the code should not enforce HTTP uploads."
