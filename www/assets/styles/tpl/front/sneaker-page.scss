@@ -52,13 +52,14 @@
         width: 35%;
         padding: 20px 0;
         display: flex;
+        gap: 20px;
         flex-direction: column;
 
         .profile-part{
             width: 100%;
             display: flex;
             align-items: center;
-            justify-content: center;
+            //justify-content: center;
             gap: 10px;
             
             .img_container{

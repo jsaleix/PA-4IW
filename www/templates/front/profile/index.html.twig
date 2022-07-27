@@ -12,7 +12,7 @@
                     <img src="https://images.unsplash.com/photo-1571601035754-5c927f2d7edc" alt="profile picture"/>
                 {% endif %}
             </div>
-            <a href="{{ path('report-user', { 'id': user.id }) }}"><button>Report this user</button></a>
+            <a href="{{ path('report-user', { 'id': user.id }) }}"><button class="btn btn-danger">Report this user</button></a>
         </div>
         <div class="right-part">
             <div class="right-header">
@@ -87,6 +87,7 @@
 
         .right-part .right-header{
             display: flex;
+            justify-content: space-between;
         }
 
         .right-part .right-header select{

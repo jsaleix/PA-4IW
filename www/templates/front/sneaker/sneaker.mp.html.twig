@@ -17,9 +17,8 @@
                     <img src="https://images.unsplash.com/photo-1571601035754-5c927f2d7edc" alt="profile picture"/>
                 {% endif %}
             </a>
-            <span>Provided by <a style="font-weight: bolder;" href="{{  path('front_profile', { 'id': sneaker.publisher.id }) }}">{{ sneaker.publisher.name??'Unknown' }} {{ sneaker.publisher.surname }}</a></span>
+            <span>Provided by <br/><a style="font-weight: bolder;" href="{{  path('front_profile', { 'id': sneaker.publisher.id }) }}">{{ sneaker.publisher.name??'Unknown' }} {{ sneaker.publisher.surname }}</a></span>
         </div>
-        <span>{{sneaker.publicationDate is empty ? "" : sneaker.publicationDate|date("d/m/Y")}}</span>
         {% if(not sneaker.sold ) %}
             <a href="{{ path('marketplace_product_checkout', {'id': sneaker.id }) }}">
                 <button class="btn btn-primary">${{ sneaker.price }} - BUY NOW</button>
@@ -29,7 +28,7 @@
         {%  endif %}
 
         <div>
-            <div style="border-bottom: 1px solid gray">
+            {# <div style="border-bottom: 1px solid gray">
                 <h4>Materials</h4>
                 {%  if(sneaker.getMaterials is not empty) %}
 
@@ -47,7 +46,10 @@
             </div>
             <a href="{{ path('report-sneaker', { 'id': sneaker.id }) }}">
                 <button class="btn btn-secondary">Report this product</button>
-            </a>
+            </a> #}
+            <h3>Details</h3>
+            <span>{{sneaker.publicationDate is empty ? "" : "Published on " ~ sneaker.publicationDate|date("d/m/Y")}}</span>
+
         </div>
 
     </div>
