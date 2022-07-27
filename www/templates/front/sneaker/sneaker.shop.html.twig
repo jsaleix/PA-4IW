@@ -10,7 +10,6 @@
     </div>
     <div class="right">
         <span><b>{{ sneaker.stock??'Unknown quantity' }}</b> left in stock</span>
-        <span>{{sneaker.publicationDate is empty ? "" : sneaker.publicationDate|date("m/d/Y")}}</span>
         {% if(not sneaker.sold ) %}
             <a href="{{ path('shop_product_checkout', {'id': sneaker.id })}}">
                 <button class="btn btn-primary">${{ sneaker.price }} - BUY ON OUR SHOP</button>
@@ -19,8 +18,8 @@
             <h4>Sold</h4>
         {%  endif %}
 
-        <div>
-            <div style="border-bottom: 1px solid gray">
+        <div class="sneaker-details">
+            {# <div style="border-bottom: 1px solid gray">
                 <h4>Materials</h4>
                 {%  if(sneaker.getMaterials is not empty) %}
 
@@ -35,9 +34,11 @@
                 {% else %}
                     <span>Not specified</span>
                 {% endif %}
-            </div>
+            </div> #}
+            <h3>Details</h3>
+            <span>{{sneaker.publicationDate is empty ? "" : "Published on " ~ sneaker.publicationDate|date("d/m/Y")}}</span>
             <a href="{{ path('report-sneaker', { 'id': sneaker.id }) }}">
-                <button class="btn btn-secondary">Report this product</button>
+                <button class="btn btn-danger">Report this product</button>
             </a>
         </div>
     </div>
