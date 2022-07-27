@@ -11,7 +11,7 @@
             {% if likes is not empty %}
                 <div class="sneakers_items">
                     {% for sneaker in likes %}
-                        {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
+                        {{ include('@front/components/sneaker_card/sneaker_item_show_blank.html.twig') }}
                     {% endfor %}
                 </div>
             {% else %}

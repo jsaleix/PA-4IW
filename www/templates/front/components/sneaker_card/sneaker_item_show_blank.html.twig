@@ -1,0 +1,15 @@
+<a href="{{ path('front_sneaker_item_by_slug', { 'slug': sneaker.slug }) }}" target="_blank" class="sneaker_item">
+    <div class="img_container">
+        {% if( sneaker.getImages() is not empty) %}
+            <img src="{{ vich_uploader_asset(sneaker.getImages()[0]) }}" alt="{{ sneaker. name }}" />
+        {% endif %}
+    </div>
+    <div class="sneaker_data">
+        <div class="content">
+            <span>{{sneaker.name}}</span>
+            <span class="brand">{{ sneaker.brand.name}} </span>
+            <h4>${{sneaker.price}}</h4>
+            <span class="source">{{sneaker.fromShop ? 'From Shop' : 'From Marketplace'}}</span>
+        </div>
+    </div>
+</a>
