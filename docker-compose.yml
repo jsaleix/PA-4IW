@@ -15,8 +15,8 @@ services:
     volumes:
       - ./db-data:/var/lib/postgresql/data:rw
     ports:
-      - target: 5432
-        published: 5432
+      - target: 5433
+        published: 5433
         protocol: tcp
 
   php:
@@ -55,7 +55,7 @@ services:
   adminer:
     image: adminer
     ports:
-      - "8080:8080"
+      - "8081:8081"
     depends_on:
     - db
 
