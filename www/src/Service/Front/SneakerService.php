@@ -5,6 +5,7 @@ use App\Entity\Invoice;
 use App\Entity\Image;
 use App\Entity\Sneaker;
 use App\Repository\InvoiceRepository;
+use App\Repository\SneakerRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\StripeClient;
@@ -14,6 +15,7 @@ class SneakerService
 {
     public function __construct(
         private InvoiceRepository $invoiceRepository,
+        private SneakerRepository $sneakerRepository,
         private EntityManagerInterface $entityManager
     )
     {}
@@ -26,9 +28,19 @@ class SneakerService
             $isLiked = true;
         }
 
+        if($sneaker->getBrand()){
+            $similarProducts = $this->sneakerRepository->findSimilarSneakers(
+                $sneaker->getBrand(), 
+                $sneaker->getId(), 
+                $user ? $user->getId() : null,
+                $sneaker->getFromShop()
+            );
+        }
+
         return [
             'sneaker'=>$sneaker,
-            'isLiked' => $isLiked
+            'isLiked' => $isLiked,
+            'similarProducts' => $similarProducts ?? []
         ];
     }
 

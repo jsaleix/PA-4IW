@@ -25,3 +25,23 @@
         <h3>Model: <a href="{{ path('front_sneaker_model_show', {'id': sneaker.sneakerModel.id }) }}">{{ sneaker.sneakerModel.name }}</a></h3>
     {% endif %}
 </div>
+
+{% if similarProducts is defined 
+    and similarProducts is not null
+    and similarProducts is not empty
+%}
+
+    <section class="similar_procuts">
+        <div class="similar_product_header">
+            <h2>Similar products</h2>
+        </div>
+        <div class="sneakers_items">
+            {% for sneaker in similarProducts %}
+                {{ include('@front/components/sneaker_card/sneaker_item_show.html.twig') }}
+            {% else %}
+                <p>No sneakers found </p>
+            {% endfor %}
+        </div>
+    </section>
+
+{% endif %}

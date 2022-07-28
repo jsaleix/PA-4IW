@@ -69,6 +69,34 @@ class SneakerRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findSimilarSneakers($brandId, $sneakerId, $userId, $fromShop=false, $limit = 6): ?Array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $this
+            ->createQueryBuilder('s')
+            ->where('s.id != :sneakerId')
+            ->andWhere('s.brand = :brand')
+            ->andWhere('s.from_shop = :fromShop');
+
+        if($userId){
+            $query = $query
+                    ->andWhere('s.publisher != :user')
+                    ->setParameter('user', $userId);
+        }
+
+        $query = $query
+            ->setParameter('sneakerId', $sneakerId)
+            ->setParameter('brand', $brandId)
+            ->setParameter('fromShop', $fromShop ? true : false)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ;
+        
+        $res = $query->getResult(\Doctrine\ORM\Query::HYDRATE_OBJECT);
+        return $res;
+    }
+
     /**
      * @param SearchData $search
      * @return Sneaker[]

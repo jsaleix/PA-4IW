@@ -57,9 +57,9 @@ class Sneaker
     private $unused;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default" : false})
      */
-    private $from_shop;
+    private $from_shop = false;
 
     /**
      * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="sneakers")
