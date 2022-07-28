@@ -1,0 +1,28 @@
+$col-nb: 12;
+$md-width: 768px ;
+$lg-width: 992px;
+$xl-width: 1200px;
+
+@mixin sm {
+    @media screen and (max-width:768px) {
+        @content;
+    }
+  }
+  
+@mixin md {
+    @media screen and (min-width: 769px) and (max-width: 992px) {
+        @content;
+    }
+}
+
+@mixin lg {
+    @media screen and (min-width: 993px) and (max-width: 1199px) {
+        @content;
+    }
+}
+
+@mixin xl {
+    @media screen and (min-width: 1200px) {
+        @content;
+    }
+}

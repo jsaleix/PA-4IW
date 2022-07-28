@@ -8,7 +8,9 @@
     <div class="account_profile_left">
         <h1>Edit your profile</h1>
         {{ form_start(form) }}
-            {{ form_rest(form) }}
+            {{ form_row(form.name)}}
+            {{ form_row(form.surname)}}
+            {{ form_row(form.profileImage)}}
             <button type="submit" class="btn btn-success">SAVE</button>
         {{ form_end(form) }}
         <div class="buttons-row">
