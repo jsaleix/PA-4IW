@@ -5,7 +5,7 @@
 {% block body %}
 
 <div id="home">
-    <section>
+    {# <section>
         <ul class="horizontal_list_item">
             {% for category in categories %}
                 <li><a href="{{ path('front_category_show', {'id':  category.id}) }}">{{ category.name }}</a></li>
@@ -14,10 +14,10 @@
             {% endfor %}
             <li><a href="{{ path('front_category_index') }}" >More ></a></li>
         </ul>
-    </section>
+    </section> #}
     <section class="home_banner">
-        <img alt="banner" 
-            src="https://images.unsplash.com/photo-1552066344-2464c1135c32?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"/>
+        <img alt="banner"
+            src="{{ asset('images/assets/home/banner.jpg') }}"/>
     </section>
 
     <section>
