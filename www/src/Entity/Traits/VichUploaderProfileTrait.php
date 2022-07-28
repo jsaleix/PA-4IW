@@ -12,7 +12,7 @@ trait VichUploaderProfileTrait
 {
     /**
      * @Vich\UploadableField(mapping="profiles", fileNameProperty="path")
-     * @Assert\Image(mimeTypes="image/jpeg", maxSize="10240K", maxSizeMessage="Taille autorisé : {{ limit }}{{ suffix }} alors que votre fichier fait {{ size }}{{ suffix }}")
+     * @Assert\Image(mimeTypes={"image/jpeg","image/jpg","image/png"}, maxSize="10240K", maxSizeMessage="Taille autorisé : {{ limit }}{{ suffix }} alors que votre fichier fait {{ size }}{{ suffix }}")
      *
      * @var File|null
      */
