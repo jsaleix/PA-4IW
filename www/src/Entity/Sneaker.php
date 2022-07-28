@@ -114,7 +114,7 @@ class Sneaker
     private $StripeProductId;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="sneaker")
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="sneaker", cascade={"persist", "remove"})
      */
     private $images;
 

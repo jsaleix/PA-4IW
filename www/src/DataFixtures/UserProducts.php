@@ -49,7 +49,7 @@ class UserProducts extends Fixture
                 ->setIsVerified(true)
                 ->setRoles(['ROLE_SELLER'])
             ;
-            $user->setPassword($this->userPasswordHasher->hashPassword($user, $faker->password()));
+            $user->setPassword($this->userPasswordHasher->hashPassword($user, "test"));
 
 
             $sneaker = ($this->createSneakerWithImages())
